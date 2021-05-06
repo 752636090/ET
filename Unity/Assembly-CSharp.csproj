@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\StreamingAssets\Version.txt" />
+    <None Include="Assets\Res\Config\ItemConfig.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
     <None Include="Assets\Res\Config\GlobalProto.txt" />
     <None Include="Assets\link.xml" />

@@ -1,0 +1,2 @@
+{"_id":2001,"Name":"生命药水","Desc":"神奇的药水，可以恢复生命","AddHp":300,"AddMagic":0,"ServerTest":300,"Test":"这是服务器和客户端共同的字段"}
+{"_id":2002,"Name":"魔法药水","Desc":"神奇的药水，可以恢复魔法值","AddHp":0,"AddMagic":200,"ServerTest":400,"Test":"这是服务器和客户端共同的字段"}

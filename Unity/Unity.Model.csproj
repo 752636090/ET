@@ -433,11 +433,11 @@
     <Compile Include="Assets\Model\Module\Message\ErrorCode.cs" />
     <Compile Include="Assets\Model\Module\Filter\FilterComponent.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_UnitPathComponent_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\ETModel_ETTask_1_IResponse_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_ResourcesComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_Transform_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Component_Binding.cs" />
     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\ExampleScripts\RecastTileUpdate.cs" />
+    <Compile Include="Assets\Model\ILBinding\ETModel_ETTask_1_IResponse_Binding.cs" />
     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\Modifiers.cs" />
     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelClasses.cs" />
     <Compile Include="Assets\Model\Base\Helper\TimeHelper.cs" />
@@ -510,6 +510,7 @@
     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\astarclasses.cs" />
     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\TurnBased\SingleNodeBlocker.cs" />
     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOObstacle.cs" />
+    <Compile Include="Assets\Model\Module\Demo\Config\ItemConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
