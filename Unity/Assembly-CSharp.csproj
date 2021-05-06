@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{1066F652-6A89-D1C4-9881-1A19DF7AB80E}</ProjectGuid>
+    <ProjectGuid>{CD8C9303-404B-FB8D-6B9B-21988D5CAC0A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Unity.Hotfix</AssemblyName>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -62,80 +62,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Hotfix\Module\Message\HotfixMessage.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\M2C_CreateUnitsHandler.cs" />
-    <Compile Include="Assets\Hotfix\Module\Config\IConfig.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IDestroySystem.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\MessagePool.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\ArrayHelper.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\MessageDispatcherComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\HotfixOpcode.cs" />
-    <Compile Include="Assets\Hotfix\Base\Log.cs" />
-    <Compile Include="Assets\Hotfix\Module\UI\UI.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\Helper\MapHelper.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IChangeSystem.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\G2C_TestHotfixHandler.cs" />
-    <Compile Include="Assets\Hotfix\Init.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\ExceptionHelper.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\System\UILobbyFactory.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\System\LoginFinish_CreateLobbyUI.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\AMHandler.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\Dumper.cs" />
-    <Compile Include="Assets\Hotfix\Entity\Scene.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\JsonHelper.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\Component\UILoginComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\IMHandler.cs" />
-    <Compile Include="Assets\Hotfix\Base\Event\EventIdType.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\System\InitSceneStart_CreateLoginUI.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\TestHotfixSubscribMonoEvent_LogString.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\Component\UILobbyComponent.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IAwakeSystem.cs" />
-    <Compile Include="Assets\Hotfix\Module\ActorLocation\IActorLocationMessage.cs" />
-    <Compile Include="Assets\Hotfix\Module\Config\ACategory.cs" />
-    <Compile Include="Assets\Hotfix\Module\Actor\IActorMessage.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ISerializeToEntity.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\SessionComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\Helper\LoginHelper.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IUpdateSystem.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\OperaComponent.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ComponentWithId.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\System\UILoginFactory.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\M2C_PathfindingResultHandler.cs" />
-    <Compile Include="Assets\Hotfix\Entity\Game.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\Entity.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\System\EnterMapFinish_RemoveLobbyUI.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ILoadSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\EventSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IStartSystem.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\HotfixMessageDispatcher.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ComponentFactory.cs" />
-    <Compile Include="Assets\Hotfix\Module\Config\ConfigHelper.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\Component.cs" />
-    <Compile Include="Assets\Hotfix\Module\UI\UIComponent.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\AssetBundleHelper.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ILateUpdateSystem.cs" />
-    <Compile Include="Assets\Hotfix\Module\Config\ConfigComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\IMessage.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\EntityType.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\OpcodeTypeComponent.cs" />
-    <Compile Include="Assets\Hotfix\Base\Event\IEvent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\System\LoginFinish_RemoveLoginUI.cs" />
-    <Compile Include="Assets\Hotfix\Module\UI\UIType.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\Session.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IDeserializeSystem.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\Config\UnitConfig.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ObjectPool.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\Object.cs" />
-    <Compile Include="Assets\Hotfix\Module\UI\IUIFactory.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\CarSystem.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\EngineSystem.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\EngineComponent.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\WheelComponent.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\Car.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\WheelSystem.cs" />
+    <Compile Include="Assets\Learn\Test.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
+    <None Include="Assets\StreamingAssets\Version.txt" />
+    <None Include="Assets\Res\Config\UnitConfig.txt" />
+    <None Include="Assets\Res\Config\GlobalProto.txt" />
+    <None Include="Assets\link.xml" />
+    <None Include="Assets\Res\Config\BuffConfig.txt" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -283,9 +217,6 @@
     <Reference Include="UnityEngine.UmbraModule">
       <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UmbraModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityAnalyticsModule.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UnityConnectModule">
       <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityConnectModule.dll</HintPath>
     </Reference>
@@ -358,30 +289,6 @@
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.Graphs">
-      <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Android.Extensions">
-      <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
-      <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI">
-      <HintPath>Assets\Plugins\Editor\npoi\NPOI.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXmlFormats">
-      <HintPath>Assets\Plugins\Editor\npoi\NPOI.OpenXmlFormats.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OOXML">
-      <HintPath>Assets\Plugins\Editor\npoi\NPOI.OOXML.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXml4Net">
-      <HintPath>Assets\Plugins\Editor\npoi\NPOI.OpenXml4Net.dll</HintPath>
-    </Reference>
     <Reference Include="Pathfinding.Ionic.Zip.Reduced">
       <HintPath>Assets\Plugins\AstarPathfindingProject\DotNetZip\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
@@ -402,12 +309,6 @@
     </Reference>
     <Reference Include="Pathfinding.Poly2Tri">
       <HintPath>Assets\Plugins\AstarPathfindingProject\Poly2Tri\Pathfinding.Poly2Tri.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.Rider.Unity.Editor.Plugin.Repacked">
-      <HintPath>Assets\Plugins\Editor\JetBrains\JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>
@@ -754,20 +655,63 @@
     <Reference Include="System.Xml.XPath.XDocument">
       <HintPath>D:\Program Files\Unity\Hub\Editor\2020.3.6f1c1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XPath.XDocument.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.AssetBundleBrowser.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.AssetBundleBrowser.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VSCode.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Tilemap.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Tilemap.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XR.LegacyInputHelpers">
+      <HintPath>Library\ScriptAssemblies\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualStudio.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.XR.LegacyInputHelpers">
+      <HintPath>Library\ScriptAssemblies\UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="ILRuntime">
+      <HintPath>Library\ScriptAssemblies\ILRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.SpatialTracking">
+      <HintPath>Library\ScriptAssemblies\UnityEditor.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking">
+      <HintPath>Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Rider.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.TestRunner">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.TestRunner">
-      <HintPath>Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Unity.Hotfix.csproj">
+      <Project>{1066F652-6A89-D1C4-9881-1A19DF7AB80E}</Project>
+      <Name>Unity.Hotfix</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Model.csproj">
       <Project>{B4BF9894-F5D9-41C4-13E3-3F26F7700E29}</Project>
       <Name>Unity.Model</Name>
@@ -775,6 +719,10 @@
     <ProjectReference Include="Unity.ThirdParty.csproj">
       <Project>{E15BADD2-3A26-309A-AB0F-DC5B08044350}</Project>
       <Name>Unity.ThirdParty</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Editor.csproj">
+      <Project>{CD311104-1830-B119-81B6-5DBEE2467FFB}</Project>
+      <Name>Unity.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
