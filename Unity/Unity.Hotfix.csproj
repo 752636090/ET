@@ -71,6 +71,7 @@
     <Compile Include="Assets\Hotfix\Module\Message\MessageDispatcherComponent.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\HotfixOpcode.cs" />
     <Compile Include="Assets\Hotfix\Base\Log.cs" />
+    <Compile Include="Assets\Hotfix\Learn\ECS\WheelComponent.cs" />
     <Compile Include="Assets\Hotfix\Module\UI\UI.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\Helper\MapHelper.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\IChangeSystem.cs" />
@@ -89,9 +90,11 @@
     <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\System\InitSceneStart_CreateLoginUI.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\TestHotfixSubscribMonoEvent_LogString.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\Component\UILobbyComponent.cs" />
+    <Compile Include="Assets\Hotfix\Learn\ECS\EngineComponent.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\IAwakeSystem.cs" />
     <Compile Include="Assets\Hotfix\Module\ActorLocation\IActorLocationMessage.cs" />
     <Compile Include="Assets\Hotfix\Module\Config\ACategory.cs" />
+    <Compile Include="Assets\Hotfix\Learn\ECS\Car.cs" />
     <Compile Include="Assets\Hotfix\Module\Actor\IActorMessage.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\ISerializeToEntity.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\SessionComponent.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="Assets\Hotfix\Base\Object\ComponentWithId.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\System\UILoginFactory.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\M2C_PathfindingResultHandler.cs" />
+    <Compile Include="Assets\Hotfix\Learn\ECS\CarSystem.cs" />
     <Compile Include="Assets\Hotfix\Entity\Game.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\Entity.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\System\EnterMapFinish_RemoveLobbyUI.cs" />
@@ -117,8 +121,10 @@
     <Compile Include="Assets\Hotfix\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\IMessage.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\EntityType.cs" />
+    <Compile Include="Assets\Hotfix\Learn\ECS\WheelSystem.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\OpcodeTypeComponent.cs" />
     <Compile Include="Assets\Hotfix\Base\Event\IEvent.cs" />
+    <Compile Include="Assets\Hotfix\Learn\ECS\EngineSystem.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\System\LoginFinish_RemoveLoginUI.cs" />
     <Compile Include="Assets\Hotfix\Module\UI\UIType.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\Session.cs" />
@@ -127,12 +133,7 @@
     <Compile Include="Assets\Hotfix\Base\Object\ObjectPool.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\Object.cs" />
     <Compile Include="Assets\Hotfix\Module\UI\IUIFactory.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\CarSystem.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\EngineSystem.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\EngineComponent.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\WheelComponent.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\Car.cs" />
-    <Compile Include="Assets\Hotfix\Learn\ECS\WheelSystem.cs" />
+    <Compile Include="Assets\Hotfix\Learn\Event\Event_ReadBook.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
