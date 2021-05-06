@@ -256,6 +256,7 @@
     <Compile Include="Assets\Model\Module\Demo\UI\UILoading\System\UILoadingFactory.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_UI_InputField_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Collections_Generic_Dictionary_2_UInt16_Object_Binding.cs" />
+    <Compile Include="Assets\Model\Module\Demo\Config\ItemConfig.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_GameObject_Binding.cs" />
     <Compile Include="Assets\Model\Helper\ILHelper.cs" />
     <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathFindHelper.cs" />
@@ -510,7 +511,6 @@
     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\astarclasses.cs" />
     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\TurnBased\SingleNodeBlocker.cs" />
     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOObstacle.cs" />
-    <Compile Include="Assets\Model\Module\Demo\Config\ItemConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />

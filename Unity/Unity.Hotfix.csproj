@@ -121,6 +121,7 @@
     <Compile Include="Assets\Hotfix\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\IMessage.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\EntityType.cs" />
+    <Compile Include="Assets\Hotfix\Module\Demo\ConfigPartial\ItemConfigPartial.cs" />
     <Compile Include="Assets\Hotfix\Learn\ECS\WheelSystem.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\OpcodeTypeComponent.cs" />
     <Compile Include="Assets\Hotfix\Learn\Event\Event_ReadBook.cs" />
@@ -133,9 +134,8 @@
     <Compile Include="Assets\Hotfix\Module\Demo\Config\UnitConfig.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\ObjectPool.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\Object.cs" />
-    <Compile Include="Assets\Hotfix\Module\UI\IUIFactory.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\Config\ItemConfig.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\ConfigPartial\ItemConfigPartial.cs" />
+    <Compile Include="Assets\Hotfix\Module\UI\IUIFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
