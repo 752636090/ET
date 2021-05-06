@@ -97,11 +97,11 @@ namespace App
 						// 发送location actor消息
 						Game.Scene.AddComponent<ActorLocationSenderComponent>();
 
-						//Game.Scene.AddComponent<DBComponent>();
-						//Game.Scene.AddComponent<DBProxyComponent>();
+                        Game.Scene.AddComponent<DBComponent>();
+                        Game.Scene.AddComponent<DBProxyComponent>();
 
-						//协程锁组件
-						Game.Scene.AddComponent<CoroutineLockComponent>();
+                        //协程锁组件
+                        Game.Scene.AddComponent<CoroutineLockComponent>();
 						// location server需要的组件
 						Game.Scene.AddComponent<LocationComponent>();
 						

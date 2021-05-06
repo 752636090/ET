@@ -9,12 +9,35 @@ namespace ETHotfix
 	{
 		protected override async ETTask Run(Session session, C2R_Login request, R2C_Login response, Action reply)
 		{
-			//if (message.Account != "abcdef" || message.Password != "111111")
-			//{
-			//	response.Error = ErrorCode.ERR_AccountOrPasswordError;
-			//	reply(response);
-			//	return;
-			//}
+            string account = request.Account;
+            string password = request.Password;
+
+            if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password))
+            {
+                response.Error = ErrorCode.ERR_AccountOrPasswordError;
+                reply();
+                return;
+            }
+
+            try
+            {
+				var accountList = await Game.Scene.GetComponent<DBProxyComponent>().Query<AccountInfo>(
+					d => account == d.AccountName && d.Password == password);
+				if (accountList.Count == 0)
+				{
+					response.Error = ErrorCode.ERR_AccountOrPasswordError;
+					reply();
+					return;
+				}
+			}
+            catch (Exception e)
+            {
+				Log.Error(e.ToString());
+				response.Error = ErrorCode.ERR_AccountOrPasswordError;
+				response.Message = e.ToString();
+				reply();
+				return;
+            }
 
 			// 随机分配一个Gate
 			StartConfig config = Game.Scene.GetComponent<RealmGateAddressComponent>().GetAddress();
