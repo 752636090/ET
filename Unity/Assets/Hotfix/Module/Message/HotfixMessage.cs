@@ -9,6 +9,161 @@ using scg = global::System.Collections.Generic;
 namespace ETHotfix {
 
   #region Messages
+  public partial class C2A_Login : pb::IMessage {
+    private static readonly pb::MessageParser<C2A_Login> _parser = new pb::MessageParser<C2A_Login>(() => (C2A_Login)MessagePool.Instance.Fetch(typeof(C2A_Login)));
+    public static pb::MessageParser<C2A_Login> Parser { get { return _parser; } }
+
+    private int rpcId_;
+    public int RpcId {
+      get { return rpcId_; }
+      set {
+        rpcId_ = value;
+      }
+    }
+
+    private string account_ = "";
+    /// <summary>
+    /// 帐号
+    /// </summary>
+    public string Account {
+      get { return account_; }
+      set {
+        account_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    private string password_ = "";
+    /// <summary>
+    /// 密码
+    /// </summary>
+    public string Password {
+      get { return password_; }
+      set {
+        password_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    private global::ETHotfix.TestInfo testInfo_;
+    public global::ETHotfix.TestInfo TestInfo {
+      get { return testInfo_; }
+      set {
+        testInfo_ = value;
+      }
+    }
+
+    private static readonly pb::FieldCodec<int> _repeated_testIds_codec
+        = pb::FieldCodec.ForInt32(34);
+    private pbc::RepeatedField<int> testIds_ = new pbc::RepeatedField<int>();
+    public pbc::RepeatedField<int> TestIds {
+      get { return testIds_; }
+      set { testIds_ = value; }
+    }
+
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Account.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Account);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Password);
+      }
+      if (testInfo_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(TestInfo);
+      }
+      testIds_.WriteTo(output, _repeated_testIds_codec);
+      if (RpcId != 0) {
+        output.WriteRawTag(208, 5);
+        output.WriteInt32(RpcId);
+      }
+    }
+
+    public int CalculateSize() {
+      int size = 0;
+      if (RpcId != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeInt32Size(RpcId);
+      }
+      if (Account.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Account);
+      }
+      if (Password.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
+      }
+      if (testInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TestInfo);
+      }
+      size += testIds_.CalculateSize(_repeated_testIds_codec);
+      return size;
+    }
+
+    public void MergeFrom(pb::CodedInputStream input) {
+      account_ = "";
+      password_ = "";
+      if (testInfo_ != null) MessagePool.Instance.Recycle(testInfo_); testInfo_ = null;
+      testIds_.Clear();
+      rpcId_ = 0;
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 10: {
+            Account = input.ReadString();
+            break;
+          }
+          case 18: {
+            Password = input.ReadString();
+            break;
+          }
+          case 26: {
+            if (testInfo_ == null) {
+              testInfo_ = new global::ETHotfix.TestInfo();
+            }
+            input.ReadMessage(testInfo_);
+            break;
+          }
+          case 34:
+          case 32: {
+            testIds_.AddEntriesFrom(input, _repeated_testIds_codec);
+            break;
+          }
+          case 720: {
+            RpcId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public partial class TestInfo : pb::IMessage {
+    private static readonly pb::MessageParser<TestInfo> _parser = new pb::MessageParser<TestInfo>(() => (TestInfo)MessagePool.Instance.Fetch(typeof(TestInfo)));
+    public static pb::MessageParser<TestInfo> Parser { get { return _parser; } }
+
+    public void WriteTo(pb::CodedOutputStream output) {
+    }
+
+    public int CalculateSize() {
+      int size = 0;
+      return size;
+    }
+
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+        }
+      }
+    }
+
+  }
+
   public partial class C2R_Login : pb::IMessage {
     private static readonly pb::MessageParser<C2R_Login> _parser = new pb::MessageParser<C2R_Login>(() => (C2R_Login)MessagePool.Instance.Fetch(typeof(C2R_Login)));
     public static pb::MessageParser<C2R_Login> Parser { get { return _parser; } }
@@ -1082,6 +1237,51 @@ namespace ETHotfix {
           }
           case 738: {
             Message = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public partial class C2R_TestHelloMsg : pb::IMessage {
+    private static readonly pb::MessageParser<C2R_TestHelloMsg> _parser = new pb::MessageParser<C2R_TestHelloMsg>(() => (C2R_TestHelloMsg)MessagePool.Instance.Fetch(typeof(C2R_TestHelloMsg)));
+    public static pb::MessageParser<C2R_TestHelloMsg> Parser { get { return _parser; } }
+
+    private string sayMessage_ = "";
+    public string SayMessage {
+      get { return sayMessage_; }
+      set {
+        sayMessage_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (SayMessage.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SayMessage);
+      }
+    }
+
+    public int CalculateSize() {
+      int size = 0;
+      if (SayMessage.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SayMessage);
+      }
+      return size;
+    }
+
+    public void MergeFrom(pb::CodedInputStream input) {
+      sayMessage_ = "";
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 10: {
+            SayMessage = input.ReadString();
             break;
           }
         }

@@ -1,11 +1,11 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v2.2",
+    "name": ".NETCoreApp,Version=v5.0",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v2.2": {
+    ".NETCoreApp,Version=v5.0": {
       "Proto2CS/1.0.0": {
         "runtime": {
           "Proto2CS.dll": {}

@@ -43,6 +43,21 @@ namespace ETHotfix
 
                 // 测试消息有成员是class类型
                 G2C_PlayerInfo g2CPlayerInfo = (G2C_PlayerInfo) await SessionComponent.Instance.Session.Call(new C2G_PlayerInfo());
+
+                C2R_TestHelloMsg testHelloMsg = new C2R_TestHelloMsg()
+                {
+                    SayMessage = "后端你好"
+                };
+                SessionComponent.Instance.Session.Send(testHelloMsg);
+
+                C2A_Login c2A_Login = new C2A_Login()
+                {
+                    //TestInfo = 
+                };
+                c2A_Login.TestIds.Add(1);
+                c2A_Login.TestIds.Add(2);
+                c2A_Login.TestIds.Add(3);
+
             }
             catch (Exception e)
             {

@@ -1,6 +1,20 @@
 syntax = "proto3";
 package ETHotfix;
 
+message C2A_Login // IRequest
+{
+	int32 RpcId = 90;
+	string	Account	 = 1;	// 帐号
+	string	Password = 2;	// 密码
+	TestInfo TestInfo = 3;
+	repeated int32 TestIds = 4;
+}
+
+message TestInfo
+{
+	
+}
+
 message C2R_Login // IRequest
 {
 	int32 RpcId = 90;
@@ -86,4 +100,9 @@ message G2C_PlayerInfo // IResponse
     repeated string TestRepeatedString = 3;
     repeated int32 TestRepeatedInt32 = 4;
     repeated int64 TestRepeatedInt64 = 5;
+}
+
+message C2R_TestHelloMsg // IMessage
+{
+	string SayMessage = 1;
 }
