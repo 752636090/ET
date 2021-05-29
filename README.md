@@ -1,4 +1,5 @@
 # 字母鸽视频代码
+字母鸽讲了哪个版本就在哪个分支
 
 # [English](https://github.com/egametang/Egametang/blob/master/README-EN.md) 
 
