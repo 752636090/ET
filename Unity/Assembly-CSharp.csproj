@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Learn\TestAsync.cs" />
+    <Compile Include="Assets\Learn_Mono\TestAsync.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\StreamingAssets\Version.txt" />
