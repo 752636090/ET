@@ -31,9 +31,6 @@ _ReSharper.CSharp/
 /Temp
 /Logs
 /Unity/CSharp60Support/compilation.log
-/.vs
-/Server/.vs/
-/Unity/.vs/
 /Tools/MongoDB
 /Excel/md5.txt
 /Release
@@ -44,15 +41,8 @@ _ReSharper.CSharp/
 /Unity/Assets/StreamingAssets.meta
 .DS_Store
 Server/.DS_Store
-/Server/.vscode/
 .vs/
 .objs/
 /Unity/.gradle
 /*.user
 /ToolsApp/
-/Unity/Unity.Editor.csproj
-/Unity/Unity.Hotfix.csproj
-/Unity/Unity.HotfixView.csproj
-/Unity/Unity.Model.csproj
-/Unity/Unity.ModelView.csproj
-/Unity/Unity.ThirdParty.csproj
