@@ -4,12 +4,12 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
         <RootNamespace>ET</RootNamespace>
-        <LangVersion>8</LangVersion>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
     
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
     
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
