@@ -1,5 +1,7 @@
 ﻿#if NOT_UNITY
 using NLog;
+using NLog.Targets;
+using System;
 
 namespace ET
 {
@@ -30,6 +32,17 @@ namespace ET
         public void Debug(string message)
         {
             this.logger.Debug(message);
+        }
+
+
+        public void Debug(string message, ConsoleColor color)
+        {
+            ColoredConsoleTarget target = new NLog.Targets.ColoredConsoleTarget(color.ToString());
+            LogManager.Configuration.AddTarget(target);
+            //LogManager.Configuration.AddRuleForAllLevels(target);
+            this.logger.Debug(message);
+            LogManager.Configuration.RemoveTarget(target.Name);
+            //LogManager.Configuration.RemoveRuleByName(target.Name);
         }
 
         public void Error(string message)
