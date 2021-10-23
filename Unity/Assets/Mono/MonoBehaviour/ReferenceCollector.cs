@@ -1,8 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 //Object并非C#基础中的Object，而是 UnityEngine.Object
 using Object = UnityEngine.Object;
+using Sirenix.OdinInspector;
+using System.Reflection;
+using UnityEditor;
+using ET;
 
 //使其能在Inspector面板显示，并且可以被赋予相应值
 [Serializable]
@@ -10,7 +15,125 @@ public class ReferenceCollectorData
 {
 	public string key;
     //Object并非C#基础中的Object，而是 UnityEngine.Object
-    public Object gameObject;
+	[OnValueChanged("OnComObjChange")]
+    public Object obj;
+#if UNITY_EDITOR
+	[OnValueChanged("OnTypeChange")]
+	public ReferenceType type;
+    private int m_InstanceId;
+    private static readonly (string, string)[] namespaces = {
+        ("UnityEngine", "UnityEngine.dll"),
+        ("UnityEngine.UI", "UnityEngine.UI.dll") };
+
+    private void OnComObjChange()
+    {
+        if (obj == null)
+        {
+            key = "";
+            type = ReferenceType.None;
+            m_InstanceId = 0;
+            return;
+        }
+
+        Transform trans = null;
+        Transform[] arr = Selection.transforms[0].GetComponentsInChildren<Transform>(true);
+        if (null != arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i].gameObject.GetInstanceID() == obj.GetInstanceID())
+                {
+                    trans = arr[i];
+                    m_InstanceId = arr[i].gameObject.GetInstanceID();
+                    break;
+                }
+            }
+        }
+
+        if (trans != null)
+        {
+            key = trans.name;
+
+            obj = GetObj(trans, null);
+        }
+    }
+
+    private void OnTypeChange()
+    {
+        if (obj == null)
+        {
+            key = "";
+            type = ReferenceType.None;
+            return;
+        }
+
+        Transform trans = null;
+        Transform[] arr = Selection.transforms[0].GetComponentsInChildren<Transform>(true);
+        if (null != arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i].gameObject.GetInstanceID() == m_InstanceId)
+                {
+                    trans = arr[i];
+                    break;
+                }
+            }
+        }
+
+        Object tempObj = GetObj(trans, type);
+
+        if (tempObj != null)
+        {
+            obj = tempObj;
+        }
+        else
+        {
+            type = ReferenceType.None;
+            Debug.LogError("选择的类型在当前组件上不存在");
+        }
+    }
+
+    private Object GetObj(Transform trans, ReferenceType? type)
+    {
+        foreach (string rcTypeName in Enum.GetNames(typeof(ReferenceType)))
+        {
+            if (rcTypeName == "None"
+                || (type != null
+                    && type.ToString() != rcTypeName
+                    )
+                ) continue;
+
+            if (type == ReferenceType.GameObject)
+            {
+                return trans.gameObject;
+            }
+            Type rcType = null;
+            foreach ((string, string) ns in namespaces)
+            {
+                rcType = Type.GetType($"{ns.Item1}.{rcTypeName}", false, false);
+                if (rcType == null)
+                {
+                    rcType = Type.GetType($"{ns.Item1}.{rcTypeName}, {ns.Item2}", false, false);
+                }
+                if (rcType != null) break;
+            }
+            if (rcType != null)
+            {
+                MethodInfo getTargetComponent = typeof(Transform).GetMethod("GetComponent", new Type[] { }).MakeGenericMethod(rcType);
+                Object tempObj = getTargetComponent.Invoke(trans, null) as Object;
+                if (tempObj != null) return tempObj;
+            }
+            else
+            {
+                Debug.LogError($"RC类型错误 {rcTypeName}");
+            }
+        }
+
+        return null;
+    }
+
+#endif
 }
 //继承IComparer对比器，Ordinal会使用序号排序规则比较字符串，因为是byte级别的比较，所以准确性和性能都不错
 public class ReferenceCollectorDataComparer: IComparer<ReferenceCollectorData>
@@ -27,6 +150,7 @@ public class ReferenceCollectorDataComparer: IComparer<ReferenceCollectorData>
 public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 {
     //用于序列化的List
+    [OnValueChanged("OnChanged")]
 	public List<ReferenceCollectorData> data = new List<ReferenceCollectorData>();
     //Object并非C#基础中的Object，而是 UnityEngine.Object
     private readonly Dictionary<string, Object> dict = new Dictionary<string, Object>();
@@ -93,6 +217,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		serializedObject.UpdateIfRequiredOrScript();
 	}
 
+	[Button("全部清除")]
 	public void Clear()
 	{
 		UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(this);
@@ -105,6 +230,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		serializedObject.UpdateIfRequiredOrScript();
 	}
 
+	[Button("排序")]
 	public void Sort()
 	{
 		UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(this);
@@ -113,9 +239,17 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		serializedObject.ApplyModifiedProperties();
 		serializedObject.UpdateIfRequiredOrScript();
 	}
+
+    private void OnChanged()
+    {
+        UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(this);
+        UnityEditor.EditorUtility.SetDirty(this);
+        serializedObject.ApplyModifiedProperties();
+        serializedObject.UpdateIfRequiredOrScript();
+    }
 #endif
     //使用泛型返回对应key的gameobject
-	public T Get<T>(string key) where T : class
+    public T Get<T>(string key) where T : class
 	{
 		Object dictGo;
 		if (!dict.TryGetValue(key, out dictGo))
@@ -146,8 +280,28 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		{
 			if (!dict.ContainsKey(referenceCollectorData.key))
 			{
-				dict.Add(referenceCollectorData.key, referenceCollectorData.gameObject);
+				dict.Add(referenceCollectorData.key, referenceCollectorData.obj);
 			}
 		}
 	}
 }
+
+#if UNITY_EDITOR
+public enum ReferenceType
+{
+    None,
+    Button,
+    Image,
+    //ZImage,
+    Text,
+    //ZText,
+    RawImage,
+    InputField,
+    Scrollbar,
+    ScrollRect,
+    //LoopListView2
+    Transform,
+    RectTransform,
+    GameObject,
+}
+#endif
