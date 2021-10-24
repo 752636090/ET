@@ -238,22 +238,22 @@ MonoBehaviour:
   data:
   - key: Transfer1
     obj: {fileID: 1847831622444348}
-    type: 10
+    type: 1
   - key: Transfer2
     obj: {fileID: 1743776465676028}
-    type: 10
+    type: 1
   - key: Send
     obj: {fileID: 1079526253439354}
-    type: 10
+    type: 1
   - key: SendRpc
     obj: {fileID: 1947784362988278}
-    type: 10
+    type: 1
   - key: EnterMap
     obj: {fileID: 1704477870053320}
-    type: 10
+    type: 1
   - key: Text
     obj: {fileID: 6310363376444861169}
-    type: 10
+    type: 1
 --- !u!114 &7116154794937056390
 MonoBehaviour:
   m_ObjectHideFlags: 0
