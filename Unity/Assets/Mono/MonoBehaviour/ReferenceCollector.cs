@@ -39,7 +39,8 @@ public class ReferenceCollectorData
         }
 
         Transform trans = null;
-        Transform[] arr = Selection.transforms[0].GetComponentsInChildren<Transform>(true);
+        //Transform[] arr = Selection.transforms[0].GetComponentsInChildren<Transform>(true);
+        Transform[] arr = Selection.activeGameObject.GetComponentsInChildren<Transform>(true);
         if (null != arr)
         {
             for (int i = 0; i < arr.Length; i++)
@@ -84,7 +85,8 @@ public class ReferenceCollectorData
         }
 
         Transform trans = null;
-        Transform[] arr = Selection.transforms[0].GetComponentsInChildren<Transform>(true);
+        //Transform[] arr = Selection.transforms[0].GetComponentsInChildren<Transform>(true);
+        Transform[] arr = Selection.activeGameObject.GetComponentsInChildren<Transform>(true);
         if (null != arr)
         {
             for (int i = 0; i < arr.Length; i++)
