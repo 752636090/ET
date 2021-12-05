@@ -2,6 +2,8 @@
 {
 	public static class Define
 	{
+		public const string BuildOutputDir = "./Temp/Bin/Debug";
+
 #if UNITY_EDITOR && !ASYNC
 		public static bool IsAsync = false;
 #else
@@ -13,7 +15,7 @@
 #else
         public static bool IsEditor = false;
 #endif
-
+		
 		public static UnityEngine.Object LoadAssetAtPath(string s)
 		{
 #if UNITY_EDITOR	
