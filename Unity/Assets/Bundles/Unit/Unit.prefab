@@ -45,5 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
   - key: Skeleton
-    gameObject: {fileID: 1248987324363926, guid: 9e27b0bdab1ad7242a009899d15c0e67,
-      type: 3}
+    obj: {fileID: 1248987324363926, guid: 9e27b0bdab1ad7242a009899d15c0e67, type: 3}
+    type: 1
