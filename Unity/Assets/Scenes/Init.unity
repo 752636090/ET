@@ -417,7 +417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff906ecbbd0163f4094f8fa4e305d39f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CodeMode: 1
+  CodeMode: 2
 --- !u!4 &575235020
 Transform:
   m_ObjectHideFlags: 0
@@ -448,8 +448,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
   - key: Unit
-    obj: {fileID: 1610378981859644, guid: cfaf4529ce2243c4c85126e9d008897b, type: 3}
-    type: 1
+    gameObject: {fileID: 1610378981859644, guid: cfaf4529ce2243c4c85126e9d008897b,
+      type: 3}
 --- !u!1 &630054495
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,7 +534,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 823
+    m_Bits: 4294967295
 --- !u!114 &872594942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -820,17 +820,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
   - key: Hidden
-    obj: {fileID: 872594939}
-    type: 1
+    gameObject: {fileID: 872594939}
   - key: Low
-    obj: {fileID: 251107983}
-    type: 1
+    gameObject: {fileID: 251107983}
   - key: Mid
-    obj: {fileID: 493985069}
-    type: 1
+    gameObject: {fileID: 493985069}
   - key: High
-    obj: {fileID: 1439952248}
-    type: 1
+    gameObject: {fileID: 1439952248}
 --- !u!850595691 &1972482029
 LightingSettings:
   m_ObjectHideFlags: 0
