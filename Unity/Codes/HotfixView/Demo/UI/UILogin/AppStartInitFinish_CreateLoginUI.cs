@@ -8,7 +8,8 @@ namespace ET
 		{
 			await UIHelper.Create(args.ZoneScene, UIType.UILogin);
 
-            #region Learn
+			#region Learn
+			// 放置第8节课会讲ZoneScene.AddChild和unitComponent.AddChildWithId的区别
 			Computer computer = args.ZoneScene.AddChild<Computer>();
 
 			computer.AddComponent<PCCaseComponent>();
@@ -17,6 +18,10 @@ namespace ET
 			computer.AddComponent<MouseComponent>();
 
 			computer.Start();
+
+			await TimerComponent.Instance.WaitAsync(3000);
+
+			computer.Dispose();
             #endregion
         }
 	}
