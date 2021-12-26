@@ -26,6 +26,16 @@
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Codes\Model\Demo\Learn\Computer\Computer.cs" Link="Demo\Learn\Computer\Computer.cs" />
+
+    <Compile Include="..\..\Unity\Codes\Model\Demo\Learn\Computer\KeyBoardComponent.cs" Link="Demo\Learn\Computer\KeyBoardComponent.cs" />
+
+    <Compile Include="..\..\Unity\Codes\Model\Demo\Learn\Computer\MonitorsComponent.cs" Link="Demo\Learn\Computer\MonitorsComponent.cs" />
+
+    <Compile Include="..\..\Unity\Codes\Model\Demo\Learn\Computer\MouseComponent.cs" Link="Demo\Learn\Computer\MouseComponent.cs" />
+
+    <Compile Include="..\..\Unity\Codes\Model\Demo\Learn\Computer\PCCaseComponent.cs" Link="Demo\Learn\Computer\PCCaseComponent.cs" />
+
     <Compile Include="..\..\Unity\Codes\Model\Demo\SessionStreamDispatcherType.cs">
       <Link>Demo\SessionStreamDispatcherType.cs</Link>
     </Compile>
@@ -107,5 +117,8 @@
     <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
     <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
     <ProjectReference Include="..\..\ThirdParty\UnityEngine\UnityEngine.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Demo\Learn\Computer\" />
   </ItemGroup>
 </Project>

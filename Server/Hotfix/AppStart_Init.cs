@@ -29,6 +29,15 @@ namespace ET
             
             Game.Scene.AddComponent<NetThreadComponent>();
 
+            #region Learn
+            Computer computer = Game.Scene.AddChild<Computer>();
+            computer.AddComponent<PCCaseComponent>();
+            computer.AddComponent<MonitorsComponent>();
+            computer.AddComponent<KeyBoardComponent>();
+            computer.AddComponent<MouseComponent>();
+            computer.Start();
+            #endregion
+
             switch (Game.Options.AppType)
             {
                 case AppType.Server:

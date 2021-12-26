@@ -19,6 +19,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Codes\Hotfix\Demo\Learn\ComputerSystem.cs" Link="Demo\Learn\Computer\ComputerSystem.cs" />
+    <Compile Include="..\..\Unity\Codes\Hotfix\Demo\Learn\MonitorsComponentSystem.cs" Link="Demo\Learn\Computer\MonitorsComponentSystem.cs" />
+    <Compile Include="..\..\Unity\Codes\Hotfix\Demo\Learn\PCCaseComponentSystem.cs" Link="Demo\Learn\Computer\PCCaseComponentSystem.cs" />
     <Compile Include="..\..\Unity\Codes\Hotfix\Demo\Move\MoveComponentSystem.cs">
       <Link>Demo\Move\MoveComponentSystem.cs</Link>
     </Compile>
@@ -42,5 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Server.Model.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Demo\Learn\Computer\" />
   </ItemGroup>
 </Project>
