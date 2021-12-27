@@ -1,11 +1,10 @@
-﻿#region Learn
-namespace ET
+﻿namespace ET
 {
     /// <summary>
     /// 实际项目要配表
     /// </summary>
-    public enum UnitType
-    {
+    public enum UnitType: byte
+    { 
         Player,
         Monster,
         Npc,
@@ -15,6 +14,4 @@ namespace ET
         /// </summary>
         Box,
     }
-}
-
-#endregion
+} 

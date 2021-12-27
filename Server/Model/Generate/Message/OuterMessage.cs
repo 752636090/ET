@@ -11,9 +11,6 @@ namespace ET
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(93)]
-		public long ActorId { get; set; }
-
 		[ProtoMember(1)]
 		public string request { get; set; }
 
@@ -44,9 +41,6 @@ namespace ET
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
-
-		[ProtoMember(93)]
-		public long ActorId { get; set; }
 
 		[ProtoMember(1)]
 		public int MapIndex { get; set; }
@@ -91,13 +85,9 @@ namespace ET
 		[ProtoMember(92)]
 		public string Message { get; set; }
 
-// 自己的unit id
+// 自己unit
 		[ProtoMember(1)]
-		public long UnitId { get; set; }
-
-// 所有的unit
-		[ProtoMember(2)]
-		public List<UnitInfo> Units = new List<UnitInfo>();
+		public long MyId { get; set; }
 
 	}
 
@@ -135,11 +125,17 @@ namespace ET
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(93)]
-		public long ActorId { get; set; }
-
 		[ProtoMember(2)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
+
+	}
+
+	[Message(OuterOpcode.M2C_RemoveUnits)]
+	[ProtoContract]
+	public partial class M2C_RemoveUnits: Object, IActorMessage
+	{
+		[ProtoMember(2)]
+		public List<long> Units = new List<long>();
 
 	}
 
@@ -149,9 +145,6 @@ namespace ET
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
-
-		[ProtoMember(93)]
-		public long ActorId { get; set; }
 
 		[ProtoMember(1)]
 		public float X { get; set; }
@@ -171,18 +164,12 @@ namespace ET
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(93)]
-		public long ActorId { get; set; }
-
 	}
 
 	[Message(OuterOpcode.M2C_PathfindingResult)]
 	[ProtoContract]
 	public partial class M2C_PathfindingResult: Object, IActorMessage
 	{
-		[ProtoMember(93)]
-		public long ActorId { get; set; }
-
 		[ProtoMember(1)]
 		public long Id { get; set; }
 
@@ -394,9 +381,6 @@ namespace ET
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
-
-		[ProtoMember(93)]
-		public long ActorId { get; set; }
 
 		[ProtoMember(1)]
 		public int N { get; set; }

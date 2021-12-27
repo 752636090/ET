@@ -26,6 +26,15 @@
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
+
+    <Compile Include="..\..\Unity\Codes\Model\Demo\Unit\UnitType.cs">
+      <Link>Demo\Unit\UnitType.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Codes\Model\Module\Recast\**\*.cs">
+      <Link>Module\Recast\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Codes\Model\Demo\Learn\Computer\Computer.cs" Link="Demo\Learn\Computer\Computer.cs" />
 
     <Compile Include="..\..\Unity\Codes\Model\Demo\Learn\Computer\KeyBoardComponent.cs" Link="Demo\Learn\Computer\KeyBoardComponent.cs" />
