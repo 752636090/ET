@@ -11,7 +11,7 @@ namespace ET
             long instanceId = IdGenerater.Instance.GenerateInstanceId();
             return await Create(parent, instanceId, instanceId, parent.DomainZone(), name, sceneType);
         }
-        
+
         public static async ETTask<Scene> Create(Entity parent, long id, long instanceId, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
         {
             await ETTask.CompletedTask;
@@ -36,6 +36,12 @@ namespace ET
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();
                     break;
+                #region Learn
+                case SceneType.Account:
+                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
+                    Log.Error("Account (Zone)Scene Created!");
+                    break;
+                #endregion
             }
 
             return scene;
