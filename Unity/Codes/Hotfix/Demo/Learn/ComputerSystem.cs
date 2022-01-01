@@ -31,6 +31,12 @@
             Log.Debug("Computer Start!!!!!!!");
             self.GetComponent<PCCaseComponent>().StartPower();
             self.GetComponent<MonitorsComponent>().Display();
+
+            #region ZoneScene DemainScene 讲解
+            //self.ZoneScene(); // 客户端才能编译通过
+            //self.DomainScene();
+            //var domain = self.Domain; // 不建议直接这么获取
+            #endregion
         }
     }
 }

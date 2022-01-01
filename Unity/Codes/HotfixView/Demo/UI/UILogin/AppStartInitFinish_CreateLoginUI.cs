@@ -22,6 +22,22 @@ namespace ET
 			await TimerComponent.Instance.WaitAsync(3000);
 
 			computer.Dispose();
+
+			UnitConfig config = UnitConfigCategory.Instance.Get(1001);
+
+			Log.Debug(config.Name);
+
+			System.Collections.Generic.Dictionary<int, UnitConfig> allUnitConfig = UnitConfigCategory.Instance.GetAll();
+
+			foreach (UnitConfig unitConfig in allUnitConfig.Values)
+            {
+				Log.Debug(unitConfig.Name);
+				Log.Debug(unitConfig.TestValue.ToString());
+            }
+
+			UnitConfig heightConfig = UnitConfigCategory.Instance.GetUnitConfigByHeight(178);
+
+			Log.Debug(heightConfig.Name);
             #endregion
         }
 	}
