@@ -6,7 +6,8 @@ namespace ET
     public partial class UnitConfig
     {
         /// <summary>
-        /// 注意是逻辑层，用的Vector3在System.Numerics里面
+        /// 注意是逻辑层，用的Vector3在System.Numerics里面。
+        /// 但用UnityEngine的也可以，因为Vector3里面是纯数学，不涉及渲染（因此ThirdParty里UnityEngine有Vector3）
         /// </summary>
         public Vector3 TestValue;
     }

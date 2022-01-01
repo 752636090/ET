@@ -12,32 +12,37 @@ namespace ET
 			// 放置第8节课会讲ZoneScene.AddChild和unitComponent.AddChildWithId的区别
 			Computer computer = args.ZoneScene.AddChild<Computer>();
 
-			computer.AddComponent<PCCaseComponent>();
-			computer.AddComponent<MonitorsComponent>();
-			computer.AddComponent<KeyBoardComponent>();
-			computer.AddComponent<MouseComponent>();
-
+			//Game.EventSystem.Publish(new EventType.InstallComputer() { Computer = computer });
+			//Game.EventSystem.PublishAsync(new EventType.InstallComputer() { Computer = computer }).Coroutine();
+			await Game.EventSystem.PublishAsync(new EventType.InstallComputer() { Computer = computer });
 			computer.Start();
 
-			await TimerComponent.Instance.WaitAsync(3000);
+			//computer.AddComponent<PCCaseComponent>();
+			//computer.AddComponent<MonitorsComponent>();
+			//computer.AddComponent<KeyBoardComponent>();
+			//computer.AddComponent<MouseComponent>();
 
-			computer.Dispose();
+			//computer.Start();
 
-			UnitConfig config = UnitConfigCategory.Instance.Get(1001);
+			//await TimerComponent.Instance.WaitAsync(3000);
 
-			Log.Debug(config.Name);
+			//computer.Dispose();
 
-			System.Collections.Generic.Dictionary<int, UnitConfig> allUnitConfig = UnitConfigCategory.Instance.GetAll();
+			//UnitConfig config = UnitConfigCategory.Instance.Get(1001);
 
-			foreach (UnitConfig unitConfig in allUnitConfig.Values)
-            {
-				Log.Debug(unitConfig.Name);
-				Log.Debug(unitConfig.TestValue.ToString());
-            }
+			//Log.Debug(config.Name);
 
-			UnitConfig heightConfig = UnitConfigCategory.Instance.GetUnitConfigByHeight(178);
+			//System.Collections.Generic.Dictionary<int, UnitConfig> allUnitConfig = UnitConfigCategory.Instance.GetAll();
 
-			Log.Debug(heightConfig.Name);
+			//foreach (UnitConfig unitConfig in allUnitConfig.Values)
+   //         {
+			//	Log.Debug(unitConfig.Name);
+			//	Log.Debug(unitConfig.TestValue.ToString());
+   //         }
+
+			//UnitConfig heightConfig = UnitConfigCategory.Instance.GetUnitConfigByHeight(178);
+
+			//Log.Debug(heightConfig.Name);
             #endregion
         }
 	}
