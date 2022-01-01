@@ -55,7 +55,7 @@ namespace ET
 
             unitComponent.Add(unit);
             unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
-            Game.EventSystem.Publish(new EventType.AfterUnitCreate() { Unit = unit }).Coroutine();
+            Game.EventSystem.Publish(new EventType.AfterUnitCreate() { Unit = unit });
             return unit;
         }
 
@@ -67,7 +67,7 @@ namespace ET
 
             unitComponent.Add(unit);
             unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
-            Game.EventSystem.Publish(new EventType.AfterUnitCreate() { Unit = unit }).Coroutine();
+            Game.EventSystem.Publish(new EventType.AfterUnitCreate() { Unit = unit });
             return unit;
         } 
 
@@ -82,7 +82,7 @@ namespace ET
 
             unitComponent.Add(unit);
             unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
-            Game.EventSystem.Publish(new EventType.AfterUnitCreate() { Unit = unit }).Coroutine();
+            Game.EventSystem.Publish(new EventType.AfterUnitCreate() { Unit = unit });
             return unit;
         } 
         #endregion
