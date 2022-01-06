@@ -18,5 +18,6 @@
 		Zone = 31,
 		Login = 32,
 		Robot = 33,
+		Current = 34,
 	}
 }
