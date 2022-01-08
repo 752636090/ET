@@ -3,7 +3,7 @@
     /// <summary>
     /// 主机箱
     /// </summary>
-    public class PCCaseComponent : Entity
+    public class PCCaseComponent : Entity, IAwake
     {
 
     }

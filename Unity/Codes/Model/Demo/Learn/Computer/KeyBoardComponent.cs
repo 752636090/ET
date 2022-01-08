@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public class KeyBoardComponent : Entity
+    public class KeyBoardComponent : Entity, IAwake
     {
     }
 }

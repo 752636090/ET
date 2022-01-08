@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public class MouseComponent : Entity
+    public class MouseComponent : Entity, IAwake
     {
     }
 }
