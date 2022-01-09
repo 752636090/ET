@@ -600,7 +600,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Codes\Hotfix\Demo\Learn\" />
     <Folder Include="Codes\Hotfix\Demo\NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

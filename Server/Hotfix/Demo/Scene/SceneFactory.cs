@@ -39,7 +39,7 @@ namespace ET
                 #region Learn
                 case SceneType.Account:
                     scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
-                    Log.Error("Account (Zone)Scene Created!");
+                    Log.Debug("Account (Zone)Scene Created!");
                     break;
                 #endregion
             }
