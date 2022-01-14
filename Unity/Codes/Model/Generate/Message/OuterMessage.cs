@@ -14,12 +14,6 @@ namespace ET
 		[ProtoMember(1)]
 		public string request { get; set; }
 
-		[ProtoMember(2)]
-		public List<long> key = new List<long>();
-
-		[ProtoMember(3)]
-		public List<long> value = new List<long>();
-
 	}
 
 	[Message(OuterOpcode.M2C_TestResponse)]
@@ -474,25 +468,19 @@ namespace ET
 
 	}
 
-	[ResponseType(nameof(R2C_LoginTest))]
-	[Message(OuterOpcode.C2R_LoginTest)]
+	[ResponseType(nameof(M2C_TransferMap))]
+	[Message(OuterOpcode.C2M_TransferMap)]
 	[ProtoContract]
-	public partial class C2R_LoginTest: Object, IRequest
+	public partial class C2M_TransferMap: Object, IActorLocationRequest
 	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
 		[ProtoMember(1)]
-		public string Account { get; set; }
-
-		[ProtoMember(2)]
-		public string Password { get; set; }
+		public int RpcId { get; set; }
 
 	}
 
-	[Message(OuterOpcode.R2C_LoginTest)]
+	[Message(OuterOpcode.M2C_TransferMap)]
 	[ProtoContract]
-	public partial class R2C_LoginTest: Object, IResponse
+	public partial class M2C_TransferMap: Object, IActorLocationResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -502,30 +490,6 @@ namespace ET
 
 		[ProtoMember(92)]
 		public string Message { get; set; }
-
-		[ProtoMember(1)]
-		public string GateAddress { get; set; }
-
-		[ProtoMember(2)]
-		public string key { get; set; }
-
-	}
-
-	[Message(OuterOpcode.C2R_SayHello)]
-	[ProtoContract]
-	public partial class C2R_SayHello: Object, IMessage
-	{
-		[ProtoMember(1)]
-		public string Hello { get; set; }
-
-	}
-
-	[Message(OuterOpcode.R2C_SayGoodBye)]
-	[ProtoContract]
-	public partial class R2C_SayGoodBye: Object, IMessage
-	{
-		[ProtoMember(1)]
-		public string GoodBye { get; set; }
 
 	}
 
