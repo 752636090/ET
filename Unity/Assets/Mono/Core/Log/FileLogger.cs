@@ -36,6 +36,12 @@ namespace ET
             this.stream.Flush();
         }
 
+        public void DebugColor(string message, string colorCode)
+        {
+            this.stream.WriteLine(message);
+            this.stream.Flush();
+        }
+
         public void Error(string message)
         {
             this.stream.WriteLine(message);

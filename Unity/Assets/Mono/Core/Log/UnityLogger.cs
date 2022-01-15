@@ -15,6 +15,11 @@ namespace ET
             UnityEngine.Debug.Log(msg);
         }
 
+        public void DebugColor(string msg, string colorCode)
+        {
+            UnityEngine.Debug.Log($"<color=#{colorCode}>{msg}</color>");
+        }
+
         public void Info(string msg)
         {
             UnityEngine.Debug.Log(msg);

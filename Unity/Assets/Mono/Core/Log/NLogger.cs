@@ -34,6 +34,11 @@ namespace ET
             this.logger.Debug(message);
         }
 
+        public void DebugColor(string message, string colorCode)
+        {
+            this.logger.Debug(message);
+        }
+
 
         public void Debug(string message, ConsoleColor color)
         {

@@ -6,6 +6,7 @@
         void Warning(string message);
         void Info(string message);
         void Debug(string message);
+        void DebugColor(string message, string colorCode);
         void Error(string message);
         void Trace(string message, params object[] args);
         void Warning(string message, params object[] args);
