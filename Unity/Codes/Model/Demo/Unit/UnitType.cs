@@ -5,7 +5,7 @@
     /// </summary>
     public enum UnitType: byte
     { 
-        Player,
+        Player = 1,
         Monster,
         Npc,
         DropItem,

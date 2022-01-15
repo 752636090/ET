@@ -7,6 +7,7 @@ namespace ET
         protected override async ETTask Run(EventType.AfterUnitCreate args)
         {
             #region Learn
+            args.Unit.UnitType = UnitType.Player;
             switch (args.Unit.UnitType)
             #endregion
             {
