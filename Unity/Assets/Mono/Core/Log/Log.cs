@@ -42,6 +42,15 @@ namespace ET
             ILog.Debug(msg);
         }
 
+        public static void DebugColor(string msg, string colorCode)
+        {
+            if (!CheckLogLevel(DebugLevel))
+            {
+                return;
+            }
+            ILog.DebugColor(msg, colorCode);
+        }
+
         public static void Info(string msg)
         {
             if (!CheckLogLevel(InfoLevel))
