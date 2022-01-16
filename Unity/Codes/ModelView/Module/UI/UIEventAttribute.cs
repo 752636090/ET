@@ -1,14 +1,14 @@
-using System;
+//using System;
 
-namespace ET
-{
-    public class UIEventAttribute: BaseAttribute
-    {
-        public string UIType { get; }
+//namespace ET
+//{
+//    public class UIEventAttribute: BaseAttribute
+//    {
+//        public string UIType { get; }
 
-        public UIEventAttribute(string uiType)
-        {
-            this.UIType = uiType;
-        }
-    }
-}
+//        public UIEventAttribute(string uiType)
+//        {
+//            this.UIType = uiType;
+//        }
+//    }
+//}
