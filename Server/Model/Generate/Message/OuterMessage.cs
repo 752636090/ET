@@ -606,10 +606,10 @@ namespace ET
 
 	}
 
-	[ResponseType(nameof(A2C_LoginAccountIG))]
-	[Message(OuterOpcode.C2A_LoginAccountIG)]
+	[ResponseType(nameof(A2C_LoginAccount))]
+	[Message(OuterOpcode.C2A_LoginAccount)]
 	[ProtoContract]
-	public partial class C2A_LoginAccountIG: Object, IRequest
+	public partial class C2A_LoginAccount: Object, IRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -622,9 +622,9 @@ namespace ET
 
 	}
 
-	[Message(OuterOpcode.A2C_LoginAccountIG)]
+	[Message(OuterOpcode.A2C_LoginAccount)]
 	[ProtoContract]
-	public partial class A2C_LoginAccountIG: Object, IResponse
+	public partial class A2C_LoginAccount: Object, IResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }

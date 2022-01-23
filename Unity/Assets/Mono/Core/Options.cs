@@ -14,15 +14,6 @@ namespace ET
         Proto2CS
     }
 
-    public enum GameType
-    {
-        Demo,
-        IdleGame,
-        MMO,
-        Moba,
-        FPS,
-    }
-
     public class Options
     {
         public static Options Instance { get; set; }
@@ -45,10 +36,5 @@ namespace ET
         // 进程启动是否创建该进程的scenes
         [Option("CreateScenes", Required = false, Default = 1)]
         public int CreateScenes { get; set; } = 1;
-
-
-
-        [Option("GameType", Required = false, Default = GameType.IdleGame)]
-        public GameType GameType { get; set; } = GameType.IdleGame;
     }
 }

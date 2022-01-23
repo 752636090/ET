@@ -1,13 +1,13 @@
 ﻿namespace ET
 {
-    public enum AccountTypeIG
+    public enum AccountType
     {
         General,
 
         BlackList = 1,
     }
 
-    public class AccountIG : Entity, IAwake
+    public class Account : Entity, IAwake
     {
         public string AccountName;
 
