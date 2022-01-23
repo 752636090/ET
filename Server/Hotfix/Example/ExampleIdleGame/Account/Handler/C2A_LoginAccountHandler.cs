@@ -34,6 +34,7 @@ namespace ET
                 return;
             }
 
+            // 正则3处中括号表示必须有大小写和字母，可以有别的
             if (!Regex.IsMatch(request.AccountName.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
             {
                 response.Error = ErrorCode.ERR_AccountNameFormError;
@@ -93,6 +94,13 @@ namespace ET
                         account.AccountType = (int)AccountType.General;
                         await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save<Account>(account); // Zone是区服
                     }
+
+                    long accountSessionInstanceId = session.DomainScene().GetComponent<AccountSessionsComponent>().Get(account.Id);
+                    Session otherSession = Game.EventSystem.Get(accountSessionInstanceId) as Session;
+                    otherSession?.Send(new A2C_Disconnect() { Error = 0 });
+                    otherSession?.Disconnect().Coroutine();
+                    session.DomainScene().GetComponent<AccountSessionsComponent>().Add(account.Id, session.InstanceId);
+                    session.AddComponent<AccountCheckOutTimeComponent, long>(account.Id);
 
                     string Token = TimeHelper.ServerNow().ToString() + RandomHelper.RandomNumber(int.MinValue, int.MaxValue).ToString();
                     session.DomainScene().GetComponent<TokenComponent>().Remove(account.Id); // DomainScene拿到了账号服务器的Scene

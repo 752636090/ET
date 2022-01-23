@@ -155,7 +155,6 @@ namespace ET
 
         #region UI按钮事件
 
-        private static bool isClicked = false;
         /// <summary>
         /// 在外面要try，不然action出了异常执行不下去
         /// </summary>
@@ -165,14 +164,18 @@ namespace ET
 
             async ETTask clickActionAsync()
             {
-                isClicked = true;
+                UIEventComponent.Instance?.SetUIClicked(true); // 临时修改方案(解决问题：HotfixView中出现了字段)
                 await action();
-                isClicked = false;
+                UIEventComponent.Instance?.SetUIClicked(false);
             }
 
             button.onClick.AddListener(() =>
             {
-                if (isClicked)
+                if (UIEventComponent.Instance == null)
+                {
+                    return;
+                }
+                if (UIEventComponent.Instance.IsClicked)
                 {
                     return;
                 }

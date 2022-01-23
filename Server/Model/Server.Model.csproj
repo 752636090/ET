@@ -77,6 +77,8 @@
     
     <Compile Remove="Libs\**" />
     
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\TimerType.cs" Link="Example\ExampleIdleGame\TimerType.cs" />
+    
     <Compile Include="..\..\Unity\Codes\Model\Module\ActorLocation\ActorResponse.cs">
       <Link>Module\ActorLocation\ActorResponse.cs</Link>
     </Compile>

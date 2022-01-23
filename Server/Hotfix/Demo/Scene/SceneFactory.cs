@@ -45,6 +45,7 @@ namespace ET
                     #region IdleGame
                     scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter); 
                     scene.AddComponent<TokenComponent>();
+                    scene.AddComponent<AccountSessionsComponent>();
                     #endregion
                     break;
             }

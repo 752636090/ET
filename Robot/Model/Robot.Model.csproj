@@ -91,6 +91,10 @@
             <Link>Demo\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
+        <Compile Include="..\..\Unity\Codes\Model\Example\**\*.cs">
+            <Link>Example\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
         <Compile Include="..\..\Server\Model\Generate\**\*.cs">
             <Link>Generate\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
