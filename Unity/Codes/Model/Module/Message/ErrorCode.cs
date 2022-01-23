@@ -15,5 +15,6 @@ namespace ET
         // 200001以上不抛异常
 
         public const int ERR_NetworkError = 200002;
+        public const int ERR_LoginInfoError = 200003;
     }
 }

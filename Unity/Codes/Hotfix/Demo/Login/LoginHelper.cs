@@ -28,7 +28,7 @@ namespace ET
         //        Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(r2CLogin.Address));
         //        gateSession.AddComponent<PingComponent>();
         //        zoneScene.AddComponent<SessionComponent>().Session = gateSession;
-				
+
         //        G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(
         //            new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId});
 
@@ -42,6 +42,7 @@ namespace ET
         //    }
         //}
 
+        #region IdleGame
         public static async ETTask<int> Login(Scene zoneScene, string address, string account, string password)
         {
             A2C_LoginAccount a2CLoginAccount = null;
@@ -67,8 +68,12 @@ namespace ET
 
             zoneScene.AddComponent<SessionComponent>().Session = accountSession;
 
+            zoneScene.GetComponent<AccountInfoComponent>().Token = a2CLoginAccount.Token;
+            zoneScene.GetComponent<AccountInfoComponent>().AccountId = a2CLoginAccount.AccountId;
+
             return ErrorCode.ERR_Success;
-        }
+        } 
+        #endregion
 
         #region Learn
         public static async ETTask LoginTest(Scene zoneScene, string address)

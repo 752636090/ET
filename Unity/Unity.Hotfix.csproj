@@ -79,6 +79,7 @@
     <Compile Include="Codes\Hotfix\Demo\Unit\UnitFactory.cs" />
     <Compile Include="Codes\Hotfix\Demo\Unit\UnitHelper.cs" />
     <Compile Include="Codes\Hotfix\Demo\Unit\UnitSystem.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Account\AccountInfoComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Module\AI\AIComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Module\AI\AIDispatcherComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Module\Config\ConfigComponentSystem.cs" />
