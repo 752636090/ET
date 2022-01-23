@@ -15,6 +15,8 @@
 #else
         public static bool IsEditor = false;
 #endif
+
+		public static GameType GameType = GameType.IdleGame;
 		
 		public static UnityEngine.Object LoadAssetAtPath(string s)
 		{

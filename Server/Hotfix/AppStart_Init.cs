@@ -31,6 +31,23 @@ namespace ET
             
             Game.Scene.AddComponent<NavmeshComponent, Func<string, byte[]>>(RecastFileReader.Read);
 
+            switch (Options.Instance.GameType)
+            {
+                case GameType.Demo:
+                    break;
+                case GameType.IdleGame:
+                    Game.Scene.AddComponent<DBManagerComponent>();
+                    break;
+                case GameType.MMO:
+                    break;
+                case GameType.Moba:
+                    break;
+                case GameType.FPS:
+                    break;
+                default:
+                    break;
+            }
+
             #region Learn
             //Computer computer = Game.Scene.AddChild<Computer>();
             //computer.AddComponent<PCCaseComponent>();

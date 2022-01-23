@@ -606,4 +606,41 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(A2C_LoginAccountIG))]
+	[Message(OuterOpcode.C2A_LoginAccountIG)]
+	[ProtoContract]
+	public partial class C2A_LoginAccountIG: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public string AccountName { get; set; }
+
+		[ProtoMember(2)]
+		public string Password { get; set; }
+
+	}
+
+	[Message(OuterOpcode.A2C_LoginAccountIG)]
+	[ProtoContract]
+	public partial class A2C_LoginAccountIG: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public string Token { get; set; }
+
+		[ProtoMember(2)]
+		public long AccountId { get; set; }
+
+	}
+
 }

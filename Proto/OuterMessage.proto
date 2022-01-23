@@ -295,3 +295,20 @@ message M2C_TestActorMessage // IActorMessage
 {
 	string Content = 1; // 整个消息类的注释：只是经过网关转发，不需要定位，不需要回复
 }
+
+//ResponseType A2C_LoginAccountIG
+message C2A_LoginAccountIG // IRequest
+{
+	int RpcId = 90;
+	string AccountName = 1;
+	string Password = 2;
+}
+
+message A2C_LoginAccountIG // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	string Token = 1;
+	int64 AccountId = 2;
+}

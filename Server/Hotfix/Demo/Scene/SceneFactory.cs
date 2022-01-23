@@ -36,12 +36,29 @@ namespace ET
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();
                     break;
-                #region Learn
                 case SceneType.Account:
-                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
-                    Log.Debug("Account (Zone)Scene Created!");
+                    switch (Options.Instance.GameType)
+                    {
+                        case GameType.Demo:
+                            #region Learn
+                            scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
+                            Log.Debug("Account (Zone)Scene Created!");
+                            #endregion
+                            break;
+                        case GameType.IdleGame:
+                            scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
+
+                            break;
+                        case GameType.MMO:
+                            break;
+                        case GameType.Moba:
+                            break;
+                        case GameType.FPS:
+                            break;
+                        default:
+                            break;
+                    }
                     break;
-                #endregion
             }
 
             return scene;
