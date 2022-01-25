@@ -10,11 +10,10 @@
 //        {
 //            ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 
-//            self.enterMap = rc.Get<GameObject>("EnterMap");
-//            self.enterMap.GetComponent<Button>().onClick.AddListener(() => { self.EnterMap().Coroutine(); });
-//            self.text = rc.Get<GameObject>("Text").GetComponent<Text>();
-//        }
-//    }
+    //         self.enterMap = rc.Get<GameObject>("EnterMap");
+    //         self.enterMap.GetComponent<Button>().onClick.AddListener(() => { self.EnterMap().Coroutine(); });
+    //     }
+    // }
 
 //    public static class UILobbyComponentSystem
 //    {

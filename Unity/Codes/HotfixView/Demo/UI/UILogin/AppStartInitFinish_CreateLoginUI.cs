@@ -8,7 +8,7 @@
 //	{
 //		protected override async ETTask Run(EventType.AppStartInitFinish args)
 //		{
-//			await UIHelper.Create(args.ZoneScene, UIType.UILogin);
+//			await UIHelper.Create(args.ZoneScene, UIType.UILogin, UILayer.Mid);
 
 //            #region Learn
 //            // 放置第8节课会讲ZoneScene.AddChild和unitComponent.AddChildWithId的区别
