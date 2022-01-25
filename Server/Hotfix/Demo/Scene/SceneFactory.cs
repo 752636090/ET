@@ -17,7 +17,7 @@ namespace ET
             await ETTask.CompletedTask;
             Scene scene = EntitySceneFactory.CreateScene(id, instanceId, zone, sceneType, name, parent);
 
-            scene.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
+            scene.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher); // 让scene这个entity变成actor
 
             switch (scene.SceneType)
             {
@@ -46,8 +46,14 @@ namespace ET
                     scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter); 
                     scene.AddComponent<TokenComponent>();
                     scene.AddComponent<AccountSessionsComponent>();
+
                     #endregion
                     break;
+                #region IdleGame
+                case SceneType.LoginCenter:
+                    scene.AddComponent<LoginInfoRecordComponent>();
+                    break; 
+                    #endregion
             }
 
             return scene;

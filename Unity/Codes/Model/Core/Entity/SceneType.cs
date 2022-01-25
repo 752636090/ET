@@ -10,7 +10,10 @@
 		Location = 5,
 		Map = 6,
         #region Learn
-        Account = 7, 
+        Account = 7,
+        #endregion
+        #region IdleGame
+		LoginCenter = 8,
         #endregion
 
         // 客户端Model层

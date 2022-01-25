@@ -95,6 +95,23 @@ namespace ET
                         await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save<Account>(account); // Zone是区服
                     }
 
+                    #region 与账号中心服操作
+                    StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter_GI");
+                    long loginCenterInstanceId = startSceneConfig.InstanceId;
+                    L2A_LoginAccountResponse loginAccountResponse = (L2A_LoginAccountResponse)await ActorMessageSenderComponent.Instance.Call
+                        (loginCenterInstanceId, new A2L_LoginAccountRequest() { AccountId = account.Id });
+
+                    if (loginAccountResponse.Error != ErrorCode.ERR_Success)
+                    {
+                        response.Error = loginAccountResponse.Error;
+
+                        reply();
+                        session?.Disconnect().Coroutine();
+                        account?.Dispose();
+                        return;
+                    } 
+                    #endregion
+
                     long accountSessionInstanceId = session.DomainScene().GetComponent<AccountSessionsComponent>().Get(account.Id);
                     Session otherSession = Game.EventSystem.Get(accountSessionInstanceId) as Session;
                     otherSession?.Send(new A2C_Disconnect() { Error = 0 });
