@@ -34,26 +34,24 @@
 //			}
 //		}
 //	}
-	
-//	/// <summary>
-//	/// 管理所有UI GameObject 以及UI事件
-//	/// </summary>
-//	public static class UIEventComponentSystem
-//	{
-//		public static async ETTask<UI> OnCreate(this UIEventComponent self, UIComponent uiComponent, string uiType)
-//		{
-//			try
-//			{
-//				UI ui = await self.UIEvents[uiType].OnCreate(uiComponent);
-//				UILayer uiLayer = ui.GameObject.GetComponent<UILayerScript>().UILayer;
-//				ui.GameObject.transform.SetParent(self.UILayers[(int)uiLayer]);
-//				return ui;
-//			}
-//			catch (Exception e)
-//			{
-//				throw new Exception($"on create ui error: {uiType}", e);
-//			}
-//		}
+
+// 	/// <summary>
+// 	/// 管理所有UI GameObject 以及UI事件
+// 	/// </summary>
+// 	public static class UIEventComponentSystem
+// 	{
+// 		public static async ETTask<UI> OnCreate(this UIEventComponent self, UIComponent uiComponent, string uiType, UILayer uiLayer)
+// 		{
+// 			try
+// 			{
+// 				UI ui = await self.UIEvents[uiType].OnCreate(uiComponent, uiLayer);
+// 				return ui;
+// 			}
+// 			catch (Exception e)
+// 			{
+// 				throw new Exception($"on create ui error: {uiType}", e);
+// 			}
+// 		}
 		
 //		public static void OnRemove(this UIEventComponent self, UIComponent uiComponent, string uiType)
 //		{

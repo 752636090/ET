@@ -22,14 +22,13 @@
 
 //		public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();
 		
-//		public void Awake(string name, GameObject gameObject)
-//		{
-//			this.nameChildren.Clear();
-//			gameObject.AddComponent<ComponentView>().Component = this;
-//			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
-//			this.Name = name;
-//			this.GameObject = gameObject;
-//		}
+// 		public void Awake(string name, GameObject gameObject)
+// 		{
+// 			this.nameChildren.Clear();
+// 			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
+// 			this.Name = name;
+// 			this.GameObject = gameObject;
+// 		}
 
 //		public override void Dispose()
 //		{
