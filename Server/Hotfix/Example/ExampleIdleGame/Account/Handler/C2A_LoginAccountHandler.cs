@@ -44,7 +44,7 @@ namespace ET
                 return;
             }
 
-            if (!Regex.IsMatch(request.Password.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
+            if (!Regex.IsMatch(request.Password.Trim(), @"^[A-Za-z0-9]+$"))
             {
                 response.Error = ErrorCode.ERR_PasswordFormError;
                 reply();
@@ -96,7 +96,7 @@ namespace ET
                     }
 
                     #region 与账号中心服操作
-                    StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter_GI");
+                    StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter_IG");
                     long loginCenterInstanceId = startSceneConfig.InstanceId;
                     L2A_LoginAccountResponse loginAccountResponse = (L2A_LoginAccountResponse)await ActorMessageSenderComponent.Instance.Call
                         (loginCenterInstanceId, new A2L_LoginAccountRequest() { AccountId = account.Id });

@@ -36,7 +36,8 @@ namespace ET
 					return;
                 }
 				// TODO 限时登录之后的页面逻辑
-
+				self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Login);
+				self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Lobby);
             }
             catch (Exception e)
             {
