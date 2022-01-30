@@ -106,6 +106,8 @@
     <Compile Include="Codes\Model\Demo\Unit\UnitType.cs" />
     <Compile Include="Codes\Model\Demo\WaitType.cs" />
     <Compile Include="Codes\Model\Example\ExampleIdleGame\AccountInfoComponent.cs" />
+    <Compile Include="Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" />
+    <Compile Include="Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfosComponent.cs" />
     <Compile Include="Codes\Model\Example\ExampleIdleGame\TimerType.cs" />
     <Compile Include="Codes\Model\Generate\ConfigPartial\UnitConfigPartial.cs" />
     <Compile Include="Codes\Model\Generate\Config\AIConfig.cs" />

@@ -20,6 +20,7 @@ namespace ET
         public const int ERR_PasswordFormError = 200005;
         public const int ERR_AccountInBlackListError = 200006;
         public const int ERR_LoginPasswordError = 200007;
-        public const int ERR_RequestRepeatedly = 200008; // 突然冒出来的，不知道是不是放在这
+        public const int ERR_RequestRepeatedly = 200008;
+        public const int ERR_TokenError = 200009;
     }
 }
