@@ -42,6 +42,19 @@ namespace ET
             if (serverInfoList == null || serverInfoList.Count <= 0)
             {
                 Log.Error("ServerInfo数量为0");
+                self.ServerInfos.Clear();
+                Dictionary<int, ServerInfoConfig> serverInfoConfigs = ServerInfoConfigCategory.Instance.GetAll();
+
+                // 临时在配置表里读区服信息，实际上要在后台动态修改
+                foreach (var info in serverInfoConfigs.Values)
+                {
+                    ServerInfo newServerInfo = self.AddChildWithId<ServerInfo>(info.Id);
+                    newServerInfo.ServerName = info.ServerName;
+                    newServerInfo.Status = (int)ServerStatus.Normal;
+                    self.ServerInfos.Add(newServerInfo);
+                    await DBManagerComponent.Instance.GetZoneDB(self.DomainZone()).Save(newServerInfo);
+                }
+
                 return;
             }
             self.ServerInfos.Clear();

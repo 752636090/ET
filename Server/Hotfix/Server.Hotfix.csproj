@@ -25,6 +25,7 @@
     <Compile Include="..\..\Unity\Codes\Hotfix\Demo\Move\MoveComponentSystem.cs">
       <Link>Demo\Move\MoveComponentSystem.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Codes\Hotfix\Example\ExampleIdleGame\Role\RoleInfoSystem.cs" Link="Example\ExampleIdleGame\Role\RoleInfoSystem.cs" />
     <Compile Include="..\..\Unity\Codes\Hotfix\Example\ExampleIdleGame\ServerInfo\ServerInfoSystem.cs" Link="Example\ExampleIdleGame\ServerInfo\ServerInfoSystem.cs" />
     <Compile Include="..\..\Unity\Codes\Hotfix\Module\Config\ConfigComponentSystem.cs">
       <Link>Module\Config\ConfigComponentSystem.cs</Link>

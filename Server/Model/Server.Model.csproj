@@ -77,6 +77,8 @@
     
     <Compile Remove="Libs\**" />
     
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Role\RoleInfo.cs" Link="Example\ExampleIdleGame\Role\RoleInfo.cs" />
+    
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" Link="Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" />
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\TimerType.cs" Link="Example\ExampleIdleGame\TimerType.cs" />
@@ -133,5 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Demo\Learn\Computer\" />
+    <Folder Include="Example\ExampleIdleGame\Role\" />
   </ItemGroup>
 </Project>
