@@ -42,6 +42,7 @@ namespace ET
             if (serverInfoList == null || serverInfoList.Count <= 0)
             {
                 Log.Error("ServerInfo数量为0");
+                return;
             }
             self.ServerInfos.Clear();
 
