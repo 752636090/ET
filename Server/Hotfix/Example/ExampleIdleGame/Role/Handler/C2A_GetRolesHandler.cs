@@ -37,7 +37,7 @@ namespace ET
                 using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.CreateRole, request.AccountId)) // 角色的创建和查询也不能同时
                 {
                     List<RoleInfo> roleInfos = await DBManagerComponent.Instance.GetZoneDB(session.DomainZone())
-                        .Query<RoleInfo>(d => d.AccountId == request.AccountId && d.ServerId == request.ServerId);
+                        .Query<RoleInfo>(d => d.AccountId == request.AccountId && d.ServerId == request.ServerId && d.State == (int)RoleInfoState.Normal);
 
                     if (roleInfos == null || roleInfos.Count == 0)
                     {
