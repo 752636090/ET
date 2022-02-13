@@ -13,6 +13,7 @@ namespace ET
             #region IdleGame
             zoneScene.AddComponent<AccountInfoComponent>(); 
             zoneScene.AddComponent<ServerInfosComponent>();
+            zoneScene.AddComponent<RoleInfosComponent>();
             #endregion
 
             Game.EventSystem.Publish(new EventType.AfterCreateZoneScene() {ZoneScene = zoneScene});

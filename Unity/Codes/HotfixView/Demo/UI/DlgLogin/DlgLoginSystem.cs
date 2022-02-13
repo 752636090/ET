@@ -35,9 +35,16 @@ namespace ET
 					Log.Error(errorCode.ToString());
 					return;
                 }
-				// TODO 限时登录之后的页面逻辑
+
+				errorCode = await LoginHelper.GetServerInfos(self.ZoneScene());
+				if (errorCode != ErrorCode.ERR_Success)
+                {
+					Log.Error(errorCode.ToString());
+					return;
+                }
+
 				self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Login);
-				self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Lobby);
+				self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Server);
             }
             catch (Exception e)
             {

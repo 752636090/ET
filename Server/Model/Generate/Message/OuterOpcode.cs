@@ -49,5 +49,9 @@ namespace ET
 		 public const ushort RoleInfoProto = 10046;
 		 public const ushort C2A_CreateRole = 10047;
 		 public const ushort A2C_CreateRole = 10048;
+		 public const ushort C2A_GetRoles = 10049;
+		 public const ushort A2C_GetRoles = 10050;
+		 public const ushort C2A_DeleteRole = 10051;
+		 public const ushort A2C_DeleteRole = 10052;
 	}
 }
