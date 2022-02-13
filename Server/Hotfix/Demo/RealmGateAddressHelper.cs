@@ -13,5 +13,13 @@ namespace ET
 
 			return zoneGates[n];
 		}
-	}
+
+        #region ExampleIdleGame
+		public static StartSceneConfig GetRealm(int zone)
+        {
+			StartSceneConfig zoneRealm = StartSceneConfigCategory.Instance.Realms[zone];
+			return zoneRealm;
+        }
+        #endregion
+    }
 }

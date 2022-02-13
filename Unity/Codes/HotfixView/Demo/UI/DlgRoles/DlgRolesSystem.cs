@@ -101,8 +101,25 @@ namespace ET
 
 		public static async ETTask OnConfirmClickHandler(this DlgRoles self)
         {
+			if (self.ZoneScene().GetComponent<RoleInfosComponent>().CurrentRoleId == 0)
+            {
+				Log.Error("请选择需要删除的角色");
+				return;
+            }
 
-			await ETTask.CompletedTask;
+            try
+            {
+				int errorCode = await LoginHelper.GetRealmKey(self.ZoneScene());
+				if (errorCode != ErrorCode.ERR_Success)
+                {
+					Log.Error(errorCode.ToString());
+					return;
+                }
+            }
+            catch (Exception e)
+            {
+				Log.Error(e.ToString());
+            }
         }
 	}
 }
