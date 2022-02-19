@@ -17,7 +17,11 @@ namespace ET
         public Dictionary<long, Dictionary<string, StartSceneConfig>> ZoneScenesByName = new Dictionary<long, Dictionary<string, StartSceneConfig>>();
 
         public StartSceneConfig LocationConfig;
-        
+
+        #region ExampleIdleGame
+        public StartSceneConfig LoginCenterConfig;
+        #endregion
+
         public List<StartSceneConfig> Robots = new List<StartSceneConfig>();
         
         public List<StartSceneConfig> GetByProcess(int process)
@@ -56,7 +60,10 @@ namespace ET
                     #region ExampleIdleGame
                     case SceneType.Realm:
                         this.Realms.Add(startSceneConfig.Zone, startSceneConfig);
-                        break; 
+                        break;
+                    case SceneType.LoginCenter:
+                        this.LoginCenterConfig = startSceneConfig;
+                        break;
                         #endregion
                 }
             }

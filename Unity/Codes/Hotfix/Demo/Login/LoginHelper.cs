@@ -281,8 +281,33 @@ namespace ET
             zoneScene.GetComponent<SessionComponent>().Session = gateSession;
 
             // 2. 开始连接Gate
+            long currentRoleId = zoneScene.GetComponent<RoleInfosComponent>().CurrentRoleId;
+            G2C_LoginGate g2CLoginGate = null;
+            try
+            {
+                long accountId = zoneScene.GetComponent<AccountInfoComponent>().AccountId;
+                g2CLoginGate = (G2C_LoginGate)await gateSession.Call(new C2G_LoginGameGate()
+                {
+                    Key = r2cLogin.GateSessionKey,
+                    Account = accountId,
+                    RoleId = currentRoleId
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                zoneScene.GetComponent<SessionComponent>().Session.Dispose();
+                return ErrorCode.ERR_NetworkError;
+            }
 
-            return 0; // 为了这节课不报错
+            if (g2CLoginGate.Error != ErrorCode.ERR_Success)
+            {
+                zoneScene.GetComponent<SessionComponent>().Session.Dispose();
+                return g2CLoginGate.Error;
+            }
+            Log.Debug("登录Gate成功！");
+
+            return ErrorCode.ERR_Success;
         }
         #endregion
 
