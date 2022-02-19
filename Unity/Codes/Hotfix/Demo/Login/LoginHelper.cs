@@ -241,9 +241,48 @@ namespace ET
 
             zoneScene.GetComponent<AccountInfoComponent>().RealmKey = a2CGetRealmKey.RealmKey;
             zoneScene.GetComponent<AccountInfoComponent>().RealmAddress = a2CGetRealmKey.RealmAddress;
-
+            zoneScene.GetComponent<SessionComponent>().Session.Dispose();
             await ETTask.CompletedTask;
             return ErrorCode.ERR_Success;
+        }
+
+        public static async ETTask<int> EnterGame(Scene zoneScene)
+        {
+            string realmAddress = zoneScene.GetComponent<AccountInfoComponent>().RealmAddress;
+            // 1. 连接Realm，获取分配的Gate
+            R2C_LoginRealm r2cLogin;
+
+            Session session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(realmAddress));
+            try
+            {
+                r2cLogin = (R2C_LoginRealm)await session.Call(new C2R_LoginRealm()
+                {
+                    AccountId = zoneScene.GetComponent<AccountInfoComponent>().AccountId,
+                    RealmTokenKey = zoneScene.GetComponent<AccountInfoComponent>().RealmKey
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                session?.Dispose();
+                return ErrorCode.ERR_NetworkError;
+            }
+            session?.Dispose();
+
+
+            if (r2cLogin.Error != ErrorCode.ERR_Success)
+            {
+                return r2cLogin.Error;
+            }
+
+            Log.Warning($"GateAddress: {r2cLogin.GateAddress}");
+            Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(r2cLogin.GateAddress));
+            gateSession.AddComponent<PingComponent>();
+            zoneScene.GetComponent<SessionComponent>().Session = gateSession;
+
+            // 2. 开始连接Gate
+
+            return 0; // 为了这节课不报错
         }
         #endregion
 

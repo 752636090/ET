@@ -26,5 +26,9 @@ namespace ET
         public const int ERR_RoleNameIsNull = 200010;
         public const int ERR_RoleNameSame = 200011;
         public const int ERR_RoleNotExist = 200012;
+
+        public const int ERR_ConnectGateKeyError = 200013;
+
+        public const int ERR_RequestSceneTypeError = 200014;
     }
 }

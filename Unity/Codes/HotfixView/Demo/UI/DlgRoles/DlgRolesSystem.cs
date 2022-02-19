@@ -115,6 +115,13 @@ namespace ET
 					Log.Error(errorCode.ToString());
 					return;
                 }
+
+				errorCode = await LoginHelper.EnterGame(self.ZoneScene());
+				if (errorCode != ErrorCode.ERR_Success)
+                {
+					Log.Error(errorCode.ToString());
+					return;
+                }
             }
             catch (Exception e)
             {
