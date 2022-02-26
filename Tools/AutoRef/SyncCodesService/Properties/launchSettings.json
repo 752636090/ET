@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "SyncCodesService": {
+      "commandName": "Project",
+      "commandLineArgs": "G:\\Unity\\ETZ\\Unity",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    }
+  }
+}
