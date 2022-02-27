@@ -81,8 +81,6 @@
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" Link="Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" />
     
-    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\TimerType.cs" Link="Example\ExampleIdleGame\TimerType.cs" />
-    
     <Compile Include="..\..\Unity\Codes\Model\Module\ActorLocation\ActorResponse.cs">
       <Link>Module\ActorLocation\ActorResponse.cs</Link>
     </Compile>
