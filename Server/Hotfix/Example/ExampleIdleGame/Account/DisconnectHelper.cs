@@ -21,7 +21,7 @@
         }
 
         /// <param name="player">网关上对游戏角色的映射</param>
-        public static async ETTask KickPlayer(Player player)
+        public static async ETTask KickPlayer(Player player, bool isException = false)
         {
             if (player == null || player.IsDisposed)
             {
@@ -35,16 +35,19 @@
                     return;
                 }
 
-                switch (player.PlayerState)
+                if (!isException)
                 {
-                    case PlayerState.Disconnect:
-                        break;
-                    case PlayerState.Gate:
-                        break;
-                    case PlayerState.Game:
-                        // TODO 通知游戏逻辑服下线Unit角色逻辑，并将数据存入数据库    还要通知账号服务器移除
+                    switch (player.PlayerState)
+                    {
+                        case PlayerState.Disconnect:
+                            break;
+                        case PlayerState.Gate:
+                            break;
+                        case PlayerState.Game:
+                            // TODO 通知游戏逻辑服下线Unit角色逻辑，并将数据存入数据库    还要通知账号服务器移除
 
-                        break;
+                            break;
+                    } 
                 }
 
                 player.PlayerState = PlayerState.Disconnect;

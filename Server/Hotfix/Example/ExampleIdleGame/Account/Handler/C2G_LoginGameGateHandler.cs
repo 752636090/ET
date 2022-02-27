@@ -56,6 +56,13 @@ namespace ET
                     return;
                 }
 
+                SessionStateComponent SessionStateComponent = session.GetComponent<SessionStateComponent>();
+                if (SessionStateComponent == null)
+                {
+                    SessionStateComponent = session.AddComponent<SessionStateComponent>();
+                }
+                SessionStateComponent.State = SessionState.Normal;
+
                 Player player = scene.GetComponent<PlayerComponent>().Get(request.Account);
 
                 if (player == null)

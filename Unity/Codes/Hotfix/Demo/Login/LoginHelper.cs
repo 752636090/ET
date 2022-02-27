@@ -282,11 +282,11 @@ namespace ET
 
             // 2. 开始连接Gate
             long currentRoleId = zoneScene.GetComponent<RoleInfosComponent>().CurrentRoleId;
-            G2C_LoginGate g2CLoginGate = null;
+            G2C_LoginGameGate g2CLoginGate = null;
             try
             {
                 long accountId = zoneScene.GetComponent<AccountInfoComponent>().AccountId;
-                g2CLoginGate = (G2C_LoginGate)await gateSession.Call(new C2G_LoginGameGate()
+                g2CLoginGate = (G2C_LoginGameGate)await gateSession.Call(new C2G_LoginGameGate()
                 {
                     Key = r2cLogin.GateSessionKey,
                     Account = accountId,
@@ -306,6 +306,27 @@ namespace ET
                 return g2CLoginGate.Error;
             }
             Log.Debug("登录Gate成功！");
+
+            // 3. 角色正式请求进入游戏逻辑服
+            G2C_EnterGame g2CEnterGame = null;
+            try
+            {
+                g2CEnterGame = (G2C_EnterGame)await gateSession.Call(new C2G_EnterGame() { });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                zoneScene.GetComponent<SessionComponent>().Session.Dispose();
+                return ErrorCode.ERR_NetworkError;
+            }
+
+            if (g2CEnterGame.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error(g2CEnterGame.Error.ToString());
+                return g2CEnterGame.Error;
+            }
+
+            Log.Debug("角色进入游戏成功!!!!");
 
             return ErrorCode.ERR_Success;
         }
