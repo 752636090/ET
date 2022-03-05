@@ -28,7 +28,7 @@
                 return;
             }
             long instanceId = player.InstanceId;
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoginGate, player.Account.GetHashCode()))
+            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoginGate, player.AccountId.GetHashCode()))
             {
                 if (player.IsDisposed || instanceId != player.InstanceId) // 防多次进入
                 {
@@ -44,14 +44,21 @@
                         case PlayerState.Gate:
                             break;
                         case PlayerState.Game:
-                            // TODO 通知游戏逻辑服下线Unit角色逻辑，并将数据存入数据库    还要通知账号服务器移除
+                            // 通知游戏逻辑服下线Unit角色逻辑，并将数据存入数据库
+                            M2G_RequestExitGame m2GRequestExitGame = (M2G_RequestExitGame)await MessageHelper.CallLocationActor(player.UnitId, new G2M_RequestExitGame());
 
+                            // 通知移除账号角色登录信息
+                            long LoginCenterConfigSceneId = StartSceneConfigCategory.Instance.LoginCenterConfig.InstanceId;
+                            L2G_RemoveLoginRecord L2G_RemoveLoginRecord = (L2G_RemoveLoginRecord)await MessageHelper.CallActor(LoginCenterConfigSceneId, new G2L_RemoveLoginRecord
+                            {
+                                AccountId = player.AccountId, ServerId = player.DomainZone()
+                            });
                             break;
                     } 
                 }
 
                 player.PlayerState = PlayerState.Disconnect;
-                player.DomainScene().GetComponent<PlayerComponent>()?.Remove(player.Account);
+                player.DomainScene().GetComponent<PlayerComponent>()?.Remove(player.AccountId);
                 player?.Dispose();
                 await TimerComponent.Instance.WaitAsync(300); // 为了防止Player身上有异步操作
             }
