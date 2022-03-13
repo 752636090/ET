@@ -23,7 +23,11 @@ namespace ET
         #endregion
 
         public List<StartSceneConfig> Robots = new List<StartSceneConfig>();
-        
+
+        #region ExampleIdleGame
+        public Dictionary<int, StartSceneConfig> UnitCaches = new();
+        #endregion
+
         public List<StartSceneConfig> GetByProcess(int process)
         {
             return this.ProcessScenes[process];
@@ -33,7 +37,15 @@ namespace ET
         {
             return this.ZoneScenesByName[zone][name];
         }
-        
+
+        #region ExampleIdleGame
+        public StartSceneConfig GetUnitCacheConfig(long unitId)
+        {
+            int zone = UnitIdStruct.GetUnitZone(unitId);
+            return UnitCaches[zone];
+        }
+        #endregion
+
         public override void AfterEndInit()
         {
             foreach (StartSceneConfig startSceneConfig in this.GetAll().Values)
@@ -63,6 +75,9 @@ namespace ET
                         break;
                     case SceneType.LoginCenter:
                         this.LoginCenterConfig = startSceneConfig;
+                        break;
+                    case SceneType.UnitCache:
+                        this.UnitCaches.Add(startSceneConfig.Zone, startSceneConfig);
                         break;
                         #endregion
                 }

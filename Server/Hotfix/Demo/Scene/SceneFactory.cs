@@ -55,7 +55,10 @@ namespace ET
                 #region IdleGame
                 case SceneType.LoginCenter:
                     scene.AddComponent<LoginInfoRecordComponent>();
-                    break; 
+                    break;
+                case SceneType.UnitCache:
+                    scene.AddComponent<UnitCacheComponent>();
+                    break;
                     #endregion
             }
 

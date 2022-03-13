@@ -14,6 +14,8 @@
         #endregion
         #region IdleGame
 		LoginCenter = 8,
+
+		UnitCache = 9,
         #endregion
 
         // 客户端Model层
