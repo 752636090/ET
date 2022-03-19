@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ET
@@ -64,6 +66,29 @@ namespace ET
             M2C_RemoveUnits removeUnits = new M2C_RemoveUnits();
             removeUnits.Units.Add(sendUnit.Id);
             MessageHelper.SendToClient(unit, removeUnits);
+        }
+
+        public static async ETTask<(bool isNewPlayer, Unit unit)> LoadUnit(Player player)
+        {
+            GateMapComponent gateMapComponent = player.AddComponent<GateMapComponent>();
+            gateMapComponent.Scene = await SceneFactory.Create(gateMapComponent, "GateMap", SceneType.Map);
+
+            Unit unit = await UnitCacheHelper.GetUnitCache(gateMapComponent.Scene, player.UnitId);
+
+            bool isNewUnit = unit == null;
+            if (isNewUnit)
+            {
+                unit = UnitFactory.Create(gateMapComponent.Scene, player.Id, UnitType.Player); // player.Id跟player.UnitId一样
+                UnitCacheHelper.AddOrUpdateUnitAllCache(unit);
+            }
+
+            return (isNewUnit, unit);
+        }
+
+        public static async ETTask InitUnit(Unit unit, bool isNew)
+        {
+
+            await ETTask.CompletedTask;
         }
     }
 }

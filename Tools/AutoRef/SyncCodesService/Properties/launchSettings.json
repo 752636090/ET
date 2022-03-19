@@ -2,7 +2,7 @@
   "profiles": {
     "SyncCodesService": {
       "commandName": "Project",
-      "commandLineArgs": "G:\\Unity\\ETZ\\Unity",
+      "commandLineArgs": "G:\\Unity\\ETIdleGame\\Unity",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       },
