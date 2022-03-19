@@ -7,7 +7,7 @@ namespace SyncCodesService
         private readonly string _workSpace;
         private FileSystemWatcher _watcher;
 
-        private bool _refreshed = false;
+        //private bool _refreshed = false;
         public Worker(ILogger<Worker> logger, IConfiguration config)
         {
             _logger = logger;
@@ -33,7 +33,7 @@ namespace SyncCodesService
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _refreshed = false;
+                //_refreshed = false;
                 await Task.Delay(1000, stoppingToken);
             }
             _watcher.EnableRaisingEvents = false;
@@ -52,10 +52,10 @@ namespace SyncCodesService
 
         private void Refresh(string path, bool isAdd)
         {
-            if (_refreshed)
-            {
-                return;
-            }
+            //if (_refreshed)
+            //{
+            //    return;
+            //}
 
             if (Path.GetExtension(path).ToLower() != ".cs")
             {
@@ -64,13 +64,25 @@ namespace SyncCodesService
             string root = _workSpace;
             if (!Directory.Exists(root))
             {
-                _logger.LogError($"ƒø¬º{root}≤ª¥Ê‘⁄,ºÏ≤È≤Œ ˝");
+                _logger.LogError($"ÁõÆÂΩï{root}‰∏çÂ≠òÂú®,Ê£ÄÊü•ÂèÇÊï∞");
             }
-            AdjustTool.Adjust(Path.Combine(root, "Unity.Model.csproj"), "Model", path, isAdd, false);
-            AdjustTool.Adjust(Path.Combine(root, "Unity.ModelView.csproj"), "ModelView", path, isAdd, false);
-            AdjustTool.Adjust(Path.Combine(root, "Unity.Hotfix.csproj"), "Hotfix", path, isAdd, false);
-            AdjustTool.Adjust(Path.Combine(root, "Unity.HotfixView.csproj"), "HotfixView", path, isAdd, false);
-            _refreshed = true;
+            if (path.Contains(@"\Model\"))
+            {
+                AdjustTool.Adjust(Path.Combine(root, "Unity.Model.csproj"), "Model", path, isAdd, false);
+            }
+            else if (path.Contains(@"\ModelView\"))
+            {
+                AdjustTool.Adjust(Path.Combine(root, "Unity.ModelView.csproj"), "ModelView", path, isAdd, false);
+            }
+            else if (path.Contains(@"\Hotfix\"))
+            {
+                AdjustTool.Adjust(Path.Combine(root, "Unity.Hotfix.csproj"), "Hotfix", path, isAdd, false);
+            }
+            else if (path.Contains(@"\HotfixView\"))
+            {
+                AdjustTool.Adjust(Path.Combine(root, "Unity.HotfixView.csproj"), "HotfixView", path, isAdd, false);
+            }
+            //_refreshed = true;
         }
     }
 }
