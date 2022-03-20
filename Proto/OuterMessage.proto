@@ -479,3 +479,25 @@ message G2C_EnterGame // IResponse
 	// 自己unitId
 	int64 MyId = 4;
 }
+
+message M2C_NoticeUnitNumeric // IActorMessage
+{
+	int64 UnitId = 1;
+
+	int32 NumericType = 2;
+
+	int64 NewValue = 4;
+}
+
+//ResponseType M2C_TestUnitNumeric
+message C2M_TestUnitNumeric // IActorLocationRequest
+{
+	int32 RpcId = 1;
+}
+
+message M2C_TestUnitNumeric // IActorLocationResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}

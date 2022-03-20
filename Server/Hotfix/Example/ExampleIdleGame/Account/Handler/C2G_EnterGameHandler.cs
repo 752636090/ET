@@ -101,15 +101,11 @@ namespace ET
 
                         // 玩家Unit上线后的初始化操作
                         await UnitHelper.InitUnit(unit, isNewPlayer);
+                        response.MyId = unit.Id;
+                        reply();
 
-                        long unitId = unit.Id;
                         StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "Game");
                         await TransferHelper.Transfer(unit, startSceneConfig.InstanceId, startSceneConfig.Name);
-
-                        player.UnitId = unitId;
-                        response.MyId = unitId;
-
-                        reply();
 
                         SessionStateComponent SessionStateComponent = session.GetComponent<SessionStateComponent>();
                         if (SessionStateComponent == null)

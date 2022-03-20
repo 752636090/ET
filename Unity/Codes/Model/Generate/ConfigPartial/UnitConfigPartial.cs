@@ -27,8 +27,8 @@ namespace ET
 
             foreach (UnitConfig config in this.dict.Values)
             {
-                config.TestValue = new Vector3(config.Position[0], config.Height, config.Weight);
-                this.TestVector3List.Add(new TestVector3() { TestValue = config.TestValue });
+                //config.TestValue = new Vector3(config.Position[0], config.Height, config.Weight);
+                //this.TestVector3List.Add(new TestVector3() { TestValue = config.TestValue });
             }
         }
 
