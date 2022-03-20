@@ -15,7 +15,7 @@ namespace ET
             UnitComponent unitComponent = currentScene.AddComponent<UnitComponent>();
 
             // 可以订阅这个事件中创建Loading界面
-            Game.EventSystem.Publish(new EventType.SceneChangeStart() { ZoneScene = zoneScene });
+            Game.EventSystem.Publish(new EventType.SceneChangeStart() { ZoneScene = zoneScene }); // 逻辑层不能直接调用显示层，要用事件
 
             // 等待CreateMyUnit的消息
             WaitType.Wait_CreateMyUnit waitCreateMyUnit = await zoneScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_CreateMyUnit>();
@@ -23,23 +23,25 @@ namespace ET
             Unit unit = UnitFactory.Create(currentScene, m2CCreateMyUnit.Unit);
             unitComponent.Add(unit);
 
-            zoneScene.RemoveComponent<AIComponent>();
+            //zoneScene.RemoveComponent<AIComponent>();
+
+            await TimerComponent.Instance.WaitAsync(2000); // 要看到加载界面 
 
             Game.EventSystem.Publish(new EventType.SceneChangeFinish() { ZoneScene = zoneScene, CurrentScene = currentScene });
 
             #region Learn 正常不会写在这个地方                  而且视频中没有<ObjectWait>().Notify
-            try
-            {
-                Session session = zoneScene.GetComponent<SessionComponent>().Session;
-                M2C_TestActorLocationResponse m2CTestActorLocationResponse = (M2C_TestActorLocationResponse)await session.Call(new C2M_TestActorLocationRequest() { Content = "1111111" });
-                Log.DebugColor(m2CTestActorLocationResponse.Content, "FFFF00");
+            //try
+            //{
+            //    Session session = zoneScene.GetComponent<SessionComponent>().Session;
+            //    M2C_TestActorLocationResponse m2CTestActorLocationResponse = (M2C_TestActorLocationResponse)await session.Call(new C2M_TestActorLocationRequest() { Content = "1111111" });
+            //    Log.DebugColor(m2CTestActorLocationResponse.Content, "FFFF00");
 
-                session.Send(new C2M_TestActorLocationMessage { Content = "222222" });
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.ToString());
-            }
+            //    session.Send(new C2M_TestActorLocationMessage { Content = "222222" });
+            //}
+            //catch (Exception e)
+            //{
+            //    Log.Error(e.ToString());
+            //}
             #endregion
 
             // 通知等待场景切换的协程

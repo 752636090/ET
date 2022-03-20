@@ -20,7 +20,7 @@ namespace ET
                 }
 
                 scene.GetComponent<GateSessionKeyComponent>().Remove(accountId); // scene:网关的scene
-                Session gateSession = Game.EventSystem.Get(player.SessionInstanceId) as Session;
+                Session gateSession = player.ClientSesison; // 猜的
                 if (gateSession != null && !gateSession.IsDisposed)
                 {
                     if (gateSession.GetComponent<SessionPlayerComponent>() != null)
@@ -31,7 +31,7 @@ namespace ET
                     gateSession.Send(new A2C_Disconnect() { Error = ErrorCode.ERR_OtherAccountLogin });
                     gateSession?.Disconnect().Coroutine();
                 }
-                player.SessionInstanceId = 0;
+                player.ClientSesison = null; // 猜的
                 player.AddComponent<PlayerOfflineOutTimeComponent>();
             }
             reply();

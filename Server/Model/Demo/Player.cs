@@ -25,10 +25,10 @@
 	{
 		public long AccountId { get; set; }
 		
-		public long SessionInstanceId { get; set; }
-
 		public long UnitId { get; set; }
 
 		public PlayerState PlayerState { get; set; }
+
+		public Session ClientSesison { get; set; }
 	}
 }

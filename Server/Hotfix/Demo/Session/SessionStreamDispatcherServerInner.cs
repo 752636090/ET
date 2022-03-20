@@ -23,8 +23,8 @@ namespace ET
                     InstanceIdStruct instanceIdStruct = new InstanceIdStruct(actorId);
                     instanceIdStruct.Process = Game.Options.Process;
                     long realActorId = instanceIdStruct.ToLong();
-                    
-                    
+
+
                     Entity entity = Game.EventSystem.Get(realActorId);
                     if (entity == null)
                     {
@@ -33,7 +33,7 @@ namespace ET
                         Log.Error($"not found actor: {session.DomainScene().Name}  {opcode} {realActorId} {message}");
                         return;
                     }
-                    
+
                     if (entity is Session gateSession)
                     {
                         // 发送给客户端
@@ -41,6 +41,25 @@ namespace ET
                         gateSession.Send(0, memoryStream);
                         return;
                     }
+
+                    #region IdleGame
+                    if (entity is Player player)
+                    {
+                        // 发送给客户端
+                        if (player == null || player.IsDisposed)
+                        {
+                            return;
+                        }
+                        if (player.ClientSesison == null || player.ClientSesison.IsDisposed)
+                        {
+                            return;
+                        }
+
+                        memoryStream.Seek(Packet.OpcodeIndex, SeekOrigin.Begin);
+                        player.ClientSesison.Send(0, memoryStream);
+                        return;
+                    }
+                    #endregion
                 }
 #endif
                         

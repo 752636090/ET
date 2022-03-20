@@ -41,3 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Role
+    uniqueID: 1687817469
+    locked: 0

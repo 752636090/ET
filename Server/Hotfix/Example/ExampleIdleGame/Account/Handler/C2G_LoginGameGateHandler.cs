@@ -81,7 +81,7 @@ namespace ET
                 session.AddComponent<SessionPlayerComponent>().PlayerId = player.Id;
                 session.GetComponent<SessionPlayerComponent>().PlayerInstanceId = player.InstanceId; // 让SessionPlayerComponent可以拿到Player实体
                 session.GetComponent<SessionPlayerComponent>().AccountId = request.Account;
-                player.SessionInstanceId = session.InstanceId;
+                player.ClientSesison = session;
             }
             reply();
         }
