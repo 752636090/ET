@@ -37,7 +37,7 @@ namespace ET
 			self.View.E_AttributePointText.text = numericComponent.GetAsInt(NumericType.AttributePoint).ToString();
 
 			int count = PlayerNumericConfigCategory.Instance.GetShowConfigCount();
-			self.AddUIScrollItems(ref self.SrollItemAttributes, count);
+			self.AddUIScrollItems(ref self.ScrollItemAttributes, count);
 			self.View.E_AttributsLoopVerticalScrollRect.SetVisible(true, count);
         }
 

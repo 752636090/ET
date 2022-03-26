@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
     public static class UnitHelper
     {
@@ -13,6 +15,12 @@
         {
             PlayerComponent playerComponent = currentScene.Parent.Parent.GetComponent<PlayerComponent>();
             return currentScene.GetComponent<UnitComponent>().Get(playerComponent.MyId);
+        }
+
+        public static NumericComponent GetMyUnitNumericComponent(Scene currentScene)
+        {
+            // 整个方法都是自己猜的
+            return GetMyUnitFromCurrentScene(currentScene).GetComponent<NumericComponent>();
         }
     }
 }

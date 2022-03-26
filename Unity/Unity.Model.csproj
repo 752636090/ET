@@ -111,6 +111,7 @@
     <Compile Include="Codes\Model\Example\ExampleIdleGame\Role\RoleInfosComponent.cs" />
     <Compile Include="Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" />
     <Compile Include="Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfosComponent.cs" />
+    <Compile Include="Codes\Model\Generate\ConfigPartial\PlayerNumericConfigPartial.cs" />
     <Compile Include="Codes\Model\Generate\ConfigPartial\UnitConfigPartial.cs" />
     <Compile Include="Codes\Model\Generate\Config\AIConfig.cs" />
     <Compile Include="Codes\Model\Generate\Config\StartMachineConfig.cs" />
