@@ -22,9 +22,7 @@ namespace ET
             Game.Scene.AddComponent<ZoneSceneManagerComponent>();
             
             Game.Scene.AddComponent<GlobalComponent>();
-            #region ExampleIdleGame
             Game.Scene.AddComponent<NumericWatcherComponent>();
-            #endregion
             Game.Scene.AddComponent<AIDispatcherComponent>();
             await ResourcesComponent.Instance.LoadBundleAsync("unit.unity3d");
             
