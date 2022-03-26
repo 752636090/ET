@@ -19,10 +19,23 @@ namespace ET
                     NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
                     //numericComponent.Set(NumericType.Speed, 6f); // 速度是6米每秒
                     //numericComponent.Set(NumericType.AOI, 15000); // 视野15米
-                    UnitConfig unitConfig = UnitConfigCategory.Instance.Get(1001);
-                    numericComponent.SetNoEvent(NumericType.Postion, unitConfig.Position); // 补充：配表中浮点数要写成万分比(防止误差)，直接填浮点数是小白做法
-                    numericComponent.SetNoEvent(NumericType.Height, unitConfig.Height);
-                    numericComponent.SetNoEvent(NumericType.Weight, unitConfig.Weight);
+                    foreach (var config in PlayerNumericConfigCategory.Instance.GetAll())
+                    {
+                        if (config.Value.BaseValue == 0)
+                        {
+                            continue;
+                        }
+
+                        if (config.Key < 3000)
+                        {
+                            int baseKey = config.Key * 10 + 1;
+                            numericComponent.SetNoEvent(baseKey, config.Value.BaseValue);
+                        }
+                        else
+                        {
+                            numericComponent.SetNoEvent(config.Key, config.Value.BaseValue);
+                        }
+                    }
                     
                     unitComponent.Add(unit);
                     //// 加入aoi

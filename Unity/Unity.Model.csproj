@@ -79,6 +79,7 @@
     <Compile Include="Codes\Model\Core\Object\ProtoObject.cs" />
     <Compile Include="Codes\Model\Core\PoolHelper.cs" />
     <Compile Include="Codes\Model\Core\ProtobufHelper.cs" />
+    <Compile Include="Codes\Model\Core\JsonHelper.cs" />
     <Compile Include="Codes\Model\Core\QueueDictionary.cs" />
     <Compile Include="Codes\Model\Core\Scene\SceneHelper.cs" />
     <Compile Include="Codes\Model\Core\Scene\ZoneSceneFlagComponent.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Codes\Model\Generate\Config\StartSceneConfig.cs" />
     <Compile Include="Codes\Model\Generate\Config\StartZoneConfig.cs" />
     <Compile Include="Codes\Model\Generate\Config\UnitConfig.cs" />
+    <Compile Include="Codes\Model\Generate\Config\PlayerNumericConfig.cs" />
     <Compile Include="Codes\Model\Generate\Message\OuterMessage.cs" />
     <Compile Include="Codes\Model\Generate\Message\OuterOpcode.cs" />
     <Compile Include="Codes\Model\Module\ActorLocation\ActorResponse.cs" />
