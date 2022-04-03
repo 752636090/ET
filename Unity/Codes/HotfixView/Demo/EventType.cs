@@ -10,6 +10,11 @@ namespace ET
         public struct CreateUnitView
         {
             public GameObject GameObject;
-        } 
+        }
+
+        public struct StartGameLevel
+        {
+            public Scene ZoneScene;
+        }
     }
 }

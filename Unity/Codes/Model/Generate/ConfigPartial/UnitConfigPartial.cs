@@ -32,20 +32,20 @@ namespace ET
             }
         }
 
-        public UnitConfig GetUnitConfigByHeight(int height)
-        {
-            UnitConfig unitConfig = null;
+        //public UnitConfig GetUnitConfigByHeight(int height)
+        //{
+        //    UnitConfig unitConfig = null;
 
-            foreach (UnitConfig info in this.dict.Values)
-            {
-                if (info.Height == height)
-                {
-                    unitConfig = info;
-                    break;
-                }
-            }
+        //    foreach (UnitConfig info in this.dict.Values)
+        //    {
+        //        if (info.Height == height)
+        //        {
+        //            unitConfig = info;
+        //            break;
+        //        }
+        //    }
 
-            return unitConfig;
-        }
+        //    return unitConfig;
+        //}
     }
 }

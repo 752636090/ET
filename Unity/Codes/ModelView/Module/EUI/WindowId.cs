@@ -13,5 +13,6 @@
         WindowID_Main,
         WindowID_Loading,
         WindowID_RoleInfo,
+        WindowID_Advanture,
     }
 }

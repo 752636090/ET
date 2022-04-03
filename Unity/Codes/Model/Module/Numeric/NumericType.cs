@@ -74,6 +74,12 @@
 
 	    public const int Exp = 3009;
 
+		public const int AdventureState = 3010;
+
+		public const int DyingState = 3011;
+
+		public const int AdventureStartTime = 3022;
+
 	    //public const int Postion = 1007;
 
 	    //public const int Height = 1008;

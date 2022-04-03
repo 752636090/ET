@@ -80,7 +80,6 @@
     <Compile Include="Codes\Model\Core\Object\ProtoObject.cs" />
     <Compile Include="Codes\Model\Core\PoolHelper.cs" />
     <Compile Include="Codes\Model\Core\ProtobufHelper.cs" />
-    <Compile Include="Codes\Model\Core\JsonHelper.cs" />
     <Compile Include="Codes\Model\Core\QueueDictionary.cs" />
     <Compile Include="Codes\Model\Core\Scene\SceneHelper.cs" />
     <Compile Include="Codes\Model\Core\Scene\ZoneSceneFlagComponent.cs" />
@@ -112,11 +111,13 @@
     <Compile Include="Codes\Model\Example\ExampleIdleGame\Role\RoleInfosComponent.cs" />
     <Compile Include="Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" />
     <Compile Include="Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfosComponent.cs" />
+    <Compile Include="Codes\Model\Generate\ConfigPartial\BattleLevelConfigPartial.cs" />
     <Compile Include="Codes\Model\Generate\ConfigPartial\PlayerNumericConfigPartial.cs" />
     <Compile Include="Codes\Model\Generate\ConfigPartial\UnitConfigPartial.cs" />
     <Compile Include="Codes\Model\Generate\Config\AIConfig.cs" />
     <Compile Include="Codes\Model\Generate\Config\UnitConfig.cs" />
     <Compile Include="Codes\Model\Generate\Config\PlayerNumericConfig.cs" />
+    <Compile Include="Codes\Model\Generate\Config\BattleLevelConfig.cs" />
     <Compile Include="Codes\Model\Generate\Message\OuterMessage.cs" />
     <Compile Include="Codes\Model\Generate\Message\OuterOpcode.cs" />
     <Compile Include="Codes\Model\Module\ActorLocation\ActorResponse.cs" />

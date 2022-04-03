@@ -50,6 +50,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Codes\ModelView\**\*.cs" />
+    <Reference Include="TextMeshPro">
+      <HintPath>./Temp/bin/Debug/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>./Temp/bin/Debug/DOTween.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>./Temp/bin/Debug/UnityEngine.dll</HintPath>
     </Reference>
@@ -599,9 +605,7 @@
       <Name>Unity.ThirdParty</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Codes\ModelView\Demo\UI\DlgLogin" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
