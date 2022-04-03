@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class InstallComputer_AddComponent : AEvent<EventType.InstallComputer>
+    public class InstallComputer_AddComponent : AEventAsync<EventType.InstallComputer>
     {
         protected async override ETTask Run(InstallComputer arg)
         {

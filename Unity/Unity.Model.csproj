@@ -56,6 +56,7 @@
     <Compile Include="Codes\Model\Core\ETCancelationTokenHelper.cs" />
     <Compile Include="Codes\Model\Core\Event\EventAttribute.cs" />
     <Compile Include="Codes\Model\Core\Event\IEvent.cs" />
+    <Compile Include="Codes\Model\Core\JsonHelper.cs" />
     <Compile Include="Codes\Model\Core\ObjectWait.cs" />
     <Compile Include="Codes\Model\Core\Object\BaseAttribute.cs" />
     <Compile Include="Codes\Model\Core\Object\Entity.cs" />
@@ -114,10 +115,6 @@
     <Compile Include="Codes\Model\Generate\ConfigPartial\PlayerNumericConfigPartial.cs" />
     <Compile Include="Codes\Model\Generate\ConfigPartial\UnitConfigPartial.cs" />
     <Compile Include="Codes\Model\Generate\Config\AIConfig.cs" />
-    <Compile Include="Codes\Model\Generate\Config\StartMachineConfig.cs" />
-    <Compile Include="Codes\Model\Generate\Config\StartProcessConfig.cs" />
-    <Compile Include="Codes\Model\Generate\Config\StartSceneConfig.cs" />
-    <Compile Include="Codes\Model\Generate\Config\StartZoneConfig.cs" />
     <Compile Include="Codes\Model\Generate\Config\UnitConfig.cs" />
     <Compile Include="Codes\Model\Generate\Config\PlayerNumericConfig.cs" />
     <Compile Include="Codes\Model\Generate\Message\OuterMessage.cs" />
@@ -133,6 +130,7 @@
     <Compile Include="Codes\Model\Module\Config\ConfigComponent.cs" />
     <Compile Include="Codes\Model\Module\Config\IConfig.cs" />
     <Compile Include="Codes\Model\Module\Config\IConfigLoader.cs" />
+    <Compile Include="Codes\Model\Module\Config\IMerge.cs" />
     <Compile Include="Codes\Model\Module\CoroutineLock\CoroutineLock.cs" />
     <Compile Include="Codes\Model\Module\CoroutineLock\CoroutineLockComponent.cs" />
     <Compile Include="Codes\Model\Module\CoroutineLock\CoroutineLockQueue.cs" />

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Tools.App": {
+      "commandName": "Project",
+      "commandLineArgs": "--AppType=ExcelExporter"
+    }
+  }
+}

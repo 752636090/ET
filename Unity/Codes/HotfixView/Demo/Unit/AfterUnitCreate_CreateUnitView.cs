@@ -4,7 +4,7 @@ namespace ET
 {
     public class AfterUnitCreate_CreateUnitView : AEvent<EventType.AfterUnitCreate>
     {
-        protected override async ETTask Run(EventType.AfterUnitCreate args)
+        protected override void Run(EventType.AfterUnitCreate args)
         {
             #region IdleGame
             // Unit View层
@@ -70,7 +70,6 @@ namespace ET
             //        break;
             //}
 
-            await ETTask.CompletedTask;
         }
     }
 }

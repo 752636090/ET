@@ -1,14 +1,12 @@
-﻿
-
-//using UnityEngine;
+﻿//using UnityEngine;
 
 //namespace ET
 //{
 //	public class AppStartInitFinish_CreateLoginUI: AEvent<EventType.AppStartInitFinish>
 //	{
-//		protected override async ETTask Run(EventType.AppStartInitFinish args)
+//		protected override void Run(EventType.AppStartInitFinish args)
 //		{
-//			await UIHelper.Create(args.ZoneScene, UIType.UILogin, UILayer.Mid);
+//			UIHelper.Create(args.ZoneScene, UIType.UILogin, UILayer.Mid).Coroutine();
 
 //            #region Learn
 //            // 放置第8节课会讲ZoneScene.AddChild和unitComponent.AddChildWithId的区别
