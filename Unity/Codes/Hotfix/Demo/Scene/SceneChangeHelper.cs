@@ -25,7 +25,7 @@ namespace ET
 
             zoneScene.RemoveComponent<AIComponent>();
 
-            Game.EventSystem.Publish(new EventType.SceneChangeFinish() { ZoneScene = zoneScene, CurrentScene = currentScene });
+            Game.EventSystem.PublishAsync(new EventType.SceneChangeFinish() { ZoneScene = zoneScene, CurrentScene = currentScene }).Coroutine();
 
             #region Learn 正常不会写在这个地方                  而且视频中没有<ObjectWait>().Notify
             try

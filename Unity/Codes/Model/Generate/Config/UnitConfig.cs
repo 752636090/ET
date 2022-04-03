@@ -89,13 +89,16 @@ namespace ET
 		public string Desc { get; set; }
 		/// <summary>位置</summary>
 		[ProtoMember(5)]
-		public int Position { get; set; }
+		public int[] Position { get; set; }
 		/// <summary>身高</summary>
 		[ProtoMember(6)]
 		public int Height { get; set; }
 		/// <summary>体重</summary>
 		[ProtoMember(7)]
 		public int Weight { get; set; }
+		/// <summary>前端专属</summary>
+		[ProtoMember(8)]
+		public int ClientField { get; set; }
 
 	}
 }
