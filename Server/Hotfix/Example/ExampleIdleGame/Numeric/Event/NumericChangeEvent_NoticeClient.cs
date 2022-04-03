@@ -4,14 +4,13 @@ namespace ET
 {
     public class NumericChangeEvent_NoticeClient : AEvent<EventType.NumbericChange>
     {
-        protected override async ETTask Run(NumbericChange args)
+        protected override void Run(NumbericChange args)
         {
             if (!(args.Parent is Unit unit))
             {
                 return;
             }
             unit.GetComponent<NumericNoticeComponent>()?.NoticeImmediately(args);
-            await ETTask.CompletedTask;
         }
     }
 }

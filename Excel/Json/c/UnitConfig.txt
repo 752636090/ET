@@ -1,4 +1,4 @@
 {"list":[
-{"_t":"UnitConfig","_id":1001,"Type":1,"Name":"米克尔1","Desc":"带有强力攻击技能","Position":[1,2,3],"Height":178,"Weight":68,"ClientField":11,"ServerField":21},
-{"_t":"UnitConfig","_id":1003,"Type":1,"Name":"米克尔3","Desc":"带有强力攻击技能","Position":[3,2,3],"Height":180,"Weight":70,"ClientField":13,"ServerField":23},
+{"_t":"UnitConfig","_id":1001,"Type":1,"Name":"米克尔1","Desc":"带有强力攻击技能","Position":1,"Height":178,"Weight":68,"ClientField":11,"ServerField":21},
+{"_t":"UnitConfig","_id":1003,"Type":1,"Name":"米克尔3","Desc":"带有强力攻击技能","Position":1,"Height":180,"Weight":70,"ClientField":13,"ServerField":23},
 ]}
