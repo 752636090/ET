@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace ET
 {
@@ -13,6 +14,17 @@ namespace ET
             }
             Transform transform = gameObjectComponent.GameObject.transform;
             transform.position = args.Unit.Position;
+
+            #region IdleGame
+            SortingGroup sortingGroup = transform.GetComponent<SortingGroup>();
+
+            if (sortingGroup == null)
+            {
+                return;
+            }
+
+            sortingGroup.sortingOrder = (int)-args.Unit.Position.y;
+            #endregion
         }
     }
 }

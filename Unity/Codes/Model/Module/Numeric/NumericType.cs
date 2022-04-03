@@ -78,7 +78,9 @@
 
 		public const int DyingState = 3011;
 
-		public const int AdventureStartTime = 3022;
+		public const int AdventureStartTime = 3012;
+
+		public const int IsAlive = 3013;
 
 	    //public const int Postion = 1007;
 

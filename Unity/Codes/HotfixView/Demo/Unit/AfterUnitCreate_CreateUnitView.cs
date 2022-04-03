@@ -2,21 +2,25 @@
 
 namespace ET
 {
-    public class AfterUnitCreate_CreateUnitView : AEvent<EventType.AfterUnitCreate>
+    public class AfterUnitCreate_CreateUnitView : AEventAsync<EventType.AfterUnitCreate>
     {
-        protected override void Run(EventType.AfterUnitCreate args)
+        protected override async ETTask Run(EventType.AfterUnitCreate args)
         {
             #region IdleGame
             // Unit View层
-            // 这里可以改成异步加载，demo就不搞了
-            ResourcesComponent.Instance.LoadBundle("Knight.unity3d");
-            GameObject bundleGameObject = (GameObject)ResourcesComponent.Instance.GetAsset("Knight.unity3d", "Knight");
+
+            await ResourcesComponent.Instance.LoadBundleAsync($"{args.Unit.Config.PrefabName}.unity3d");
+            GameObject bundleGameObject = (GameObject)ResourcesComponent.Instance.GetAsset($"{args.Unit.Config.PrefabName}.unity3d", args.Unit.Config.PrefabName); ;
             GameObject go = UnityEngine.Object.Instantiate(bundleGameObject);
             go.transform.SetParent(GlobalComponent.Instance.Unit, true);
 
             args.Unit.AddComponent<GameObjectComponent>().GameObject = go;
+            args.Unit.GetComponent<GameObjectComponent>().SpriteRenderer = go.GetComponent<SpriteRenderer>();
             args.Unit.AddComponent<AnimatorComponent>();
-            args.Unit.Position = Vector3.zero;
+
+            args.Unit.Position = args.Unit.Type == UnitType.Player ? new Vector3(-1.5f, 0, 0) : new Vector3(1.5f, RandomHelper.RandomNumber(-1, 1), 0);
+
+            await ETTask.CompletedTask;
             #endregion
 
             #region Learn

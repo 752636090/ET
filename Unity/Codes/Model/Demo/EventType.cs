@@ -99,5 +99,10 @@ namespace ET
         {
             public Computer Computer;
         }
+
+        public struct AdventureRoundReset
+        {
+            public Scene ZoneScene;
+        }
     }
 }

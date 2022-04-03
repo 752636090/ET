@@ -93,8 +93,11 @@ namespace ET
 		/// <summary>攻击伤害值</summary>
 		[ProtoMember(6)]
 		public int DamageValue { get; set; }
-		/// <summary>前端专属</summary>
+		/// <summary>c预设物名</summary>
 		[ProtoMember(7)]
+		public string PrefabName { get; set; }
+		/// <summary>前端专属</summary>
+		[ProtoMember(8)]
 		public int ClientField { get; set; }
 
 	}

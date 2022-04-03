@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-	[AUIEvent(WindowID.WindowID_Advanture)]
+	[AUIEvent(WindowID.WindowID_Adventure)]
 	public  class DlgAdventureEventHandler : IAUIEventHandler
 	{
 

@@ -45,6 +45,27 @@ namespace ET
             return unit;
         }
 
+        #region IdleGame
+        public static async ETTask<Unit> CreateMonster(Scene currentScene, int configId)
+        {
+            UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
+            Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), configId);
+            unitComponent.Add(unit);
+
+            NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
+
+            numericComponent.SetNoEvent(NumericType.IsAlive, 1);
+            numericComponent.SetNoEvent(NumericType.DamageValue, unit.Config.DamageValue);
+            numericComponent.SetNoEvent(NumericType.MaxHp, unit.Config.MaxHp);
+            numericComponent.SetNoEvent(NumericType.Hp, unit.Config.MaxHp);
+
+            unit.AddComponent<ObjectWait>();
+
+            await Game.EventSystem.PublishAsync(new EventType.AfterUnitCreate() { Unit = unit });
+            return unit;
+        }
+        #endregion
+
         #region Learn
         public static Unit CreatePlayer(Entity domain, UnitInfo unitInfo)
         {

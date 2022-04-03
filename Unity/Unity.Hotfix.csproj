@@ -80,6 +80,7 @@
     <Compile Include="Codes\Hotfix\Demo\Unit\UnitHelper.cs" />
     <Compile Include="Codes\Hotfix\Demo\Unit\UnitSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Account\AccountInfoComponentSystem.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\AdventureComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\AdventureHelper.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Numeric\Handler\M2C_NoticeUnitNumericHandler.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Numeric\NumericHelper.cs" />

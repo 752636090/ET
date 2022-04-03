@@ -81,14 +81,11 @@ namespace ET
 		/// <summary>怪物列表</summary>
 		[ProtoMember(2)]
 		public int[] MonsterIds { get; set; }
-		/// <summary>怪物数量</summary>
-		[ProtoMember(3)]
-		public int[] MonsterCount { get; set; }
 		/// <summary>c关卡名字</summary>
-		[ProtoMember(4)]
+		[ProtoMember(3)]
 		public string Name { get; set; }
 		/// <summary>准入等级范围</summary>
-		[ProtoMember(5)]
+		[ProtoMember(4)]
 		public int[] MiniEnterLevel { get; set; }
 
 	}

@@ -31,9 +31,9 @@ namespace ET
             return ErrorCode.ERR_Success;
         }
 
-        public static async ETTask<int> RequestEndGameLevel(Scene zoneScene)
-        {
+        //public static async ETTask<int> RequestEndGameLevel(Scene zoneScene)
+        //{
 
-        }
+        //}
     }
 }
