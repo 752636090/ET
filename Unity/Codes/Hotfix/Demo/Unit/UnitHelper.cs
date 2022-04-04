@@ -19,8 +19,44 @@ namespace ET
 
         public static NumericComponent GetMyUnitNumericComponent(Scene currentScene)
         {
-            // 整个方法都是自己猜的
-            return GetMyUnitFromCurrentScene(currentScene).GetComponent<NumericComponent>();
+            PlayerComponent playerComponent = currentScene?.ZoneScene().GetComponent<PlayerComponent>();
+            if (null == playerComponent)
+            {
+                return null;
+            }
+            return currentScene.GetComponent<UnitComponent>()?.Get(playerComponent.MyId)?.GetComponent<NumericComponent>();
+        }
+
+        public static bool IsAlive(this Unit unit)
+        {
+            if (unit == null || unit.IsDisposed)
+            {
+                return false;
+            }
+
+            NumericComponent numericComponent = unit.GetComponent<NumericComponent>();
+            if (null == numericComponent)
+            {
+                return false;
+            }
+
+            return numericComponent.GetAsInt(NumericType.IsAlive) == 1;
+        }
+
+        public static void SetAlive(this Unit unit, bool isAlive)
+        {
+            if (unit == null || unit.IsDisposed)
+            {
+                return;
+            }
+
+            NumericComponent numericComponent = unit.GetComponent<NumericComponent>();
+            if (null == numericComponent)
+            {
+                return;
+            }
+
+            numericComponent.Set(NumericType.IsAlive, isAlive ? 1 : 0);
         }
     }
 }

@@ -82,6 +82,9 @@
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Account\AccountInfoComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\AdventureComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\AdventureHelper.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\Event\AdventureBattleReportEvent_RequestEndGameLevel.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\Event\AdventureBattleRoundEvent_CalculateDamage.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\Event\SceneChangeFinish_StartAdventure.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Numeric\Handler\M2C_NoticeUnitNumericHandler.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Numeric\NumericHelper.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Role\RoleInfosComponentSystem.cs" />
@@ -651,7 +654,6 @@
       <Name>Unity.ThirdParty</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

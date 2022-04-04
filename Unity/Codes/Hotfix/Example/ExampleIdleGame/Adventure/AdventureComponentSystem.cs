@@ -75,8 +75,133 @@ namespace ET
 
         public static async ETTask PlayOneBattleRound(this AdventureComponent self)
         {
-            await ETTask.CompletedTask;
-            throw new NotImplementedException();
+            Unit unit = UnitHelper.GetMyUnitFromCurrentScene(self.ZoneScene().CurrentScene());
+            if (self.Round % 2 == 0)
+            {
+                // 玩家回合
+                Unit monsterUnit = self.GetTargetMonsterUnit();
+                await Game.EventSystem.PublishAsync(new EventType.AdventureBattleRound()
+                {
+                    ZoneScene = self.ZoneScene(),
+                    AttackUnit = unit,
+                    TargetUnit = monsterUnit
+                });
+
+                await TimerComponent.Instance.WaitAsync(1000);
+            }
+            else
+            {
+                // 敌人回合
+                for (int i = 0; i < self.EnemyIdList.Count; i++)
+                {
+                    if (!unit.IsAlive())
+                    {
+                        break;
+                    }
+
+                    Unit monsterUnit = self.ZoneScene().CurrentScene().GetComponent<UnitComponent>().Get(self.EnemyIdList[i]);
+
+                    if (!monsterUnit.IsAlive())
+                    {
+                        continue;
+                    }
+
+                    await Game.EventSystem.PublishAsync(new EventType.AdventureBattleRound()
+                    {
+                        ZoneScene = self.ZoneScene(),
+                        AttackUnit = monsterUnit,
+                        TargetUnit = unit
+                    });
+
+                    await TimerComponent.Instance.WaitAsync(1000);
+                }
+            }
+
+            self.BattleRoundOver();
+        }
+
+        public static void BattleRoundOver(this AdventureComponent self)
+        {
+            ++self.Round;
+            BattleRoundResult battleRoundResult = self.GetBattleRoundResult();
+            Log.Debug("当前回合结果:" + battleRoundResult);
+            switch (battleRoundResult)
+            {
+                case BattleRoundResult.KeepBattle:
+                    {
+                        self.BattleTimer = TimerComponent.Instance.NewOnceTimer(500, TimerType.BattleRound, self);
+                    }
+                    break;
+                case BattleRoundResult.WinBattle:
+                    {
+                        Unit unit = UnitHelper.GetMyUnitFromCurrentScene(self.ZoneScene().CurrentScene());
+                        Game.EventSystem.PublishAsync(new EventType.AdventureBattleOver()
+                        {
+                            ZoneScene = self.ZoneScene(),
+                            WinUnit = unit
+                        }).Coroutine();
+                    }
+                    break;
+                case BattleRoundResult.LoseBattle:
+                    for (int i = 0; i < self.EnemyIdList.Count; i++)
+                    {
+                        Unit monsterUnit = self.ZoneScene().CurrentScene().GetComponent<UnitComponent>().Get(self.EnemyIdList[i]);
+                        if (!monsterUnit.IsAlive())
+                        {
+                            continue;
+                        }
+                        Game.EventSystem.PublishAsync(new EventType.AdventureBattleOver()
+                        {
+                            ZoneScene = self.ZoneScene(),
+                            WinUnit = monsterUnit
+                        }).Coroutine();
+                    }
+                    break;
+            }
+
+            Game.EventSystem.PublishAsync(new EventType.AdventureBattleReport()
+            {
+                Round = self.Round,
+                BattleRoundResult = battleRoundResult,
+                ZoneScene = self.ZoneScene()
+            }).Coroutine();
+        }
+
+        public static BattleRoundResult GetBattleRoundResult(this AdventureComponent self)
+        {
+            Unit unit = UnitHelper.GetMyUnitFromCurrentScene(self.ZoneScene().CurrentScene());
+            if (!unit.IsAlive())
+            {
+                return BattleRoundResult.LoseBattle;
+            }
+
+            Unit monsterUnit = self.GetTargetMonsterUnit();
+            if (monsterUnit == null)
+            {
+                return BattleRoundResult.WinBattle;
+            }
+
+            return BattleRoundResult.KeepBattle;
+        }
+
+        // 这个方法被姆鸽放上面不知道哪去了
+        public static Unit GetTargetMonsterUnit(this AdventureComponent self)
+        {
+            self.AliveEnemyIdList.Clear();
+            for (int i = 0; i < self.EnemyIdList.Count; i++)
+            {
+                Unit monsterUnit = self.ZoneScene().CurrentScene().GetComponent<UnitComponent>().Get(self.EnemyIdList[i]);
+                if (monsterUnit.IsAlive())
+                {
+                    self.AliveEnemyIdList.Add(monsterUnit.Id);
+                }
+            }
+
+            if (self.AliveEnemyIdList.Count <= 0)
+            {
+                return null;
+            }
+            return self.ZoneScene().CurrentScene().GetComponent<UnitComponent>().Get(self.AliveEnemyIdList[0]);
         }
     }
 }

@@ -26,6 +26,13 @@
 	    public const int AOIFinalAdd = AOI * 10 + 4;
 	    public const int AOIFinalPct = AOI * 10 + 5;
 
+        public const int MaxMp = 1004;
+        public const int MaxMpBase = MaxMp * 10 + 1;
+        public const int MaxMpAdd = MaxMp * 10 + 2;
+        public const int MaxMpPct = MaxMp * 10 + 3;
+        public const int MaxMpFinalAdd = MaxMp * 10 + 4;
+        public const int MaxMpFinalPct = MaxMp * 10 + 5;
+
 		public const int DamageValue = 1011;
 		public const int DamageValueBase = DamageValue * 10 + 1;
 		public const int DamageValueAdd = DamageValue * 10 + 2;

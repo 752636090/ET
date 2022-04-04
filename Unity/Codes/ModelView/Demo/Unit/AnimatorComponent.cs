@@ -10,7 +10,7 @@ namespace ET
 		Run,
 		Attack,
 		Hurt,
-		Dir,
+		Die,
 		Win
 	}
 

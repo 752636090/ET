@@ -100,6 +100,38 @@ namespace ET
             public Computer Computer;
         }
 
+        public struct StartGameLevel // 抄来的，好像没地方用
+        {
+            public Scene ZoneScene;
+        }
+
+        public struct AdventureBattleRound
+        {
+            public Scene ZoneScene;
+            public Unit AttackUnit;
+            public Unit TargetUnit;
+        }
+
+        public struct UnitBattleView
+        {
+            public Scene ZoneScene;
+            public Unit AttackUnit;
+            public Unit TargetUnit;
+        }
+
+        public struct AdventureBattleOver
+        {
+            public Scene ZoneScene;
+            public Unit WinUnit;
+        }
+
+        public struct AdventureBattleReport
+        {
+            public int Round;
+            public BattleRoundResult BattleRoundResult;
+            public Scene ZoneScene;
+        }
+
         public struct AdventureRoundReset
         {
             public Scene ZoneScene;

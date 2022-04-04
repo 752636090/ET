@@ -20,7 +20,7 @@
 
             if (args.NumericType == NumericType.PhysicalStrength)
             {
-                unit.GetComponent<NumericComponent>()[NumericType.HpPct] += 1 * 10000; // 1%
+                unit.GetComponent<NumericComponent>()[NumericType.MaxHpPct] += 1 * 10000; // 1%
             }
 
             if (args.NumericType == NumericType.Agile)

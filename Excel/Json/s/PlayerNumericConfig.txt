@@ -1,7 +1,9 @@
 {"list":[
 {"_t":"PlayerNumericConfig","_id":1011,"Name":"伤害","BaseValue":100,"isNeedShow":1,"isAddPoint":0},
 {"_t":"PlayerNumericConfig","_id":1012,"Name":"伤害追加","BaseValue":0,"isNeedShow":1,"isAddPoint":0},
+{"_t":"PlayerNumericConfig","_id":1002,"Name":"最大生命值","BaseValue":200,"isNeedShow":1,"isAddPoint":0},
 {"_t":"PlayerNumericConfig","_id":1013,"Name":"生命","BaseValue":100,"isNeedShow":1,"isAddPoint":0},
+{"_t":"PlayerNumericConfig","_id":1004,"Name":"最大法力值","BaseValue":100,"isNeedShow":1,"isAddPoint":0},
 {"_t":"PlayerNumericConfig","_id":1014,"Name":"法力","BaseValue":100,"isNeedShow":1,"isAddPoint":0},
 {"_t":"PlayerNumericConfig","_id":1015,"Name":"护甲","BaseValue":100,"isNeedShow":1,"isAddPoint":0},
 {"_t":"PlayerNumericConfig","_id":1016,"Name":"护甲追加","BaseValue":0,"isNeedShow":1,"isAddPoint":0},
