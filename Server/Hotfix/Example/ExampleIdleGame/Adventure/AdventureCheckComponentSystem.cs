@@ -91,7 +91,7 @@
                     // 敌人回合
                     for (int j = 0; j < battleLevelConfig.MonsterIds.Length; j++)
                     {
-                        if (self.EnemyHpDictionary[i] <= 0)
+                        if (self.EnemyHpDictionary[j] <= 0)
                         {
                             continue;
                         }

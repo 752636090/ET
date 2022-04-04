@@ -59,7 +59,7 @@ namespace ET
             try
             {
 				int errorCode = await AdventureHelper.RequestStartGameLevel(self.ZoneScene(), levelId);
-				if (errorCode == ErrorCode.ERR_Success)
+				if (errorCode != ErrorCode.ERR_Success)
                 {
 					return;
                 }

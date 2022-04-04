@@ -54,7 +54,8 @@ namespace ET
             reply();
 
             // TODO 下发闯关成功的奖励
-
+            Console.WriteLine("验证成功");
+            
             await ETTask.CompletedTask;
         }
     }

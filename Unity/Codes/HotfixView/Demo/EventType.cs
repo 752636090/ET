@@ -11,10 +11,5 @@ namespace ET
         {
             public GameObject GameObject;
         }
-
-        public struct StartGameLevel
-        {
-            public Scene ZoneScene;
-        }
     }
 }

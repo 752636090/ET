@@ -600,7 +600,7 @@ GameObject:
   - component: {fileID: 3215774161627424380}
   - component: {fileID: 4038096094438834961}
   m_Layer: 5
-  m_Name: DlgAdvanture
+  m_Name: DlgAdventure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -29,8 +29,10 @@ namespace ET
             }
             args.TargetUnit.GetComponent<NumericComponent>().Set(NumericType.Hp, HP);
 
-            Log.Debug($"********** {args.AttackUnit.Type}攻击造成伤害：{damage} *********");
-            Log.Debug($"********** {args.TargetUnit.Type}被攻击剩余血量：{HP} *********");
+            //Log.Debug($"********** {args.AttackUnit.Type}攻击造成伤害：{damage} *********");
+            //Log.Debug($"********** {args.TargetUnit.Type}被攻击剩余血量：{HP} *********");
+            UnityEngine.Debug.Log($"********** {args.AttackUnit.Type}攻击造成伤害：{damage} *********");
+            UnityEngine.Debug.Log($"********** {args.TargetUnit.Type}被攻击剩余血量：{HP} *********");
             await ETTask.CompletedTask;
         }
     }

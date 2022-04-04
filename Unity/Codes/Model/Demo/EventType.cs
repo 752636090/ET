@@ -100,7 +100,7 @@ namespace ET
             public Computer Computer;
         }
 
-        public struct StartGameLevel // 抄来的，好像没地方用
+        public struct StartGameLevel
         {
             public Scene ZoneScene;
         }
