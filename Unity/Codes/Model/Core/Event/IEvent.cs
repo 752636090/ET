@@ -20,7 +20,7 @@ namespace ET
 			return typeof (A);
 		}
 
-		protected abstract void Run(object a);
+		protected abstract void Run(object args); // 自己改的参数名
 
 		public void Handle(object a)
 		{
@@ -43,7 +43,7 @@ namespace ET
 			return typeof (A);
 		}
 
-		protected abstract void Run(A a);
+		protected abstract void Run(A args); // 课程没改，自己改的参数名
 
 		public void Handle(A a)
 		{
@@ -66,7 +66,7 @@ namespace ET
 			return typeof (A);
 		}
 
-		protected abstract ETTask Run(A a);
+		protected abstract ETTask Run(A args); // 自己改的参数名
 
 		public async ETTask Handle(A a)
 		{

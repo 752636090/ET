@@ -149,5 +149,24 @@ namespace ET
         {
             public Scene ZoneScene;
         }
+
+        public struct ShowDamageValueView
+        {
+            public Scene ZoneScene;
+            public Unit TargetUnit;
+            public long DamageValue;
+        }
+
+        public struct ShowAdventureHpBar
+        {
+            public Unit Unit;
+            public bool isShow;
+        }
+
+        public struct ExpChange
+        {
+            public Scene ZoneScene;
+            public bool isEnoughUpLevel;
+        }
     }
 }

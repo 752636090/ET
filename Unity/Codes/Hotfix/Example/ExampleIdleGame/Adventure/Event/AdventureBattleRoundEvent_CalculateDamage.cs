@@ -29,6 +29,13 @@ namespace ET
             }
             args.TargetUnit.GetComponent<NumericComponent>().Set(NumericType.Hp, HP);
 
+            Game.EventSystem.PublishAsync(new EventType.ShowDamageValueView()
+            {
+                ZoneScene = args.ZoneScene,
+                TargetUnit = args.TargetUnit,
+                DamageValue = damage,
+            }).Coroutine();
+
             Log.Debug($"********** {args.AttackUnit.Type}攻击造成伤害：{damage} *********");
             Log.Debug($"********** {args.TargetUnit.Type}被攻击剩余血量：{HP} *********");
 #if !NOT_UNITY
