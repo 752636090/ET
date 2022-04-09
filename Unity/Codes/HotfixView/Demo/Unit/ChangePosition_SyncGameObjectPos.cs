@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace ET
 {
-    public class ChangePosition_SyncGameObjectPos: AEvent<EventType.ChangePosition>
+    public class ChangePosition_SyncGameObjectPos: AEventClass<EventType.ChangePosition>
     {
-        protected override void Run(EventType.ChangePosition args)
+        protected override void Run(object changePosition)
         {
+            EventType.ChangePosition args = changePosition as EventType.ChangePosition;;
             GameObjectComponent gameObjectComponent = args.Unit.GetComponent<GameObjectComponent>();
             if (gameObjectComponent == null)
             {
