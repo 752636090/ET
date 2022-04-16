@@ -151,8 +151,9 @@ public partial class UICodeSpawner
         
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
-
-        strBuilder.AppendFormat("\t[AUIEvent(WindowID.WindowID_{0})]\n",strDlgName.Substring(3));
+		strBuilder.AppendLine("\t[FriendClass(typeof(WindowCoreData))]");
+		strBuilder.AppendLine("\t[FriendClass(typeof(UIBaseWindow))]");
+		strBuilder.AppendFormat("\t[AUIEvent(WindowID.WindowID_{0})]\n",strDlgName.Substring(3));
         strBuilder.AppendFormat("\tpublic  class {0}EventHandler : IAUIEventHandler\r\n", strDlgName);
           strBuilder.AppendLine("\t{");
           strBuilder.AppendLine("");

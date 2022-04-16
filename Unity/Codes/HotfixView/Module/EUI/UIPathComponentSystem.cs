@@ -23,7 +23,8 @@ namespace ET
             UIPathComponent.Instance = null;
         }
     }
-    
+
+    [FriendClass(typeof(UIPathComponent))]
     public static class UIPathComponentSystem
     {
         public static void Awake(this UIPathComponent self)
