@@ -28,16 +28,17 @@
 //					continue;
 //				}
 
-//				UIEventAttribute uiEventAttribute = attrs[0] as UIEventAttribute;
-//				AUIEvent aUIEvent = Activator.CreateInstance(type) as AUIEvent;
-//				self.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
-//			}
-//		}
-//	}
+// 				UIEventAttribute uiEventAttribute = attrs[0] as UIEventAttribute;
+// 				AUIEvent aUIEvent = Activator.CreateInstance(type) as AUIEvent;
+// 				self.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
+// 			}
+// 		}
+// 	}
 
 // 	/// <summary>
 // 	/// 管理所有UI GameObject 以及UI事件
 // 	/// </summary>
+// 	[FriendClass(typeof(UIEventComponent))]
 // 	public static class UIEventComponentSystem
 // 	{
 // 		public static async ETTask<UI> OnCreate(this UIEventComponent self, UIComponent uiComponent, string uiType, UILayer uiLayer)
