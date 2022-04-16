@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace ET
 {
-    public class EUIRootHelper
+    [FriendClass(typeof(GlobalComponent))]
+    public static class EUIRootHelper
     {
         public static void Init()
         {

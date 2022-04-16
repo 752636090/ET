@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace ET
 {
+    [FriendClass(typeof(Unit))]
+    [FriendClass(typeof(MoveComponent))]
+    [FriendClass(typeof(NumericComponent))]
     public static class UnitHelper
     {
         public static UnitInfo CreateUnitInfo(Unit unit)

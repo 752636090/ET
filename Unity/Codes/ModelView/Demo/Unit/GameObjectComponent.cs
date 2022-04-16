@@ -4,9 +4,9 @@ namespace ET
 {
     public class GameObjectComponent: Entity, IAwake, IDestroy
     {
-        public GameObject GameObject;
+        public GameObject GameObject { get; set; }
         #region IdleGame
-        public SpriteRenderer SpriteRenderer; 
+        public SpriteRenderer SpriteRenderer { get; set; }
         #endregion
     }
 }

@@ -13,15 +13,15 @@
 //			self.Awake(name, gameObject);
 //		}
 //	}
-	
+
 //	public sealed class UI: Entity, IAwake<string, GameObject>
 //	{
-//		public GameObject GameObject;
-		
+//		public GameObject GameObject { get; set; }
+
 //		public string Name { get; private set; }
 
 //		public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();
-		
+
 // 		public void Awake(string name, GameObject gameObject)
 // 		{
 // 			this.nameChildren.Clear();
@@ -36,14 +36,14 @@
 //			{
 //				return;
 //			}
-			
+
 //			base.Dispose();
 
 //			foreach (UI ui in this.nameChildren.Values)
 //			{
 //				ui.Dispose();
 //			}
-			
+
 //			UnityEngine.Object.Destroy(this.GameObject);
 //			this.nameChildren.Clear();
 //		}
