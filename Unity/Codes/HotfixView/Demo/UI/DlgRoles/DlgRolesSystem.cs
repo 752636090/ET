@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 namespace ET
 {
+	[FriendClass(typeof(DlgRoles))]
+	[FriendClass(typeof(RoleInfo))]
+	[FriendClass(typeof(Scroll_Item_role))]
+	[FriendClass(typeof(RoleInfosComponent))]
 	public static  class DlgRolesSystem
 	{
 

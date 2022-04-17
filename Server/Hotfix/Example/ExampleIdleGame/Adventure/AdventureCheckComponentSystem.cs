@@ -8,6 +8,7 @@
         }
     }
 
+    [FriendClass(typeof(AdventureCheckComponent))]
     public static class AdventureCheckComponentSystem
     {
         public static bool CheckBattleWinResult(this AdventureCheckComponent self, int totalBattalRound)

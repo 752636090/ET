@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [FriendClass(typeof(ServerInfoManagerComponent))]
     public class C2A_GetServerInfosHandler : AMRpcHandler<C2A_GetServerInfos, A2C_GetServerInfos>
     {
         protected override async ETTask Run(Session session, C2A_GetServerInfos request, A2C_GetServerInfos response, Action reply)

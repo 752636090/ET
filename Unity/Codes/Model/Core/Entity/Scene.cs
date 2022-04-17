@@ -1,5 +1,6 @@
 ﻿namespace ET
 {
+    [ChildType]
     public sealed class Scene: Entity
     {
         public int Zone

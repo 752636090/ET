@@ -3,6 +3,7 @@
 namespace ET
 {
     [ObjectSystem]
+    [FriendClass(typeof(UnitCache))]
     public class UnitCacheComponentAwakeSystem : AwakeSystem<UnitCacheComponent>
     {
         public override void Awake(UnitCacheComponent self)
@@ -38,6 +39,8 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(UnitCacheComponent))]
+    [FriendClass(typeof(UnitCache))]
     public static class UnitCacheComponentSystem
     {
         public static async ETTask<Entity> Get(this UnitCacheComponent self, long unitId, string key)

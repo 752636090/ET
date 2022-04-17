@@ -8,6 +8,7 @@
         }
     }
 
+    [FriendClass(typeof(LoginInfoRecordComponent))]
     public static class LoginInfoRecordComponentSystem
     {
         public static void Add(this LoginInfoRecordComponent self, long key, int value)

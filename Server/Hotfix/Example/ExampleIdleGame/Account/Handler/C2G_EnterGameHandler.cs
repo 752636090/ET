@@ -2,6 +2,8 @@
 
 namespace ET
 {
+    [FriendClass(typeof(SessionStateComponent))]
+    [FriendClass(typeof(SessionPlayerComponent))]
     public class C2G_EnterGameHandler : AMRpcHandler<C2G_EnterGame, G2C_EnterGame>
     {
         protected override async ETTask Run(Session session, C2G_EnterGame request, G2C_EnterGame response, Action reply)

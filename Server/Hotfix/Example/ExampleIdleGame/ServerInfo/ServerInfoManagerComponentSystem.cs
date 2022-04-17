@@ -30,6 +30,8 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(ServerInfoManagerComponent))]
+    [FriendClass(typeof(ServerInfo))]
     public static class ServerInfoManagerComponentSystem
     {
         /// <summary>

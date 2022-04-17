@@ -30,6 +30,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(FlyDamageValueViewComponent))]
     public static class FlyDamageValueViewComponentSystem
     {
         public static async ETTask Awake(this FlyDamageValueViewComponent self)

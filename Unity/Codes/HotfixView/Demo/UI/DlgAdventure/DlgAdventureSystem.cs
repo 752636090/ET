@@ -7,6 +7,8 @@ using DG.Tweening;
 
 namespace ET
 {
+    [FriendClass(typeof(DlgAdventure))]
+    [FriendClass(typeof(Scroll_Item_battleLevel))]
 	public static  class DlgAdventureSystem
 	{
 

@@ -1,5 +1,6 @@
 ﻿namespace ET
 {
+    [FriendClass(typeof(RoleInfo))]
     public static class RoleInfoSystem
     {
         public static void FromMessage(this RoleInfo self, RoleInfoProto roleInfoProto)

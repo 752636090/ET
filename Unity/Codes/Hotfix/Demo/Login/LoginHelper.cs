@@ -3,6 +3,10 @@ using System;
 
 namespace ET
 {
+    [FriendClass(typeof(SessionComponent))]
+    [FriendClass(typeof(AccountInfoComponent))]
+    [FriendClass(typeof(ServerInfosComponent))]
+    [FriendClass(typeof(RoleInfosComponent))]
     public static class LoginHelper
     {
         //public static async ETTask Login(Scene zoneScene, string address, string account, string password)

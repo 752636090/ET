@@ -28,6 +28,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(AdventureComponent))]
     public static class AdventureComponentSystem
     {
         public static void ResetAdventure(this AdventureComponent self)

@@ -19,6 +19,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(HeadHpViewComponent))]
     public static class HeadHpViewComponentSystem
     {
         public static void SetVisible(this HeadHpViewComponent self, bool isVisible)

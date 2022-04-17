@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [FriendClass(typeof(SessionPlayerComponent))]
     public class L2G_DisconnectGateUnitHandler : AMActorRpcHandler<Scene, L2G_DisconnectGateUnit, G2L_DisconnectGateUnit>
     {
         protected override async ETTask Run(Scene scene, L2G_DisconnectGateUnit request, G2L_DisconnectGateUnit response, Action reply)

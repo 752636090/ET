@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    [FriendClass(typeof(UnitCacheComponent))]
     public class Other2UnitCache_GetUnitHandler : AMActorRpcHandler<Scene, Other2UnitCache_GetUnit, UnitCache2Other_GetUnit>
     {
         protected override async ETTask Run(Scene scene, Other2UnitCache_GetUnit request, UnitCache2Other_GetUnit response, Action reply)

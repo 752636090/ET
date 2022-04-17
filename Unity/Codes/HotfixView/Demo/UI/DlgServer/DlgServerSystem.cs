@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 namespace ET
 {
+	[FriendClass(typeof(ServerInfo))]
+	[FriendClass(typeof(DlgServer))]
+	[FriendClass(typeof(ServerInfosComponent))]
+	[FriendClass(typeof(Scroll_Item_serverTest))]
 	public static  class DlgServerSystem
 	{
 
