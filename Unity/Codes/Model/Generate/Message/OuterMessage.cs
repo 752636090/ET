@@ -1115,4 +1115,29 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(M2C_UpRoleLevel))]
+	[Message(OuterOpcode.C2M_UpRoleLevel)]
+	[ProtoContract]
+	public partial class C2M_UpRoleLevel: Object, IActorLocationRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_UpRoleLevel)]
+	[ProtoContract]
+	public partial class M2C_UpRoleLevel: Object, IActorLocationResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
 }

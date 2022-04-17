@@ -162,6 +162,40 @@ namespace ET
      		}
      	}
 
+		public UnityEngine.UI.Button E_UpLevelButton
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_E_UpLevelButton == null )
+     			{
+		    		this.m_E_UpLevelButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"E_UpLevel");
+     			}
+     			return this.m_E_UpLevelButton;
+     		}
+     	}
+
+		public UnityEngine.UI.Image E_UpLevelImage
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_E_UpLevelImage == null )
+     			{
+		    		this.m_E_UpLevelImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"E_UpLevel");
+     			}
+     			return this.m_E_UpLevelImage;
+     		}
+     	}
+
 		public void DestroyWidget()
 		{
 			this.m_E_CombatEffectivenessText = null;
@@ -177,6 +211,8 @@ namespace ET
 			this.m_E_AttributsLoopVerticalScrollRect = null;
 			this.m_E_CloseButton = null;
 			this.m_E_CloseImage = null;
+			this.m_E_UpLevelButton = null;
+			this.m_E_UpLevelImage = null;
 			this.uiTransform = null;
 		}
 
@@ -189,6 +225,8 @@ namespace ET
 		private UnityEngine.UI.LoopVerticalScrollRect m_E_AttributsLoopVerticalScrollRect = null;
 		private UnityEngine.UI.Button m_E_CloseButton = null;
 		private UnityEngine.UI.Image m_E_CloseImage = null;
+		private UnityEngine.UI.Button m_E_UpLevelButton = null;
+		private UnityEngine.UI.Image m_E_UpLevelImage = null;
 		public Transform uiTransform = null;
 	}
 }

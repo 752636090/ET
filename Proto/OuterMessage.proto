@@ -243,6 +243,8 @@ message M2C_TransferMap // IActorLocationResponse
  
 
 
+
+
 //ResponseType R2C_LoginTest
 message C2R_LoginTest // IRequest
 {
@@ -295,6 +297,8 @@ message M2C_TestActorMessage // IActorMessage
 {
 	string Content = 1; // 整个消息类的注释：只是经过网关转发，不需要定位，不需要回复
 }
+
+
 
 
 
@@ -539,6 +543,20 @@ message C2M_EndGameLevel // IActorLocationRequest
 }
 
 message M2C_EndGameLevel // IActorLocationResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+
+
+//ResponseType M2C_UpRoleLevel
+message C2M_UpRoleLevel // IActorLocationRequest
+{
+	int32 RpcId = 1;
+}
+
+message M2C_UpRoleLevel // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;

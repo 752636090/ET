@@ -43,6 +43,8 @@ namespace ET
 
             numericComponent.Set(NumericType.AdventureState, request.LevelId);
             numericComponent.Set(NumericType.AdventureStartTime, TimeHelper.ServerNow());
+            // 设置本次战斗的随机种子，保证客户端的战斗中的1每次随即产生的数能在服务器端复现
+            numericComponent.Set(NumericType.BattleRandomSeed, RandomHelper.RandUInt32());
 
             reply();
             await ETTask.CompletedTask;

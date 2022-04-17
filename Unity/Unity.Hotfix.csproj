@@ -82,6 +82,7 @@
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Account\AccountInfoComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\AdventureComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\AdventureHelper.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\DamageCalculateHelper.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\Event\AdventureBattleReportEvent_RequestEndGameLevel.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\Event\AdventureBattleRoundEvent_CalculateDamage.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\Event\SceneChangeFinish_StartAdventure.cs" />

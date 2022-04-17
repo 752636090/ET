@@ -19,6 +19,10 @@ namespace ET
 			self.View.ES_AttributeItem2.RegisterEvent(NumericType.Agile);
 			self.View.ES_AttributeItem3.RegisterEvent(NumericType.Spirit);
 			self.View.E_AttributsLoopVerticalScrollRect.AddItemRefreshListener((Transform transform, int index) => { self.OnAttributeItemRefreshHandler(transform, index); });
+			self.View.E_UpLevelButton.AddListenerAsync(self.OnUpRoleLevelHandler);
+
+			RedDotHelper.AddRedDotNodeView(self.ZoneScene(), "UpLevelButton", self.View.E_UpLevelButton.gameObject, Vector3.one, new Vector3(115f, 10f, 0));
+			RedDotHelper.AddRedDotNodeView(self.ZoneScene(), "AddAttribute", self.View.E_AttributePointText.gameObject, new Vector3(0.5f, 0.5f, 1), new Vector3(-17, 10f, 0));
 		}
 
 		public static void ShowWindow(this DlgRoleInfo self, Entity contextData = null)
@@ -48,8 +52,26 @@ namespace ET
 			Scroll_Item_attribute scrollItemAttribute = self.ScrollItemAttributes[index].BindTrans(transform);
 			PlayerNumericConfig config = PlayerNumericConfigCategory.Instance.GetConfigByIndex(index);
 			scrollItemAttribute.E_attributeNameText.text = config.Name + ":";
-			scrollItemAttribute.E_attributeValueText.text = UnitHelper.GetMyUnitNumericComponent(self.ZoneScene().CurrentScene())
-				.GetAsLong(config.Id).ToString();
+			scrollItemAttribute.E_attributeValueText.text = config.isPercent == 0 ?
+				UnitHelper.GetMyUnitNumericComponent(self.ZoneScene().CurrentScene()).GetAsLong(config.Id).ToString() :
+				$"{UnitHelper.GetMyUnitNumericComponent(self.ZoneScene().CurrentScene()).GetAsFloat(config.Id)}%";
 		}
+
+		public static async ETTask OnUpRoleLevelHandler(this DlgRoleInfo self)
+        {
+            try
+            {
+				int errorCode = await NumericHelper.RequestUpRoleLevel(self.ZoneScene());
+
+				if (errorCode != ErrorCode.ERR_Success)
+                {
+					return;
+                }
+            }
+            catch (Exception e)
+            {
+				Log.Error(e.ToString());
+            }
+        }
 	}
 }

@@ -90,6 +90,9 @@ namespace ET
 		/// <summary>s是否用于加成点</summary>
 		[ProtoMember(5)]
 		public int isAddPoint { get; set; }
+		/// <summary>c是否是百分比</summary>
+		[ProtoMember(6)]
+		public int isPercent { get; set; }
 
 	}
 }

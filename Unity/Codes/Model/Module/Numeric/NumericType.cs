@@ -63,6 +63,24 @@
 		public const int ArmorFinalAdd = Armor * 10 + 4;
 		public const int ArmorFinalPct = Armor * 10 + 5;
 
+		//public const int ArmorAddition = 1015; // 护甲追加
+
+		public const int Dodge = 1017; // 闪避
+		public const int DodgeBase = Dodge * 10 + 1;
+		public const int DodgeAdd = Dodge * 10 + 2;
+		public const int DodgePct = Dodge * 10 + 3;
+		public const int DodgeFinalAdd = Dodge * 10 + 4;
+		public const int DodgeFinalPct = Dodge * 10 + 5;
+
+        public const int DodgeAddition = 1018; // 闪避追加
+
+		public const int CriticalHitRate = 1019; // 暴击率
+		public const int CriticalHitRateBase = CriticalHitRate * 10 + 1;
+		public const int CriticalHitRateAdd = CriticalHitRate * 10 + 2;
+		public const int CriticalHitRatePct = CriticalHitRate * 10 + 3;
+		public const int CriticalHitRateFinalAdd = CriticalHitRate * 10 + 4;
+		public const int CriticalHitRateFinalPct = CriticalHitRate * 10 + 5;
+
 		public const int Power = 3001;
 
 		public const int PhysicalStrength = 3002;
@@ -88,6 +106,9 @@
 		public const int AdventureStartTime = 3012;
 
 		public const int IsAlive = 3013;
+
+
+		public const int BattleRandomSeed = 3014; // 战斗随机数种子
 
 	    //public const int Postion = 1007;
 

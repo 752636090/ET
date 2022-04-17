@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace ET
 {
-    public class AdventureBattleRound_PlayAnimation : AEventAsync<EventType.AdventureBattleRound>
+    public class AdventureBattleRound_PlayAnimation : AEventAsync<EventType.AdventureBattleRoundView>
     {
-        protected override async ETTask Run(EventType.AdventureBattleRound args)
+        protected override async ETTask Run(EventType.AdventureBattleRoundView args)
         {
             if (!args.AttackUnit.IsAlive() || !args.TargetUnit.IsAlive())
             {
