@@ -33,6 +33,7 @@
 
 		public void BeforeUnload(UIBaseWindow uiBaseWindow)
 		{
+			uiBaseWindow.GetComponent<DlgMain>().OnUnLoadWindow();
 		}
 
 	}

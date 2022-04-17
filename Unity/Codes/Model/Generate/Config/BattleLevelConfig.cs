@@ -87,6 +87,9 @@ namespace ET
 		/// <summary>准入等级范围</summary>
 		[ProtoMember(4)]
 		public int[] MiniEnterLevel { get; set; }
+		/// <summary>战斗胜利获取的经验值</summary>
+		[ProtoMember(5)]
+		public int RewardExp { get; set; }
 
 	}
 }

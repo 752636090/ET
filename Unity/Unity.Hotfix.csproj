@@ -92,6 +92,7 @@
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Role\RoleInfoSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\ServerInfo\ServerInfoComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\ServerInfo\ServerInfoSystem.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Unit\UnitNumericHelper.cs" />
     <Compile Include="Codes\Hotfix\Module\AI\AIComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Module\AI\AIDispatcherComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Module\Config\ConfigComponentSystem.cs" />

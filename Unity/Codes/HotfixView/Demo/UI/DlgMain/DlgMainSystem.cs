@@ -12,11 +12,14 @@ namespace ET
         public static void RegisterUIEvent(this DlgMain self)
         {
             self.View.E_RoleButton.AddListenerAsync(() => { return self.OnRoleButtonClickHandler(); });
-            // 猜的
-            self.View.E_AdventureButton.AddListenerAsync(async () => {
-                self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Adventure);
-                await ETTask.CompletedTask;
-            });
+            self.View.E_BattleButton.AddListenerAsync(() => { return self.OnBattleButtonClickHandler(); });
+            RedDotHelper.AddRedDotNodeView(self.ZoneScene(), "Role", self.View.E_RoleButton.gameObject, Vector3.one, new Vector3(75, 55, 0));
+        }
+
+        public static void OnUnLoadWindow(this DlgMain self)
+        {
+            RedDotMonoView redDotMonoView = self.View.E_RoleButton.GetComponent<RedDotMonoView>();
+            RedDotHelper.RemoveRedDotView(self.ZoneScene(), "Role", out redDotMonoView);
         }
 
         public static void ShowWindow(this DlgMain self, Entity contextData = null)
@@ -55,6 +58,13 @@ namespace ET
 
             // 都是猜的
             self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_RoleInfo);
+            await ETTask.CompletedTask;
+        }
+
+        // 里面是猜的
+        public static async ETTask OnBattleButtonClickHandler(this DlgMain self)
+        {
+            self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Adventure);
             await ETTask.CompletedTask;
         }
     }

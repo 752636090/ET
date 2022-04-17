@@ -17,7 +17,7 @@ namespace ET
 	        for (int i = 0; i < unitInfo.Ks.Count; ++i)
 	        {
 		        numericComponent.Set(unitInfo.Ks[i], unitInfo.Vs[i]);
-	        }
+            }
 	        
 	        //unit.AddComponent<MoveComponent>();
 	        //if (unitInfo.MoveInfo != null)
@@ -41,7 +41,7 @@ namespace ET
 
 	        //unit.AddComponent<XunLuoPathComponent>();
 	        
-	        Game.EventSystem.PublishAsync(new EventType.AfterUnitCreate() {Unit = unit});
+	        Game.EventSystem.PublishAsync(new EventType.AfterUnitCreate() {Unit = unit}).Coroutine(); // .Coroutine() 是自己加的
             return unit;
         }
 

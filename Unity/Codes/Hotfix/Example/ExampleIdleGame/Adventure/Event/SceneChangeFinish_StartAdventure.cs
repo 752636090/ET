@@ -15,6 +15,7 @@ namespace ET.Event
 
             await TimerComponent.Instance.WaitAsync(3000);
 
+            args.CurrentScene.GetComponent<AdventureComponent>().SetBattleRandomSeed(); // 猜的位置，可能不在这
             args.CurrentScene.GetComponent<AdventureComponent>().StartAdventure().Coroutine();
             await ETTask.CompletedTask;
         }

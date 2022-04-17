@@ -53,6 +53,9 @@ namespace ET
             numericComponent.Set(NumericType.AdventureState, 0);
             reply();
 
+            // 战斗胜利增加经验值
+            numericComponent[NumericType.Exp] += BattleLevelConfigCategory.Instance.Get(levelId).RewardExp;
+
             // TODO 下发闯关成功的奖励
             Console.WriteLine("验证成功");
             

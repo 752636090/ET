@@ -67,6 +67,7 @@ namespace ET
                 }
 				self.ZoneScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Adventure);
 
+				self.ZoneScene().CurrentScene().GetComponent<AdventureComponent>().SetBattleRandomSeed(); // 猜的位置，可能不在这
 				self.ZoneScene().CurrentScene().GetComponent<AdventureComponent>().StartAdventure().Coroutine();
             }
             catch (Exception e)

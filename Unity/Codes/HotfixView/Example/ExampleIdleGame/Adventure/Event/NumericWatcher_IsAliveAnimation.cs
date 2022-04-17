@@ -20,7 +20,7 @@ namespace ET
             }
             else
             {
-                unit?.GetComponent<AnimatorComponent>().Play(MotionType.Idle);
+                unit?.GetComponent<AnimatorComponent>()?.Play(MotionType.Idle);
             }
         }
     }
