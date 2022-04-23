@@ -40,7 +40,7 @@ namespace ET
 
 			CodeLoader.Instance.CodeMode = this.CodeMode;
 			Options.Instance.Develop = 1;
-			Options.Instance.LogLevel = 0; // 猜的
+			Options.Instance.LogLevel = 0;
 		}
 
 		private void Start()
