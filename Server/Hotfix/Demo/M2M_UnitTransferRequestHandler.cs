@@ -32,14 +32,19 @@ namespace ET
 			M2C_CreateMyUnit m2CCreateUnits = new M2C_CreateMyUnit();
 			m2CCreateUnits.Unit = UnitHelper.CreateUnitInfo(unit);
 			MessageHelper.SendToClient(unit, m2CCreateUnits);
-			
-			unit.AddComponent<NumericNoticeComponent>();
-			unit.AddComponent<AdventureCheckComponent>();
 
-			// 加入aoi
-			//unit.AddComponent<AOIEntity, int, Vector3>(9 * 1000, unit.Position);
+			#region ExampleIdleGame
+			ItemUpdateNoticeHelper.SyncAllBagItems(unit);
+			ItemUpdateNoticeHelper.SyncAllEquipItems(unit);
 
-			response.NewInstanceId = unit.InstanceId;
+            unit.AddComponent<NumericNoticeComponent>();
+            unit.AddComponent<AdventureCheckComponent>(); 
+            #endregion
+
+            // 加入aoi
+            //unit.AddComponent<AOIEntity, int, Vector3>(9 * 1000, unit.Position);
+
+            response.NewInstanceId = unit.InstanceId;
 			
 			reply();
 		}

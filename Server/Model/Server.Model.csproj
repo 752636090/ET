@@ -79,7 +79,13 @@
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Adventure\BattleRoundResult.cs" Link="Example\ExampleIdleGame\Adventure\BattleRoundResult.cs" />
     
-    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Bag\BagComponent.cs" Link="Demo\Bag\BagComponent.cs" />
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Bag\BagComponent.cs" Link="Example\ExampleIdleGame\Bag\BagComponent.cs" />
+    
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\Item.cs" Link="Example\ExampleIdleGame\Item\Item.cs" />
+    
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\ItemQuality.cs" Link="Example\ExampleIdleGame\Item\ItemQuality.cs" />
+    
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\ItemType.cs" Link="Example\ExampleIdleGame\Item\ItemType.cs" />
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Role\RoleInfo.cs" Link="Example\ExampleIdleGame\Role\RoleInfo.cs" />
     
@@ -138,7 +144,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Demo\Learn\Computer\" />
-    <Folder Include="Demo\Bag\" />
+    <Folder Include="Example\ExampleIdleGame\Bag\" />
     <Folder Include="Example\ExampleIdleGame\Role\" />
+    <Folder Include="Example\ExampleIdleGame\Item\" />
   </ItemGroup>
 </Project>

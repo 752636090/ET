@@ -86,6 +86,12 @@
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\Event\AdventureBattleReportEvent_RequestEndGameLevel.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\Event\AdventureBattleRoundEvent_CalculateDamage.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Adventure\Event\SceneChangeFinish_StartAdventure.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Bag\BagComponentSystem.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Bag\Handler\M2C_AllItemsListHandler.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Bag\Handler\M2C_ItemUpdateOpInfoHandler.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Item\ItemFactory.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Item\ItemHelper.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Item\ItemSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Numeric\Handler\M2C_NoticeUnitNumericHandler.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Numeric\NumericHelper.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Role\RoleInfosComponentSystem.cs" />
@@ -660,6 +666,7 @@
       <Name>Unity.ThirdParty</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
