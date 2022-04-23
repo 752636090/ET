@@ -1140,4 +1140,79 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.ItemInfo)]
+	[ProtoContract]
+	public partial class ItemInfo: Object
+	{
+		[ProtoMember(1)]
+		public long ItemUid { get; set; }
+
+		[ProtoMember(2)]
+		public int ItemConfigId { get; set; }
+
+		[ProtoMember(3)]
+		public int ItemQuality { get; set; }
+
+		[ProtoMember(4)]
+		public EquipInfoProto EquipInfo { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_AllItemsList)]
+	[ProtoContract]
+	public partial class M2C_AllItemsList: Object, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public List<ItemInfo> ItemInfoList = new List<ItemInfo>();
+
+		[ProtoMember(2)]
+		public int CotainerType { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_ItemUpdateOpInfo)]
+	[ProtoContract]
+	public partial class M2C_ItemUpdateOpInfo: Object, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public ItemInfo ItemInfo { get; set; }
+
+		[ProtoMember(2)]
+		public int Op { get; set; }
+
+		[ProtoMember(3)]
+		public int ContainerType { get; set; }
+
+	}
+
+	[Message(OuterOpcode.AttributeEntryProto)]
+	[ProtoContract]
+	public partial class AttributeEntryProto: Object
+	{
+		[ProtoMember(2)]
+		public long Id { get; set; }
+
+		[ProtoMember(2)]
+		public int Key { get; set; }
+
+		[ProtoMember(3)]
+		public long Value { get; set; }
+
+		[ProtoMember(4)]
+		public int EntryType { get; set; }
+
+	}
+
+	[Message(OuterOpcode.EquipInfoProto)]
+	[ProtoContract]
+	public partial class EquipInfoProto: Object
+	{
+	}
+
 }

@@ -23,7 +23,7 @@
         RoleInfo = 1,
     }
 
-    // 猜的
+    // 猜的，肯定不是这里
     public enum ItemQuality
     {
         General = 0,

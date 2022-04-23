@@ -110,6 +110,8 @@
 
 		public const int BattleRandomSeed = 3014; // 战斗随机数种子
 
+		public const int MaxBagCapacity = 3015;
+
 	    //public const int Postion = 1007;
 
 	    //public const int Height = 1008;

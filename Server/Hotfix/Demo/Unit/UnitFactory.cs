@@ -38,8 +38,13 @@ namespace ET
                             numericComponent.SetNoEvent(config.Key, config.Value.BaseValue);
                         }
                     }
-                    
-                    unitComponent.Add(unit);
+
+                    #region ExampleIdleGame
+                    unit.AddComponent<BagComponent>();
+                    //unit.AddComponent<EquipmentsComponent>();
+                    #endregion
+
+                        unitComponent.Add(unit);
                     //// 加入aoi
                     //unit.AddComponent<AOIEntity, int, Vector3>(9 * 1000, unit.Position);
                     return unit;

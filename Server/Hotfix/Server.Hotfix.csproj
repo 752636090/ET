@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Demo\Learn\Computer\" />
+    <Folder Include="Example\ExampleIdleGame\Bag\Handler\" />
     <Folder Include="Example\ExampleIdleGame\Unit\" />
   </ItemGroup>
 </Project>

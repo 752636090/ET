@@ -56,8 +56,14 @@ namespace ET
             // 战斗胜利增加经验值
             numericComponent[NumericType.Exp] += BattleLevelConfigCategory.Instance.Get(levelId).RewardExp;
 
-            // TODO 下发闯关成功的奖励
-            Console.WriteLine("验证成功");
+            // 背包测试代码 随机下发闯关成功的奖励（30个）
+            for (int i = 0; i < 30; i++)
+            {
+                if (!BagHelper.AddItemByConfigId(unit, RandomHelper.RandomNumber(1002, 1018)))
+                {
+                    Log.Error("增加背包物品失败");
+                }
+            }
             
             await ETTask.CompletedTask;
         }

@@ -19,4 +19,6 @@
 {"_t":"PlayerNumericConfig","_id":3007,"Name":"等级","BaseValue":1,"isNeedShow":0,"isAddPoint":0,"isPercent":0},
 {"_t":"PlayerNumericConfig","_id":3008,"Name":"金币","BaseValue":0,"isNeedShow":0,"isAddPoint":0,"isPercent":0},
 {"_t":"PlayerNumericConfig","_id":3009,"Name":"经验值","BaseValue":0,"isNeedShow":0,"isAddPoint":0,"isPercent":0},
+{"_t":"PlayerNumericConfig","_id":3013,"Name":"存活状态","BaseValue":1,"isNeedShow":0,"isAddPoint":0,"isPercent":0},
+{"_t":"PlayerNumericConfig","_id":3015,"Name":"背包容量","BaseValue":500,"isNeedShow":0,"isAddPoint":0,"isPercent":0},
 ]}
