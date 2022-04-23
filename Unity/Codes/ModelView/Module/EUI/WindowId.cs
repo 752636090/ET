@@ -14,5 +14,7 @@
         WindowID_Loading,
         WindowID_RoleInfo,
         WindowID_Adventure,
+        WindowID_Bag,
+        WindowID_ItemPopUp,
     }
 }
