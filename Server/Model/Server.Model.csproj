@@ -81,6 +81,10 @@
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Bag\BagComponent.cs" Link="Example\ExampleIdleGame\Bag\BagComponent.cs" />
     
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\AttributeEntry.cs" Link="Example\ExampleIdleGame\Item\AttributeEntry.cs" />
+    
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\EquipInfoComponent.cs" Link="Example\ExampleIdleGame\Item\EquipInfoComponent.cs" />
+    
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\Item.cs" Link="Example\ExampleIdleGame\Item\Item.cs" />
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\ItemQuality.cs" Link="Example\ExampleIdleGame\Item\ItemQuality.cs" />

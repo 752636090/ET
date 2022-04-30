@@ -33,9 +33,9 @@ namespace ET
         public static void OnEntryLoopHandler(this DlgItemPopUp self, Transform transform, int index)
         {
             Scroll_Item_entry scrollItemEntry = self.ScrollItemEntries[index].BindTrans(transform);
-            Item item = ItemViewHelper.GetItem(self.ZoneScene(), self.ItemId, self.ItemContainerType);
+            Item item = ItemHelper.GetItem(self.ZoneScene(), self.ItemId, self.ItemContainerType);
             AttributeEntry entry = item.GetComponent<EquipInfoComponent>().EntryList[index];
-            scrollItemEntry.E_EntryNameText.text = PlayerNumericConfigCategory.Instance.Get(entry.Ket).Name + ":";
+            scrollItemEntry.E_EntryNameText.text = PlayerNumericConfigCategory.Instance.Get(entry.Key).Name + ":";
             bool isPercent = PlayerNumericConfigCategory.Instance.Get(entry.Key).isPercent > 0;
             scrollItemEntry.E_EntryValueText.text = "+" + (isPercent ? $"{(entry.Value / 10000.0f).ToString("0.00")}%" : entry.Value.ToString());
         }

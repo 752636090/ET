@@ -89,6 +89,8 @@
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Bag\BagComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Bag\Handler\M2C_AllItemsListHandler.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Bag\Handler\M2C_ItemUpdateOpInfoHandler.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Item\AttributeEntrySystem.cs" />
+    <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Item\EquipInfoComponentSystem.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Item\ItemApplyHelper.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Item\ItemFactory.cs" />
     <Compile Include="Codes\Hotfix\Example\ExampleIdleGame\Item\ItemHelper.cs" />

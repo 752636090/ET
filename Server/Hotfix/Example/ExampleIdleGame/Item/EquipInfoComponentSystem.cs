@@ -33,7 +33,10 @@ namespace ET
     {
         public override void Deserialize(EquipInfoComponent self)
         {
-            throw new NotImplementedException();
+            foreach (Entity entity in self.Children.Values)
+            {
+                self.EntryList.Add(entity as AttributeEntry);
+            }
         }
     }
 
@@ -96,6 +99,18 @@ namespace ET
                 self.EntryList.Add(attributeEntry);
                 self.Score += entryConfig.EntryScore;
             }
+        }
+
+        public static EquipInfoProto ToMessage(this EquipInfoComponent self)
+        {
+            EquipInfoProto equipInfoProto = new EquipInfoProto();
+            equipInfoProto.Id = self.Id;
+            equipInfoProto.Score = self.Score;
+            for (int i = 0; i < self.EntryList.Count; i++)
+            {
+                equipInfoProto.AttributeEntryProtoList.Add(self.EntryList[i].ToMessage());
+            }
+            return equipInfoProto;
         }
     }
 }
