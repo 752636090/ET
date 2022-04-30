@@ -591,6 +591,7 @@ message M2C_ItemUpdateOpInfo // IActorMessage
 }
 
 
+// 没讲
 message AttributeEntryProto
 {
 	int64 Id = 2;
@@ -599,8 +600,55 @@ message AttributeEntryProto
 	int32 EntryType = 4;
 }
 
-
+// 没讲
 message EquipInfoProto
 {
-	
+	int64 Id = 1;
+	int32 Score = 2;
+	repeated AttributeEntryProto AttributeEntryProtoList = 3;
+}
+
+
+//ResponseType M2C_EquipItem
+message C2M_EquipItem // IActorLocationRequest // 没讲
+{
+	int32 RpcId = 1;
+	int64 ItemUid = 2;
+}
+
+message M2C_EquipItem // IActorLocationResponse // 没讲
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+
+
+//ResponseType M2C_UnloadEquipItem
+message C2M_UnloadEquipItem // IActorLocationRequest // 没讲
+{
+	int32 RpcId = 1;
+	int32 EquipPosition = 2;
+}
+
+message M2C_UnloadEquipItem // IActorLocationResponse // 没讲
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+
+
+//ResponseType M2C_SellItem
+message C2M_SellItem // IActorLocationRequest
+{
+	int32 RpcId = 1;
+	int64 ItemUid = 2;
+}
+
+message M2C_SellItem // IActorLocationResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
 }

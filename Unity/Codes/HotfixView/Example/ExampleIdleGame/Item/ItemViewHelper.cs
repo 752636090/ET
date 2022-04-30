@@ -8,7 +8,7 @@ using UnityEngine;
 namespace ET
 {
     [FriendClass(typeof(Item))]
-    public static class ItemHelper
+    public static class ItemViewHelper
     {
         public static Color ItemQualityColor(this Item item)
         {

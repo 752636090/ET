@@ -77,5 +77,11 @@ namespace ET
 		 public const ushort M2C_ItemUpdateOpInfo = 10074;
 		 public const ushort AttributeEntryProto = 10075;
 		 public const ushort EquipInfoProto = 10076;
+		 public const ushort C2M_EquipItem = 10077;
+		 public const ushort M2C_EquipItem = 10078;
+		 public const ushort C2M_UnloadEquipItem = 10079;
+		 public const ushort M2C_UnloadEquipItem = 10080;
+		 public const ushort C2M_SellItem = 10081;
+		 public const ushort M2C_SellItem = 10082;
 	}
 }

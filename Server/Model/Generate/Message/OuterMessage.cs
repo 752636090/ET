@@ -1191,6 +1191,7 @@ namespace ET
 
 	}
 
+// 没讲
 	[Message(OuterOpcode.AttributeEntryProto)]
 	[ProtoContract]
 	public partial class AttributeEntryProto: Object
@@ -1209,10 +1210,104 @@ namespace ET
 
 	}
 
+// 没讲
 	[Message(OuterOpcode.EquipInfoProto)]
 	[ProtoContract]
 	public partial class EquipInfoProto: Object
 	{
+		[ProtoMember(1)]
+		public long Id { get; set; }
+
+		[ProtoMember(2)]
+		public int Score { get; set; }
+
+		[ProtoMember(3)]
+		public List<AttributeEntryProto> AttributeEntryProtoList = new List<AttributeEntryProto>();
+
+	}
+
+	[ResponseType(nameof(M2C_EquipItem))]
+	[Message(OuterOpcode.C2M_EquipItem)]
+	[ProtoContract]
+	public partial class C2M_EquipItem: Object
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long ItemUid { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_EquipItem)]
+	[ProtoContract]
+	public partial class M2C_EquipItem: Object
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
+	[ResponseType(nameof(M2C_UnloadEquipItem))]
+	[Message(OuterOpcode.C2M_UnloadEquipItem)]
+	[ProtoContract]
+	public partial class C2M_UnloadEquipItem: Object
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int EquipPosition { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_UnloadEquipItem)]
+	[ProtoContract]
+	public partial class M2C_UnloadEquipItem: Object
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
+	[ResponseType(nameof(M2C_SellItem))]
+	[Message(OuterOpcode.C2M_SellItem)]
+	[ProtoContract]
+	public partial class C2M_SellItem: Object, IActorLocationRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long ItemUid { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_SellItem)]
+	[ProtoContract]
+	public partial class M2C_SellItem: Object, IActorLocationResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
 	}
 
 }

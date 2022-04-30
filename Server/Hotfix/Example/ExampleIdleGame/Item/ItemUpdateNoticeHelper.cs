@@ -20,7 +20,7 @@ namespace ET
 
         public static void SyncRemoveItem(Unit unit, Item item, M2C_ItemUpdateOpInfo message)
         {
-            message.ItemInfo = item.ToMessage();
+            message.ItemInfo = item.ToMessage(false);
             message.Op = (int)ItemOp.Remove;
             MessageHelper.SendToClient(unit, message);
         }

@@ -128,7 +128,28 @@ namespace ET
 
         public static void RemoveItem(this BagComponent self, Item item)
         {
+            self.RemoveContainer(item);
+            ItemUpdateNoticeHelper.SyncRemoveItem(self.GetParent<Unit>(), item, self.message);
+            item.Dispose();
+        }
 
+        public static Item RemoveItemNoDispose(this BagComponent self, Item item)
+        {
+            self.RemoveContainer(item);
+            ItemUpdateNoticeHelper.SyncRemoveItem(self.GetParent<Unit>(), item, self.message);
+            return item;
+        }
+
+        public static bool IsItemExist(this BagComponent self, long itemId)
+        {
+            self.ItemsDict.TryGetValue(itemId, out var item);
+            return item != null && !item.IsDisposed;
+        }
+
+        public static Item GetItemById(this BagComponent self, long itemId)
+        {
+            self.ItemsDict.TryGetValue(itemId, out Item item);
+            return item;
         }
     }
 }
