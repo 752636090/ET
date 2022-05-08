@@ -1191,7 +1191,6 @@ namespace ET
 
 	}
 
-// 没讲
 	[Message(OuterOpcode.AttributeEntryProto)]
 	[ProtoContract]
 	public partial class AttributeEntryProto: Object
@@ -1210,7 +1209,6 @@ namespace ET
 
 	}
 
-// 没讲
 	[Message(OuterOpcode.EquipInfoProto)]
 	[ProtoContract]
 	public partial class EquipInfoProto: Object
@@ -1229,7 +1227,7 @@ namespace ET
 	[ResponseType(nameof(M2C_EquipItem))]
 	[Message(OuterOpcode.C2M_EquipItem)]
 	[ProtoContract]
-	public partial class C2M_EquipItem: Object
+	public partial class C2M_EquipItem: Object, IActorLocationRequest
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
@@ -1241,7 +1239,7 @@ namespace ET
 
 	[Message(OuterOpcode.M2C_EquipItem)]
 	[ProtoContract]
-	public partial class M2C_EquipItem: Object
+	public partial class M2C_EquipItem: Object, IActorLocationResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }

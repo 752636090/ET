@@ -72,6 +72,26 @@ namespace ET
             }
         }
 
+        public static async ETTask OnEquipItemHandler(this DlgItemPopUp self)
+        {
+            try
+            {
+                int errorCode = await ItemApplyHelper.EquipItem(self.ZoneScene(), self.ItemId);
+
+                if (errorCode != ErrorCode.ERR_Success)
+                {
+                    Log.Error(errorCode.ToString());
+                    return;
+                }
+                self.ZoneScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_ItemPopUp);
+                self.ZoneScene().GetComponent<UIComponent>().GetDlgLogic<DlgBag>().Refresh();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.ToString());
+            }
+        }
+
         public static async ETTask OnSellItemHandler(this DlgItemPopUp self)
         {
             try

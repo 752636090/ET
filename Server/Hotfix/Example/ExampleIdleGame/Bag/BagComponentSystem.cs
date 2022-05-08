@@ -92,10 +92,39 @@ namespace ET
             return true;
         }
 
-        public static bool IsCanAddItemList(this BagComponent self, List<Item> goodsList)
+        public static bool IsCanAddItem(this BagComponent self, Item item)
         {
+            if (item == null || item.IsDisposed)
+            {
+                return false;
+            }
 
+            if (!ItemConfigCategory.Instance.Contain(item.ConfigId))
+            {
+                return false;
+            }
+
+            if (self.IsMaxLoad())
+            {
+                return false;
+            }
+
+            if (self.ItemsDict.ContainsKey(item.Id))
+            {
+                return false;
+            }
+
+            if (item.Parent == self)
+            {
+                return false;
+            }
+            return true;
         }
+
+        //public static bool IsCanAddItemList(this BagComponent self, List<Item> goodsList)
+        //{ 18集看到的
+
+        //}
 
         public static bool AddItem(this BagComponent self, Item item)
         {

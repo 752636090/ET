@@ -608,13 +608,13 @@ message EquipInfoProto
 
 
 //ResponseType M2C_EquipItem
-message C2M_EquipItem // IActorLocationRequest // 没讲
+message C2M_EquipItem // IActorLocationRequest
 {
 	int32 RpcId = 1;
 	int64 ItemUid = 2;
 }
 
-message M2C_EquipItem // IActorLocationResponse // 没讲
+message M2C_EquipItem // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;

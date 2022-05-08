@@ -59,5 +59,18 @@ namespace ET
 			public AOIEntity A;
 			public AOIEntity B;
 		}
+
+
+
+        #region IdleGame
+		public struct ChangeEquipItem
+        {
+			public Unit Unit;
+			public Item Item;
+			public EquipOp EquipOp;
+        }
+
+
+		#endregion
 	}
 }
