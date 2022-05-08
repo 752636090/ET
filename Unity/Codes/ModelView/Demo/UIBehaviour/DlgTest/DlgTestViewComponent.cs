@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[EnableMethod]
 	public  class DlgTestViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.Text ELabel_Test

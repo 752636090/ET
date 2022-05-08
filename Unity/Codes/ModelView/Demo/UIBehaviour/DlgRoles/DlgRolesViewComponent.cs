@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[EnableMethod]
 	public  class DlgRolesViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.InputField E_RoleNameInputField

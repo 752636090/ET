@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[EnableMethod]
 	public  class DlgMainViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.Button E_RoleButton

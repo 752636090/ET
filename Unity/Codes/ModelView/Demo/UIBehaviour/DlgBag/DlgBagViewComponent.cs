@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	public  class DlgBagViewComponent : Entity,IAwake,IDestroy 
+	[EnableMethod]
+	public class DlgBagViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.ToggleGroup E_TopButtonToggleGroup
      	{

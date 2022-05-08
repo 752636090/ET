@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[EnableMethod]
 	public  class DlgRoleInfoViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.Text E_CombatEffectivenessText

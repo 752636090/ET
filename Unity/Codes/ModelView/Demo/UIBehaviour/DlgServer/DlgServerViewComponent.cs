@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	public  class DlgServerViewComponent : Entity,IAwake,IDestroy 
+	[EnableMethod]
+	public class DlgServerViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.Button E_ConfirmButton
      	{

@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	public  class DlgAdventureViewComponent : Entity,IAwake,IDestroy 
+	[EnableMethod]
+	public class DlgAdventureViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.RectTransform EG_ContentRectTransform
      	{

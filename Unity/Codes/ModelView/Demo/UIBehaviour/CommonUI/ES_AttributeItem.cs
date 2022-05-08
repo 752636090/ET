@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	public  class ES_AttributeItem : Entity,ET.IAwake<UnityEngine.Transform>,IDestroy 
+	[EnableMethod]
+	public class ES_AttributeItem : Entity,ET.IAwake<UnityEngine.Transform>,IDestroy 
 	{
 		public UnityEngine.UI.Text EAttributeValueText
      	{
