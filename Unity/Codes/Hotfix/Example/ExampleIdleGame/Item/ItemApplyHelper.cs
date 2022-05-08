@@ -54,5 +54,30 @@ namespace ET
             }
             return m2cSellItem.Error;
         }
+
+        public static async ETTask<int> UnloadEquipItem(Scene ZoneScene, long itemId)
+        {
+            Item item = ItemHelper.GetItem(ZoneScene, itemId, ItemContainerType.RoleInfo);
+
+            if (item == null)
+            {
+                return ErrorCode.ERR_ItemNotExist;
+            }
+
+            M2C_UnloadEquipItem m2CUnloadEquipItem = null;
+
+            try
+            {
+                m2CUnloadEquipItem = (M2C_UnloadEquipItem)await ZoneScene.GetComponent<SessionComponent>().Session.Call(
+                    new C2M_UnloadEquipItem() { EquipPosition = item.Config.EquipPosition });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.ToString());
+                return ErrorCode.ERR_NetworkError;
+            }
+
+            return m2CUnloadEquipItem.Error;
+        }
     }
 }

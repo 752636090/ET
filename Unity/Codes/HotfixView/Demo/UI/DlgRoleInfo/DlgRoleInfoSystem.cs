@@ -21,6 +21,13 @@ namespace ET
 			self.View.E_AttributsLoopVerticalScrollRect.AddItemRefreshListener((Transform transform, int index) => { self.OnAttributeItemRefreshHandler(transform, index); });
 			self.View.E_UpLevelButton.AddListenerAsync(self.OnUpRoleLevelHandler);
 
+			self.View.ES_EquipItem_Head.RegisterEventHandler(EquipPosition.Head);
+			self.View.ES_EquipItem_Clothes.RegisterEventHandler(EquipPosition.Clothes);
+			self.View.ES_EquipItem_Shoes.RegisterEventHandler(EquipPosition.Shoes);
+			self.View.ES_EquipItem_Ring.RegisterEventHandler(EquipPosition.Ring);
+			self.View.ES_EquipItem_Weapon.RegisterEventHandler(EquipPosition.Weapon);
+			self.View.ES_EquipItem_Shield.RegisterEventHandler(EquipPosition.Shield);
+
 			RedDotHelper.AddRedDotNodeView(self.ZoneScene(), "UpLevelButton", self.View.E_UpLevelButton.gameObject, Vector3.one, new Vector3(115f, 10f, 0));
 			RedDotHelper.AddRedDotNodeView(self.ZoneScene(), "AddAttribute", self.View.E_AttributePointText.gameObject, new Vector3(0.5f, 0.5f, 1), new Vector3(-17, 10f, 0));
 		}
@@ -37,8 +44,18 @@ namespace ET
 		public static void ShowWindow(this DlgRoleInfo self, Entity contextData = null)
 		{
 			self.Refresh();
+			self.RefreshEquipShowItems();
 		}
 
+		public static void RefreshEquipShowItems(this DlgRoleInfo self)
+        {
+			self.View.ES_EquipItem_Head.RefreshShowItem(EquipPosition.Head);
+			self.View.ES_EquipItem_Clothes.RefreshShowItem(EquipPosition.Clothes);
+			self.View.ES_EquipItem_Shoes.RefreshShowItem(EquipPosition.Shoes);
+			self.View.ES_EquipItem_Ring.RefreshShowItem(EquipPosition.Ring);
+			self.View.ES_EquipItem_Weapon.RefreshShowItem(EquipPosition.Weapon);
+			self.View.ES_EquipItem_Shield.RefreshShowItem(EquipPosition.Shield);
+        }
 		 
 		public static void Refresh(this DlgRoleInfo self)
         {

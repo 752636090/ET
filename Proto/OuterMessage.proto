@@ -623,13 +623,13 @@ message M2C_EquipItem // IActorLocationResponse
 
 
 //ResponseType M2C_UnloadEquipItem
-message C2M_UnloadEquipItem // IActorLocationRequest // 没讲
+message C2M_UnloadEquipItem // IActorLocationRequest
 {
 	int32 RpcId = 1;
 	int32 EquipPosition = 2;
 }
 
-message M2C_UnloadEquipItem // IActorLocationResponse // 没讲
+message M2C_UnloadEquipItem // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;

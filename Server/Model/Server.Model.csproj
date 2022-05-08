@@ -81,6 +81,10 @@
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Bag\BagComponent.cs" Link="Example\ExampleIdleGame\Bag\BagComponent.cs" />
     
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Equipment\EquipmentsComponent.cs" Link="Example\ExampleIdleGame\Equipment\EquipmentsComponent.cs" />
+    
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Equipment\EquipPosition.cs" Link="Example\ExampleIdleGame\Equipment\EquipPosition.cs" />
+    
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\AttributeEntry.cs" Link="Example\ExampleIdleGame\Item\AttributeEntry.cs" />
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\EquipInfoComponent.cs" Link="Example\ExampleIdleGame\Item\EquipInfoComponent.cs" />
@@ -151,5 +155,6 @@
     <Folder Include="Example\ExampleIdleGame\Bag\" />
     <Folder Include="Example\ExampleIdleGame\Role\" />
     <Folder Include="Example\ExampleIdleGame\Item\" />
+    <Folder Include="Example\ExampleIdleGame\Equipment\" />
   </ItemGroup>
 </Project>

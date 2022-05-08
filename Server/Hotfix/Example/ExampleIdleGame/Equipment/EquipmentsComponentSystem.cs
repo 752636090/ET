@@ -22,10 +22,11 @@ namespace ET
     [FriendClass(typeof(EquipmentsComponent))]
     public static class EquipmentsComponentSystem
     {
-        // 没讲到
         public static bool IsEquipItemByPosition(this EquipmentsComponent self, EquipPosition equipPosition)
         {
-            return self.EquipItems.ContainsKey((int)equipPosition);
+            self.EquipItems.TryGetValue((int)equipPosition, out Item item);
+
+            return item != null && !item.IsDisposed;
         }
 
         public static bool EquipItem(this EquipmentsComponent self, Item item)

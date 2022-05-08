@@ -1255,7 +1255,7 @@ namespace ET
 	[ResponseType(nameof(M2C_UnloadEquipItem))]
 	[Message(OuterOpcode.C2M_UnloadEquipItem)]
 	[ProtoContract]
-	public partial class C2M_UnloadEquipItem: Object
+	public partial class C2M_UnloadEquipItem: Object, IActorLocationRequest
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
@@ -1267,7 +1267,7 @@ namespace ET
 
 	[Message(OuterOpcode.M2C_UnloadEquipItem)]
 	[ProtoContract]
-	public partial class M2C_UnloadEquipItem: Object
+	public partial class M2C_UnloadEquipItem: Object, IActorLocationResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
