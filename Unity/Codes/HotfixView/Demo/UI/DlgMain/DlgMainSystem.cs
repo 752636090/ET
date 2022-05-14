@@ -13,6 +13,7 @@ namespace ET
         {
             self.View.E_RoleButton.AddListenerAsync(() => { return self.OnRoleButtonClickHandler(); });
             self.View.E_BattleButton.AddListenerAsync(() => { return self.OnBattleButtonClickHandler(); });
+            self.View.E_BagButton.AddListenerAsync(() => { return self.OnBagButtonClickHandler(); }); // 猜的
             RedDotHelper.AddRedDotNodeView(self.ZoneScene(), "Role", self.View.E_RoleButton.gameObject, Vector3.one, new Vector3(75, 55, 0));
         }
 
@@ -65,6 +66,13 @@ namespace ET
         public static async ETTask OnBattleButtonClickHandler(this DlgMain self)
         {
             self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Adventure);
+            await ETTask.CompletedTask;
+        }
+
+        // 整个都是猜的
+        public static async ETTask OnBagButtonClickHandler(this DlgMain self)
+        {
+            self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Bag);
             await ETTask.CompletedTask;
         }
     }

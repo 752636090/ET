@@ -593,7 +593,7 @@ message M2C_ItemUpdateOpInfo // IActorMessage
 
 message AttributeEntryProto
 {
-	int64 Id = 2;
+	int64 Id = 1;
 	int32 Key = 2;
 	int64 Value = 3;
 	int32 EntryType = 4;

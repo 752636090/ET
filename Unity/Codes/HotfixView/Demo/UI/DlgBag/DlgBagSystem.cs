@@ -42,7 +42,7 @@ namespace ET
         {
 			self.ZoneScene().GetComponent<BagComponent>().ItemsMap.TryGetValue((int)self.CurrentItemType, out List<Item> itemList);
 
-			int showCount = itemList == null ? 0 : itemList.Count - (self.CurrentPageIndex + 30);
+			int showCount = itemList == null ? 0 : itemList.Count - (self.CurrentPageIndex * 30);
 			showCount = showCount > 30 ? 30 : showCount;
 			self.AddUIScrollItems(ref self.ScrollItemBagItems, showCount);
 			self.View.E_BagItemsLoopVerticalScrollRect.SetVisible(true, showCount); // 会调用AddItemRefreshListener进去的OnLoopItemRefreshHandler

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    //[FriendClass(typeof(EquipmentsComponent))]
+    [FriendClass(typeof(EquipmentsComponent))]
     [FriendClass(typeof(BagComponent))]
     [FriendClass(typeof(Item))]
     public static class ItemUpdateNoticeHelper
@@ -30,6 +30,19 @@ namespace ET
             M2C_AllItemsList m2CAllItemsList = new M2C_AllItemsList() { CotainerType = (int)ItemContainerType.Bag };
             BagComponent bagComponent = unit.GetComponent<BagComponent>();
             foreach (Item item in bagComponent.ItemsDict.Values)
+            {
+                m2CAllItemsList.ItemInfoList.Add(item.ToMessage());
+            }
+
+            MessageHelper.SendToClient(unit, m2CAllItemsList);
+        }
+
+        public static void SyncAllEquipItems(Unit unit)
+        {
+            Log.Debug("整个方法都是猜的");
+            M2C_AllItemsList m2CAllItemsList = new M2C_AllItemsList() { CotainerType = (int)ItemContainerType.RoleInfo };
+            EquipmentsComponent equipmentsComponent = unit.GetComponent<EquipmentsComponent>();
+            foreach (Item item in equipmentsComponent.EquipItems.Values)
             {
                 m2CAllItemsList.ItemInfoList.Add(item.ToMessage());
             }

@@ -22,7 +22,7 @@ namespace ET
 
         public static void RefreshShowItem(this ES_EquipItem self, EquipPosition equipPosition)
         {
-            Item item = self.ZoneScene().GetComponent<EquipmentsComponent>().GetItemByPosition((EquipPosition)equipPosition);
+            Item item = self.ZoneScene().GetComponent<EquipmentsComponent>().GetItemByPosition(equipPosition);
             if (null != item)
             {
                 self.E_IconImage.overrideSprite = IconHelper.LoadIconSprite("Icons", item.Config.Icon);

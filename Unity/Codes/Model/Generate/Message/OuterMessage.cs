@@ -1195,7 +1195,7 @@ namespace ET
 	[ProtoContract]
 	public partial class AttributeEntryProto: Object
 	{
-		[ProtoMember(2)]
+		[ProtoMember(1)]
 		public long Id { get; set; }
 
 		[ProtoMember(2)]
