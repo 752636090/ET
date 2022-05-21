@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    // 没讲到
+    public class EquipmentsComponentDestroySystem : DestroySystem<EquipmentsComponent>
+    {
+        public override void Destroy(EquipmentsComponent self)
+        {
+            foreach (Item item in self.EquipItems.Values)
+            {
+                item?.Dispose();
+            }
+            self.EquipItems.Clear();
+            self.message = null;
+        }
+    }
+
     public class EquipmentsComponentDeserializeSystem : DeserializeSystem<EquipmentsComponent>
     {
         public override void Deserialize(EquipmentsComponent self)

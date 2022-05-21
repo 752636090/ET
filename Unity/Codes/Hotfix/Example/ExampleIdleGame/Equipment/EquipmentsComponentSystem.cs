@@ -6,56 +6,68 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    /// <summary>
-    /// 全是猜的
-    /// </summary>
+    public class EquipmentsComponentDestroySystem : DestroySystem<EquipmentsComponent>
+    {
+        public override void Destroy(EquipmentsComponent self)
+        {
+            self.Clear();
+        }
+    }
+
     [FriendClass(typeof(EquipmentsComponent))]
     public static class EquipmentsComponentSystem
     {
         public static void Clear(this EquipmentsComponent self)
         {
-            Log.Debug("调用了猜出来的方法");
-            ForeachHelper.Foreach(self.EquipItems, (int position, Item item) =>
+            ForeachHelper.Foreach(self.EquipItems, (int index, Item item) =>
             {
                 item?.Dispose();
             });
             self.EquipItems.Clear();
         }
 
-        public static void AddEquipItem(this EquipmentsComponent self, Item item)
-        {
-            Log.Debug("调用了猜出来的方法");
-            self.AddChild(item);
-            self.EquipItems.Add(item.Config.EquipPosition, item);
-        }
-
         public static Item GetItemById(this EquipmentsComponent self, long itemId)
         {
-            Log.Debug("调用了猜出来的方法");
-            return self.GetChild<Item>(itemId);
+            if (self.Children.TryGetValue(itemId, out Entity entity))
+            {
+                return entity as Item;
+            }
+
+            return null;
         }
 
         public static Item GetItemByPosition(this EquipmentsComponent self, EquipPosition equipPosition)
         {
-            Log.Debug("调用了猜出来的方法");
             if (self.EquipItems.TryGetValue((int)equipPosition, out Item item))
             {
                 return item;
             }
+
             return null;
         }
 
-        public static void UnloadEquipItem(this EquipmentsComponent self, Item item)
+        public static void AddEquipItem(this EquipmentsComponent self, Item item)
         {
-            Log.Debug("调用了猜出来的方法");
-            if (item == null)
+            if (self.EquipItems.TryGetValue(item.Config.EquipPosition, out Item equipItem))
             {
-                Log.Error("bag item is null");
+                Log.Error($"Already EquipItem in Position{(EquipPosition)item.Config.EquipPosition}");
                 return;
             }
 
+            self.AddChild(item);
+            self.EquipItems.Add(item.Config.EquipPosition, item);
+        }
+
+        public static bool IsEquipItemByPosition(this EquipmentsComponent self, EquipPosition equipPosition)
+        {
+            return self.EquipItems.ContainsKey((int)equipPosition);
+        }
+
+        public static bool UnloadEquipItem(this EquipmentsComponent self, Item item)
+        {
             self.EquipItems.Remove(item.Config.EquipPosition);
             item?.Dispose();
+            return true;
         }
     }
 }
