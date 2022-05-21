@@ -650,3 +650,28 @@ message M2C_SellItem // IActorLocationResponse
 	int32 Error = 91;
 	string Message = 92;
 }
+
+message ProductionProto
+{
+	int64 Id = 1;
+	int32 ConfigId = 2;
+	int64 TargetTime = 3;
+	int64 StartTime = 4;
+	int32 ProductionState = 5;
+}
+
+//ResponseType M2C_StartProduction
+message C2M_StartProduction // IActorLocationRequest
+{
+	int32 RpcId = 1;
+	int32 ConfigId = 2;
+}
+
+message M2C_StartProduction // IActorLocationResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	ProductionProto ProductionProto = 2;
+}
+

@@ -35,5 +35,12 @@ namespace ET
                 self.E_QualityImage.color = Color.gray;
             }
         }
+
+
+        public static void RefreshShowItem(this ES_EquipItem self, int itemConfigId)
+        {
+            self.E_QualityImage.color = Color.gray;
+            self.E_IconImage.overrideSprite = IconHelper.LoadIconSprite("Icons", ItemConfigCategory.Instance.Get(itemConfigId).Icon);
+        }
     }
 }

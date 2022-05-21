@@ -83,5 +83,8 @@ namespace ET
 		 public const ushort M2C_UnloadEquipItem = 10080;
 		 public const ushort C2M_SellItem = 10081;
 		 public const ushort M2C_SellItem = 10082;
+		 public const ushort ProductionProto = 10083;
+		 public const ushort C2M_StartProduction = 10084;
+		 public const ushort M2C_StartProduction = 10085;
 	}
 }

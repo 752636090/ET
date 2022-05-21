@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 5529324279071218945}
   - component: {fileID: 2568057815189972107}
   m_Layer: 5
-  m_Name: E_MakeTip (1)
+  m_Name: E_MakeTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

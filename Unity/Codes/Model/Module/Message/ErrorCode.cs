@@ -58,5 +58,7 @@ namespace ET
         public static int ERR_AddBagItemError = 200035;
         public static int ERR_EquipItemError = 200036;
         public static int ERR_BagMaxLoad = 200037;
+
+        public static int ERR_MakeConfigNotExist = 200038;
     }
 }

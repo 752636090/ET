@@ -13,6 +13,7 @@
         public const int NoticeUnitNumericTime = 1006;
         public const int SaveChangeDBData = 1007;
         public const int BattleRound = 1008;
+        public const int MakeQueueOver = 1009;
         #endregion
         // 不能超过10000
     }

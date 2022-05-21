@@ -174,5 +174,10 @@ namespace ET
             public Scene ZoneScene;
             public bool isEnoughUpLevel;
         }
+
+        public struct MakeQueueOver
+        {
+            public Scene ZoneScene;
+        }
     }
 }

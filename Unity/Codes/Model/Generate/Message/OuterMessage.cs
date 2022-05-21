@@ -1308,4 +1308,56 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.ProductionProto)]
+	[ProtoContract]
+	public partial class ProductionProto: Object
+	{
+		[ProtoMember(1)]
+		public long Id { get; set; }
+
+		[ProtoMember(2)]
+		public int ConfigId { get; set; }
+
+		[ProtoMember(3)]
+		public long TargetTime { get; set; }
+
+		[ProtoMember(4)]
+		public long StartTime { get; set; }
+
+		[ProtoMember(5)]
+		public int ProductionState { get; set; }
+
+	}
+
+	[ResponseType(nameof(M2C_StartProduction))]
+	[Message(OuterOpcode.C2M_StartProduction)]
+	[ProtoContract]
+	public partial class C2M_StartProduction: Object, IActorLocationRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int ConfigId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_StartProduction)]
+	[ProtoContract]
+	public partial class M2C_StartProduction: Object, IActorLocationResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(2)]
+		public ProductionProto ProductionProto { get; set; }
+
+	}
+
 }

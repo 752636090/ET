@@ -58,7 +58,7 @@ namespace ET
      		}
      	}
 
-		public UnityEngine.UI.Text E_MakeTip (1)Text
+		public UnityEngine.UI.Text E_MakeTimeText
      	{
      		get
      		{
@@ -67,11 +67,11 @@ namespace ET
      				Log.Error("uiTransform is null.");
      				return null;
      			}
-     			if( this.m_E_MakeTip (1)Text == null )
+     			if( this.m_E_MakeTimeText == null )
      			{
-		    		this.m_E_MakeTip (1)Text = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"E_MakeTip (1)");
+		    		this.m_E_MakeTimeText = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"E_MakeTime");
      			}
-     			return this.m_E_MakeTip (1)Text;
+     			return this.m_E_MakeTimeText;
      		}
      	}
 
@@ -115,7 +115,7 @@ namespace ET
 			this.m_es_equipitem = null;
 			this.m_E_LeftTimeSlider = null;
 			this.m_E_MakeTipText = null;
-			this.m_E_MakeTip (1)Text = null;
+			this.m_E_MakeTimeText = null;
 			this.m_E_ReceiveButton = null;
 			this.m_E_ReceiveImage = null;
 			this.uiTransform = null;
@@ -124,7 +124,7 @@ namespace ET
 		private ES_EquipItem m_es_equipitem = null;
 		private UnityEngine.UI.Slider m_E_LeftTimeSlider = null;
 		private UnityEngine.UI.Text m_E_MakeTipText = null;
-		private UnityEngine.UI.Text m_E_MakeTip (1)Text = null;
+		private UnityEngine.UI.Text m_E_MakeTimeText = null;
 		private UnityEngine.UI.Button m_E_ReceiveButton = null;
 		private UnityEngine.UI.Image m_E_ReceiveImage = null;
 		public Transform uiTransform = null;

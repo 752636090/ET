@@ -14,8 +14,9 @@ namespace ET
             zoneScene.AddComponent<AccountInfoComponent>(); 
             zoneScene.AddComponent<ServerInfosComponent>();
             zoneScene.AddComponent<RoleInfosComponent>();
-            zoneScene.AddComponent<BagComponent>(); // 猜的
-            zoneScene.AddComponent<EquipmentsComponent>(); // 猜的
+            zoneScene.AddComponent<BagComponent>();
+            zoneScene.AddComponent<EquipmentsComponent>();
+            zoneScene.AddComponent<ForgeComponent>();
             #endregion
 
             Game.EventSystem.Publish(new EventType.AfterCreateZoneScene() {ZoneScene = zoneScene});

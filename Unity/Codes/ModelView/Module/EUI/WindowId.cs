@@ -16,5 +16,6 @@
         WindowID_Adventure,
         WindowID_Bag,
         WindowID_ItemPopUp,
+        WindowID_Forge,
     }
 }

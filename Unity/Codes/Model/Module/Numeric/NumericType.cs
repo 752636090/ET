@@ -112,10 +112,12 @@
 
 		public const int MaxBagCapacity = 3015;
 
-	    //public const int Postion = 1007;
+        public const int IronStone = 3016;
 
-	    //public const int Height = 1008;
+        //public const int Postion = 1007;
 
-	    //public const int Weight = 1009;
+        //public const int Height = 1008;
+
+        //public const int Weight = 1009;
     }
 }
