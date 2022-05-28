@@ -62,5 +62,6 @@ namespace ET
         public static int ERR_MakeConfigNotExist = 200038;
         public static int ERR_NoMakeFreeQueue = 200039;
         public static int ERR_MakeConsumeError = 200040;
+        public static int ERR_NoMakeQueueOver = 2000041;
     }
 }

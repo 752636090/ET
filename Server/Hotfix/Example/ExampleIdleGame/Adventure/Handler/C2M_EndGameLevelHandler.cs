@@ -64,6 +64,10 @@ namespace ET
                     Log.Error("增加背包物品失败");
                 }
             }
+
+            // 猜的，增加精铁和皮革
+            numericComponent[NumericType.IronStone] += 1000;
+            numericComponent[NumericType.Fur] += 1000;
             
             await ETTask.CompletedTask;
         }

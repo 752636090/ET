@@ -37,6 +37,8 @@ namespace ET
 			ItemUpdateNoticeHelper.SyncAllBagItems(unit);
 			ItemUpdateNoticeHelper.SyncAllEquipItems(unit);
 
+			ForgeHelper.SyncAllProduction(unit);
+
             unit.AddComponent<NumericNoticeComponent>();
             unit.AddComponent<AdventureCheckComponent>(); 
             #endregion

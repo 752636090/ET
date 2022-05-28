@@ -98,7 +98,7 @@ namespace ET
         {
             for (int i = 0; i < self.ProductionList.Count; i++)
             {
-                if (index == 1)
+                if (index == i)
                 {
                     return self.ProductionList[i];
                 }

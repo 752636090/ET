@@ -70,7 +70,11 @@ namespace ET
 			public EquipOp EquipOp;
         }
 
-
+		public struct MakeProductionOver
+        {
+			public Unit Unit;
+			public int ProductionConfigId;
+		}
 		#endregion
 	}
 }

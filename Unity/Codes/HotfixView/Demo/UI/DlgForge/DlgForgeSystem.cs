@@ -31,7 +31,7 @@ namespace ET
 
         private static void Refresh(this DlgForge self)
         {
-            self.RefreshMakeQuque();
+            self.RefreshMakeQueue();
             self.RefreshProduction();
             self.RefreshMaterialCount();
         }

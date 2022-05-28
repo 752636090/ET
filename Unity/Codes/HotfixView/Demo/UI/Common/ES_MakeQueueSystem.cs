@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
     [FriendClass(typeof(Production))]
     [FriendClass(typeof(ES_MakeQueue))]
@@ -28,6 +30,24 @@
             self.E_MakeOverTipText.SetVisible(isCanReceive);
             self.E_ReceiveButton.SetVisible(isCanReceive);
             self.E_ReceiveButton.AddListenerAsync(() => { return self.OnReceiveButtonHandler(production.Id); });
+        }
+
+        public static async ETTask OnReceiveButtonHandler(this ES_MakeQueue self, long productionId)
+        {
+            try
+            {
+                int errorCode = await ForgeHelper.ReceivedProductionItem(self.ZoneScene(), productionId);
+                if (errorCode != ErrorCode.ERR_Success)
+                {
+                    Log.Error(errorCode.ToString());
+                    return;
+                }
+                self.ZoneScene().GetComponent<UIComponent>().GetDlgLogic<DlgForge>().RefreshMakeQueue();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.ToString());
+            }
         }
     }
 }

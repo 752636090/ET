@@ -38,9 +38,34 @@ namespace ET
         }
 
         // 请求获取生产好的物品
-        //public static async ETTask<int> ReceivedProductionItem(Scene ZoneScene, long productionId)
-        //{
+        public static async ETTask<int> ReceivedProductionItem(Scene ZoneScene, long productionId)
+        {
+            // 背包已满
+            if (ZoneScene.GetComponent<BagComponent>().IsMaxLoad())
+            {
+                return ErrorCode.ERR_BagMaxLoad;
+            }
 
-        //}
+            M2C_ReceiveProduction m2CReceiveProduction = null;
+
+            try
+            {
+                m2CReceiveProduction = (M2C_ReceiveProduction)await ZoneScene.GetComponent<SessionComponent>().Session.Call(
+                    new C2M_ReceiveProduction() { ProductionId = productionId });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.ToString());
+                return ErrorCode.ERR_NetworkError;
+            }
+
+            if (m2CReceiveProduction.Error != ErrorCode.ERR_Success)
+            {
+                return m2CReceiveProduction.Error;
+            }
+
+            ZoneScene.GetComponent<ForgeComponent>().AddOrUpdateProductionQueue(m2CReceiveProduction.ProductionProto);
+            return ErrorCode.ERR_Success;
+        }
     }
 }

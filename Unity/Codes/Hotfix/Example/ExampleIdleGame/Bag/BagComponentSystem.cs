@@ -54,5 +54,11 @@ namespace ET
             }
             return null;
         }
+
+        public static bool IsMaxLoad(this BagComponent self)
+        {
+            Log.Debug("调用了猜出来的方法");
+            return self.ItemsDict.Count == UnitHelper.GetMyUnitFromCurrentScene(self.ZoneScene().CurrentScene()).GetComponent<NumericComponent>()[NumericType.MaxBagCapacity];
+        }
     }
 }

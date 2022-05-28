@@ -86,5 +86,8 @@ namespace ET
 		 public const ushort ProductionProto = 10083;
 		 public const ushort C2M_StartProduction = 10084;
 		 public const ushort M2C_StartProduction = 10085;
+		 public const ushort C2M_ReceiveProduction = 10086;
+		 public const ushort M2C_ReceiveProduction = 10087;
+		 public const ushort M2C_AllProductionList = 10088;
 	}
 }

@@ -1360,4 +1360,47 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(M2C_ReceiveProduction))]
+	[Message(OuterOpcode.C2M_ReceiveProduction)]
+	[ProtoContract]
+	public partial class C2M_ReceiveProduction: Object, IActorLocationRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long ProductionId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_ReceiveProduction)]
+	[ProtoContract]
+	public partial class M2C_ReceiveProduction: Object, IActorLocationResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public ProductionProto ProductionProto { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_AllProductionList)]
+	[ProtoContract]
+	public partial class M2C_AllProductionList: Object, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public List<ProductionProto> ProductionProtoList = new List<ProductionProto>();
+
+	}
+
 }
