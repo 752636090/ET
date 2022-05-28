@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace ET
 {
 	[EnableMethod]
-	public  class ES_MakeQueue : Entity,ET.IAwake<UnityEngine.Transform>,IDestroy 
+	public  class ES_MakeQueueOne : Entity,ET.IAwake<UnityEngine.Transform>,IDestroy 
 	{
 		public ES_EquipItem ES_EquipItem
      	{

@@ -60,5 +60,7 @@ namespace ET
         public static int ERR_BagMaxLoad = 200037;
 
         public static int ERR_MakeConfigNotExist = 200038;
+        public static int ERR_NoMakeFreeQueue = 200039;
+        public static int ERR_MakeConsumeError = 200040;
     }
 }

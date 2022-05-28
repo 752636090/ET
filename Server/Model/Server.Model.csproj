@@ -85,6 +85,10 @@
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Equipment\EquipPosition.cs" Link="Example\ExampleIdleGame\Equipment\EquipPosition.cs" />
     
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Forge\ForgeComponent.cs" Link="Example\ExampleIdleGame\Forge\ForgeComponent.cs" />
+    
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Forge\Production.cs" Link="Example\ExampleIdleGame\Forge\Production.cs" />
+    
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\AttributeEntry.cs" Link="Example\ExampleIdleGame\Item\AttributeEntry.cs" />
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\EquipInfoComponent.cs" Link="Example\ExampleIdleGame\Item\EquipInfoComponent.cs" />
@@ -156,5 +160,6 @@
     <Folder Include="Example\ExampleIdleGame\Role\" />
     <Folder Include="Example\ExampleIdleGame\Item\" />
     <Folder Include="Example\ExampleIdleGame\Equipment\" />
+    <Folder Include="Example\ExampleIdleGame\Forge\" />
   </ItemGroup>
 </Project>

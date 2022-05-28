@@ -76,7 +76,7 @@ namespace ET
      		}
      	}
 
-		public UnityEngine.UI.Text E_FurCoatText
+		public UnityEngine.UI.Text E_FurCountText
      	{
      		get
      		{
@@ -85,11 +85,11 @@ namespace ET
      				Log.Error("uiTransform is null.");
      				return null;
      			}
-     			if( this.m_E_FurCoatText == null )
+     			if( this.m_E_FurCountText == null )
      			{
-		    		this.m_E_FurCoatText = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"BackGround/LayoutGroup/BottomGroup/E_FurCoat");
+		    		this.m_E_FurCountText = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"BackGround/LayoutGroup/BottomGroup/E_FurCount");
      			}
-     			return this.m_E_FurCoatText;
+     			return this.m_E_FurCountText;
      		}
      	}
 
@@ -135,7 +135,7 @@ namespace ET
 			this.m_es_makequeuetwo = null;
 			this.m_E_ProductionLoopVerticalScrollRect = null;
 			this.m_E_IronStoneCountText = null;
-			this.m_E_FurCoatText = null;
+			this.m_E_FurCountText = null;
 			this.m_E_CloseButton = null;
 			this.m_E_CloseImage = null;
 			this.uiTransform = null;
@@ -145,7 +145,7 @@ namespace ET
 		private ES_MakeQueue m_es_makequeuetwo = null;
 		private UnityEngine.UI.LoopVerticalScrollRect m_E_ProductionLoopVerticalScrollRect = null;
 		private UnityEngine.UI.Text m_E_IronStoneCountText = null;
-		private UnityEngine.UI.Text m_E_FurCoatText = null;
+		private UnityEngine.UI.Text m_E_FurCountText = null;
 		private UnityEngine.UI.Button m_E_CloseButton = null;
 		private UnityEngine.UI.Image m_E_CloseImage = null;
 		public Transform uiTransform = null;

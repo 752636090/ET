@@ -13,7 +13,7 @@
     }
 
 #if SERVER
-    public class Production : Entity, IAwake, IDestroy, IDeserializeToEntity 
+    public class Production : Entity, IAwake, IDestroy, ISerializeToEntity 
 #else
     public class Production : Entity, IAwake, IDestroy
 #endif

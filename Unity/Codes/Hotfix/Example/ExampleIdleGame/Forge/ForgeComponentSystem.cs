@@ -94,6 +94,30 @@ namespace ET
             return null;
         }
 
+        public static Production GetProductionByIndex(this ForgeComponent self, int index)
+        {
+            for (int i = 0; i < self.ProductionList.Count; i++)
+            {
+                if (index == 1)
+                {
+                    return self.ProductionList[i];
+                }
+            }
+            return null;
+        }
 
+        public static int GetMakingProductionQueueCount(this ForgeComponent self)
+        {
+            int count = 0;
+            for (int i = 0; i < self.ProductionList.Count; i++)
+            {
+                Production production = self.ProductionList[i];
+                if (production.ProductionState == (int)ProductionState.Making)
+                {
+                    ++count;
+                }
+            }
+            return count;
+        }
     }
 }

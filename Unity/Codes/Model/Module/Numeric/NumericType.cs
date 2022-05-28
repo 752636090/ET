@@ -113,6 +113,7 @@
 		public const int MaxBagCapacity = 3015;
 
         public const int IronStone = 3016;
+        public const int Fur = 3017;
 
         //public const int Postion = 1007;
 

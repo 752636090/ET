@@ -42,6 +42,7 @@ namespace ET
                     #region ExampleIdleGame
                     unit.AddComponent<BagComponent>();
                     unit.AddComponent<EquipmentsComponent>();
+                    unit.AddComponent<ForgeComponent>();
                     #endregion
 
                     unitComponent.Add(unit);
