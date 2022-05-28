@@ -152,6 +152,31 @@ namespace ET
         #endregion
 
         #region UI按钮事件
+        public static void AddListenerAsyncWithId(this Button button, Func<int, ETTask> action, int id)
+        {
+            button.onClick.RemoveAllListeners();
+
+            async ETTask clickActionAsync()
+            {
+                UIEventComponent.Instance?.SetUIClicked(true); // 临时修改方案(解决问题：HotfixView中出现了字段)
+                await action(id);
+                UIEventComponent.Instance?.SetUIClicked(false);
+            }
+
+            button.onClick.AddListener(() =>
+            {
+                if (UIEventComponent.Instance == null)
+                {
+                    return;
+                }
+                if (UIEventComponent.Instance.IsClicked)
+                {
+                    return;
+                }
+
+                clickActionAsync().Coroutine();
+            });
+        }
 
         /// <summary>
         /// 在外面要try，不然action出了异常执行不下去

@@ -103,6 +103,10 @@
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" Link="Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" />
     
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Task\TaskInfo.cs" Link="Example\ExampleIdleGame\Task\TaskInfo.cs" />
+    
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Task\TasksComponent.cs" Link="Example\ExampleIdleGame\Task\TasksComponent.cs" />
+    
     <Compile Include="..\..\Unity\Codes\Model\Module\ActorLocation\ActorResponse.cs">
       <Link>Module\ActorLocation\ActorResponse.cs</Link>
     </Compile>
@@ -161,5 +165,6 @@
     <Folder Include="Example\ExampleIdleGame\Item\" />
     <Folder Include="Example\ExampleIdleGame\Equipment\" />
     <Folder Include="Example\ExampleIdleGame\Forge\" />
+    <Folder Include="Example\ExampleIdleGame\Task\" />
   </ItemGroup>
 </Project>
