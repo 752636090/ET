@@ -1,0 +1,5 @@
+{"list":[
+{"_t":"TaskActionConfig","_id":1,"TaskName":"升级","TaskProgressType":3},
+{"_t":"TaskActionConfig","_id":2,"TaskName":"打造","TaskProgressType":1},
+{"_t":"TaskActionConfig","_id":3,"TaskName":"冒险","TaskProgressType":1},
+]}

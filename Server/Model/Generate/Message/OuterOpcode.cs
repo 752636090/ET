@@ -89,5 +89,8 @@ namespace ET
 		 public const ushort C2M_ReceiveProduction = 10086;
 		 public const ushort M2C_ReceiveProduction = 10087;
 		 public const ushort M2C_AllProductionList = 10088;
+		 public const ushort TaskInfoProto = 10089;
+		 public const ushort M2C_UpdateTaskInfo = 10090;
+		 public const ushort M2C_AllTaskInfoList = 10091;
 	}
 }

@@ -1395,11 +1395,42 @@ namespace ET
 	[ProtoContract]
 	public partial class M2C_AllProductionList: Object, IActorMessage
 	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
+//int32 RpcId = 90; // Map主动下推给客户端的消息都可以删掉RpcId
 		[ProtoMember(1)]
 		public List<ProductionProto> ProductionProtoList = new List<ProductionProto>();
+
+	}
+
+	[Message(OuterOpcode.TaskInfoProto)]
+	[ProtoContract]
+	public partial class TaskInfoProto: Object
+	{
+		[ProtoMember(1)]
+		public int ConfigId { get; set; }
+
+		[ProtoMember(2)]
+		public int TaskState { get; set; }
+
+		[ProtoMember(3)]
+		public int TaskProgress { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_UpdateTaskInfo)]
+	[ProtoContract]
+	public partial class M2C_UpdateTaskInfo: Object, IActorMessage
+	{
+		[ProtoMember(1)]
+		public TaskInfoProto TaskInfoProto { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_AllTaskInfoList)]
+	[ProtoContract]
+	public partial class M2C_AllTaskInfoList: Object, IActorMessage
+	{
+		[ProtoMember(1)]
+		public List<TaskInfoProto> TaskInfoProtoList = new List<TaskInfoProto>();
 
 	}
 

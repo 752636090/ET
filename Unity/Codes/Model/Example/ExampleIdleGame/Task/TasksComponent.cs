@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    [ChildType(typeof(TaskInfo))]
 #if SERVER
     public class TasksComponent : Entity, IAwake, IDestroy, ITransfer, IUnitCache, IDeserialize
 #else

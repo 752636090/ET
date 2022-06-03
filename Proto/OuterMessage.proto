@@ -695,3 +695,24 @@ message M2C_AllProductionList // IActorMessage
 	//int32 RpcId = 90; // Map主动下推给客户端的消息都可以删掉RpcId
 	repeated ProductionProto ProductionProtoList = 1;
 }
+
+
+message TaskInfoProto
+{
+	int32 ConfigId = 1;
+
+	int32 TaskState = 2;
+	
+	int32 TaskProgress = 3;
+}
+
+message M2C_UpdateTaskInfo // IActorMessage
+{
+	TaskInfoProto TaskInfoProto = 1;
+}
+
+message M2C_AllTaskInfoList // IActorMessage
+{
+	repeated TaskInfoProto TaskInfoProtoList = 1;
+}
+

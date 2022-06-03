@@ -8,7 +8,7 @@
         Received = 2,
     }
 
-    public enum TaksActionType
+    public enum TaskActionType
     {
         UpLevel = 1,
         MakeItem = 2,
