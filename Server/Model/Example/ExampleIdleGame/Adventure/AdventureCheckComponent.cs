@@ -2,6 +2,7 @@
 
 namespace ET
 {
+	[ComponentOf(typeof(Unit))]
     public class AdventureCheckComponent : Entity, IAwake, IDestroy
     {
         public int AnimationTotalTime = 0;

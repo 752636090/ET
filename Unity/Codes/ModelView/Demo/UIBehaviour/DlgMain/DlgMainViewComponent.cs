@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[ComponentOf(typeof(UIBaseWindow))]
 	[EnableMethod]
 	public  class DlgMainViewComponent : Entity,IAwake,IDestroy 
 	{

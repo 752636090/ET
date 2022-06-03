@@ -2,7 +2,8 @@
 
 namespace ET
 {
-	public  class DlgTask :Entity,IAwake,IUILogic
+	[ComponentOf(typeof(UIBaseWindow))]
+	public class DlgTask :Entity,IAwake,IUILogic
 	{
         public DlgTaskViewComponent View { get => this.Parent.GetComponent<DlgTaskViewComponent>();} 
 

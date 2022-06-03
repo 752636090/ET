@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class AdventureComponent : Entity, IAwake, IDestroy
     {
         public long BattleTimer = 0;

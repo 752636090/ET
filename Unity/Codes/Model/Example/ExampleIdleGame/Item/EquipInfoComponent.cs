@@ -6,6 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
+    [ComponentOf(typeof(Item))]
     [ChildType(typeof(AttributeEntry))]
 #if SERVER
     public class EquipInfoComponent : Entity, IAwake, IDestroy, ISerializeToEntity, IDeserialize

@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[ComponentOf(typeof(UIBaseWindow))]
 	[EnableMethod]
-	public  class DlgTaskViewComponent : Entity,IAwake,IDestroy 
+    public  class DlgTaskViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.Button E_CloseButton
      	{

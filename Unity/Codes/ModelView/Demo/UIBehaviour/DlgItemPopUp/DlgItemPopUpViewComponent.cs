@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[ComponentOf(typeof(UIBaseWindow))]
 	[EnableMethod]
-	public class DlgItemPopUpViewComponent : Entity,IAwake,IDestroy 
+    public class DlgItemPopUpViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.Button E_CloseButton
      	{

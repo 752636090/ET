@@ -5,8 +5,10 @@ namespace ET
 {
     [ChildType(typeof(TaskInfo))]
 #if SERVER
+    [ComponentOf(typeof(Unit))]
     public class TasksComponent : Entity, IAwake, IDestroy, ITransfer, IUnitCache, IDeserialize
 #else
+    [ComponentOf(typeof(Scene))]
     public class TasksComponent : Entity, IAwake, IDestroy
 #endif
     {

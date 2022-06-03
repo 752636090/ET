@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[ComponentOf(typeof(UIBaseWindow))]
 	[EnableMethod]
-	public  class DlgRoleInfoViewComponent : Entity,IAwake,IDestroy 
+    public  class DlgRoleInfoViewComponent : Entity,IAwake,IDestroy 
 	{
 		public ES_EquipItem ES_EquipItem_Head
      	{

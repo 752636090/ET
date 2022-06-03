@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[ComponentOf(typeof(UIBaseWindow))]
 	[EnableMethod]
-	public  class DlgForgeViewComponent : Entity,IAwake,IDestroy 
+    public  class DlgForgeViewComponent : Entity,IAwake,IDestroy 
 	{
 		public ES_MakeQueue ES_MakeQueueOne
      	{

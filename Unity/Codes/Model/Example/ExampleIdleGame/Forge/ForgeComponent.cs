@@ -5,8 +5,10 @@ namespace ET
 {
     [ChildType(typeof(Production))]
 #if SERVER
+    [ComponentOf(typeof(Unit))]
     public class ForgeComponent : Entity, IAwake, IDestroy, IDeserialize, ITransfer, IUnitCache
 #else
+    [ComponentOf(typeof(Scene))]
     public class ForgeComponent : Entity, IAwake, IDestroy
 #endif
     {

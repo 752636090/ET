@@ -7,8 +7,10 @@ namespace ET
 {
     [ChildType(typeof(Item))]
 #if SERVER
-    public class BagComponent : Entity, IAwake, IDestroy, IDeserialize, ITransfer, IUnitCache 
+    [ComponentOf(typeof(Unit))]
+    public class BagComponent : Entity, IAwake, IDestroy, IDeserialize, ITransfer, IUnitCache
 #else
+    [ComponentOf(typeof(Scene))]
     public class BagComponent : Entity, IAwake, IDestroy
 #endif
     {

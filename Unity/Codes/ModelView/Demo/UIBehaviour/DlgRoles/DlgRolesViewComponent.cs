@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[ComponentOf(typeof(UIBaseWindow))]
 	[EnableMethod]
-	public  class DlgRolesViewComponent : Entity,IAwake,IDestroy 
+    public  class DlgRolesViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.InputField E_RoleNameInputField
      	{

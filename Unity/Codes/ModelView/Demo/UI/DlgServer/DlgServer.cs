@@ -2,7 +2,8 @@
 
 namespace ET
 {
-	public  class DlgServer :Entity,IAwake, IUILogic
+	[ComponentOf(typeof(UIBaseWindow))]
+	public  class DlgServer : Entity,IAwake, IUILogic
 	{
 
 		public DlgServerViewComponent View { get => this.Parent.GetComponent<DlgServerViewComponent>();}
