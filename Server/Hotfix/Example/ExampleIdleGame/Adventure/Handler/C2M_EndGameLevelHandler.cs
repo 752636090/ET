@@ -53,21 +53,23 @@ namespace ET
             numericComponent.Set(NumericType.AdventureState, 0);
             reply();
 
+            Game.EventSystem.Publish(new EventType.BattleWin() { Unit = unit, LevelId = levelId });
+
+
             // 战斗胜利增加经验值
             numericComponent[NumericType.Exp] += BattleLevelConfigCategory.Instance.Get(levelId).RewardExp;
 
-            // 背包测试代码 随机下发闯关成功的奖励（30个）
-            for (int i = 0; i < 30; i++)
-            {
-                if (!BagHelper.AddItemByConfigId(unit, RandomHelper.RandomNumber(1002, 1018)))
-                {
-                    Log.Error("增加背包物品失败");
-                }
-            }
+            //// 背包测试代码 随机下发闯关成功的奖励（30个）
+            //for (int i = 0; i < 30; i++)
+            //{
+            //    if (!BagHelper.AddItemByConfigId(unit, RandomHelper.RandomNumber(1002, 1018)))
+            //    {
+            //        Log.Error("增加背包物品失败");
+            //    }
+            //}
 
-            // 猜的，增加精铁和皮革
-            numericComponent[NumericType.IronStone] += 1000;
-            numericComponent[NumericType.Fur] += 1000;
+            numericComponent[NumericType.IronStone] += 3600;
+            numericComponent[NumericType.Fur] += 3600;
             
             await ETTask.CompletedTask;
         }

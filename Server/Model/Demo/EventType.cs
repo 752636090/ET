@@ -75,6 +75,12 @@ namespace ET
 			public Unit Unit;
 			public int ProductionConfigId;
 		}
+
+		public struct BattleWin
+        {
+			public Unit Unit;
+			public int LevelId;
+        }
 		#endregion
 	}
 }

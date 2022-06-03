@@ -39,7 +39,9 @@ namespace ET
 
 			ForgeHelper.SyncAllProduction(unit);
 
-            unit.AddComponent<NumericNoticeComponent>();
+			TaskNoticeHelper.SyncAllTaskInfo(unit);
+
+			unit.AddComponent<NumericNoticeComponent>();
             unit.AddComponent<AdventureCheckComponent>(); 
             #endregion
 
