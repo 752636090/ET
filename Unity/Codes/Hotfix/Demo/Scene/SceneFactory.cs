@@ -17,6 +17,7 @@ namespace ET
             zoneScene.AddComponent<BagComponent>();
             zoneScene.AddComponent<EquipmentsComponent>();
             zoneScene.AddComponent<ForgeComponent>();
+            zoneScene.AddComponent<TasksComponent>(); // ²ÂµÄ
             #endregion
 
             Game.EventSystem.Publish(new EventType.AfterCreateZoneScene() {ZoneScene = zoneScene});

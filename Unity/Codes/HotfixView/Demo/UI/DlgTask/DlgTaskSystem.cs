@@ -12,6 +12,7 @@ namespace ET
     {
         public static void RegisterUIEvent(this DlgTask self)
         {
+			self.RegisterCloseEvent<DlgTask>(self.View.E_CloseButton);
             self.View.E_TasksLoopVerticalScrollRect.AddItemRefreshListener(self.OnTaskItemLoopHandler);
         }
 

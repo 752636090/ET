@@ -12,6 +12,7 @@ namespace ET
             //RedDotHelper.AddRedDotNode(args.ZoneScene, "Main", "Task", false);
             RedDotHelper.AddRedDotNode(args.ZoneScene, "Role", "UpLevelButton", false);
             RedDotHelper.AddRedDotNode(args.ZoneScene, "Role", "AddAttribute", false);
+            RedDotHelper.AddRedDotNode(args.ZoneScene, "Main", "Task", false); // 猜的
         }
     }
 }

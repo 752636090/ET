@@ -63,5 +63,11 @@ namespace ET
         public static int ERR_NoMakeFreeQueue = 200039;
         public static int ERR_MakeConsumeError = 200040;
         public static int ERR_NoMakeQueueOver = 2000041;
+
+        public static int ERR_NoTaskInfoExist = 2000042;
+        public static int ERR_TaskNoCompleted = 2000043;
+        public static int ERR_NoTaskExist = 2000044;
+        public static int ERR_BeforeTaskNoOver = 2000045;
+        public static int ERR_TaskRewarded = 2000046;
     }
 }

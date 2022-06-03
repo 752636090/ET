@@ -109,6 +109,69 @@ namespace ET
             return 0;
         }
 
+        public static void ReceiveTaskRewardState(this TasksComponent self, Unit unit, int taskConfigId)
+        {
+            if (!self.TaskInfoDict.TryGetValue(taskConfigId, out TaskInfo taskInfo))
+            {
+                Log.Error($"TaskInfo Error :{taskConfigId}");
+                return;
+            }
+            taskInfo.SetTaskState(TaskState.Received);
+            TaskNoticeHelper.SyncTaskInfo(unit, taskInfo, self.M2CUpdateTaskInfo);
+            self.UpdateAfterTaskInfo(taskConfigId);
+        }
 
+        public static int TryReceiveTaskReward(this TasksComponent self, int taskConfigId)
+        {
+            if (!TaskConfigCategory.Instance.Contain(taskConfigId))
+            {
+                return ErrorCode.ERR_NoTaskExist;
+            }
+
+            self.TaskInfoDict.TryGetValue(taskConfigId, out TaskInfo taskInfo);
+
+            if (taskInfo == null || taskInfo.IsDisposed)
+            {
+                return ErrorCode.ERR_NoTaskInfoExist;
+            }
+
+            if (!self.IsBeforeTaskReceived(taskConfigId))
+            {
+                return ErrorCode.ERR_BeforeTaskNoOver;
+            }
+
+            if (taskInfo.IsTaskState(TaskState.Received))
+            {
+                return ErrorCode.ERR_TaskRewarded;
+            }
+
+            if (!taskInfo.IsTaskState(TaskState.Complete))
+            {
+                return ErrorCode.ERR_TaskNoCompleted;
+            }
+
+            return ErrorCode.ERR_Success;
+        }
+
+        public static bool IsBeforeTaskReceived(this TasksComponent self, int taskConfigId)
+        {
+            TaskConfig config = TaskConfigCategory.Instance.Get(taskConfigId);
+
+            if (config.TaskBeforeId == 0)
+            {
+                return true;
+            }
+
+            if (!self.TaskInfoDict.TryGetValue(config.TaskBeforeId, out TaskInfo beforeTaskInfo))
+            {
+                return false;
+            }
+
+            if (!beforeTaskInfo.IsTaskState(TaskState.Received))
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

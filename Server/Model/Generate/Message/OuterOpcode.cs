@@ -92,5 +92,7 @@ namespace ET
 		 public const ushort TaskInfoProto = 10089;
 		 public const ushort M2C_UpdateTaskInfo = 10090;
 		 public const ushort M2C_AllTaskInfoList = 10091;
+		 public const ushort C2M_ReceiveTaskReward = 10092;
+		 public const ushort M2C_ReceiveTaskReward = 10093;
 	}
 }
