@@ -239,9 +239,9 @@ public partial class UICodeSpawner
         
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
+		strBuilder.AppendLine("\t [ComponentOf(typeof(UIBaseWindow))]");
 
-      
-        strBuilder.AppendFormat("\tpublic  class {0} :Entity,IAwake,IUILogic\r\n", strDlgName);
+		strBuilder.AppendFormat("\tpublic  class {0} :Entity,IAwake,IUILogic\r\n", strDlgName);
           strBuilder.AppendLine("\t{");
           strBuilder.AppendLine("");
           
@@ -331,7 +331,8 @@ public partial class UICodeSpawner
 	    strBuilder.AppendLine("using UnityEngine.UI;");
 	    strBuilder.AppendLine("namespace ET");
 	    strBuilder.AppendLine("{");
-	    strBuilder.AppendLine("\t[EnableMethod]");
+		strBuilder.AppendLine("\t[ComponentOf(typeof(UIBaseWindow))]");
+		strBuilder.AppendLine("\t[EnableMethod]");
 	    strBuilder.AppendFormat("\tpublic  class {0} : Entity,IAwake,IDestroy \r\n", strDlgComponentName)
 		    .AppendLine("\t{");
      
