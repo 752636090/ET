@@ -14,6 +14,7 @@ namespace ET
 		Win
 	}
 
+	[ComponentOf(typeof(Unit))]
 	public class AnimatorComponent : Entity, IAwake, IUpdate, IDestroy
 	{
 		public Dictionary<string, AnimationClip> animationClips = new Dictionary<string, AnimationClip>();

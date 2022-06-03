@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	[EnableMethod]
+    [ComponentOf(typeof(UIBaseWindow))]
+    [EnableMethod]
 	public  class DlgHelperViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.UI.Text E_TipText
