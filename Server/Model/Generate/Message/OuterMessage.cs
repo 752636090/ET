@@ -1462,4 +1462,50 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.RankInfoProto)]
+	[ProtoContract]
+	public partial class RankInfoProto: Object
+	{
+		[ProtoMember(1)]
+		public long Id { get; set; }
+
+		[ProtoMember(2)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(4)]
+		public string Name { get; set; }
+
+		[ProtoMember(5)]
+		public int Count { get; set; }
+
+	}
+
+	[ResponseType(nameof(Rank2C_GetRanksInfo))]
+	[Message(OuterOpcode.C2Rank_GetRanksInfo)]
+	[ProtoContract]
+	public partial class C2Rank_GetRanksInfo: Object, IActorRankInfoRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.Rank2C_GetRanksInfo)]
+	[ProtoContract]
+	public partial class Rank2C_GetRanksInfo: Object, IActorRankInfoResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public List<RankInfoProto> RankInfoProtoList = new List<RankInfoProto>();
+
+	}
+
 }

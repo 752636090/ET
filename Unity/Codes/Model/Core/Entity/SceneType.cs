@@ -16,6 +16,8 @@
 		LoginCenter = 8,
 
 		UnitCache = 9,
+
+		Rank = 10,
         #endregion
 
         // 客户端Model层

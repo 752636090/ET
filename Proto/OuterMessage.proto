@@ -729,3 +729,25 @@ message M2C_ReceiveTaskReward // IActorLocationResponse
 	int32 Error = 91;
 	string Message = 92;
 }
+
+message RankInfoProto
+{
+	int64 Id = 1;
+	int64 UnitId = 2;
+	string Name = 4;
+	int32 Count = 5;
+}
+
+//ResponseType Rank2C_GetRanksInfo
+message C2Rank_GetRanksInfo // IActorRankInfoRequest
+{
+	int32 RpcId = 1;
+}
+
+message Rank2C_GetRanksInfo // IActorRankInfoResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	repeated RankInfoProto RankInfoProtoList = 1;
+}
