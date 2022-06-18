@@ -15,7 +15,7 @@
         public static void Add(this RankComponent self, RankInfoProto rankInfoProto)
         {
             RankInfo rankInfo = self.AddChild<RankInfo>(true);
-            rankInfo.FromMessage(rankInfo);
+            rankInfo.FromMessage(rankInfoProto);
             self.RankInfos.Add(rankInfo);
         }
 

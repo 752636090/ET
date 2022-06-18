@@ -26,6 +26,7 @@
       <Link>Demo\Move\MoveComponentSystem.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Codes\Hotfix\Example\ExampleIdleGame\Adventure\DamageCalculateHelper.cs" Link="Example\ExampleIdleGame\Adventure\DamageCalculateHelper.cs" />
+    <Compile Include="..\..\Unity\Codes\Hotfix\Example\ExampleIdleGame\Rank\RankInfoSystem.cs" Link="Example\ExampleIdleGame\Rank\RankInfoSystem.cs" />
     <Compile Include="..\..\Unity\Codes\Hotfix\Example\ExampleIdleGame\Role\RoleInfoSystem.cs" Link="Example\ExampleIdleGame\Role\RoleInfoSystem.cs" />
     <Compile Include="..\..\Unity\Codes\Hotfix\Example\ExampleIdleGame\ServerInfo\ServerInfoSystem.cs" Link="Example\ExampleIdleGame\ServerInfo\ServerInfoSystem.cs" />
     <Compile Include="..\..\Unity\Codes\Hotfix\Example\ExampleIdleGame\Task\TaskInfoSystem.cs" Link="Example\ExampleIdleGame\Task\TaskInfoSystem.cs" />

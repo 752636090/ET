@@ -28,7 +28,7 @@ namespace ET
 
 		public static void ShowWindow(this DlgRank self, Entity contextData = null)
 		{
-			self.RefrshRankInfo().Coroutine();
+			self.RefreshRankInfo().Coroutine();
 			self.Timer = TimerComponent.Instance.NewRepeatedTimer(5000, TimerType.RankUI, self);
 		}
 

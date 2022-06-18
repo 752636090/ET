@@ -99,6 +99,8 @@
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Item\ItemType.cs" Link="Example\ExampleIdleGame\Item\ItemType.cs" />
     
+    <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Rank\RankInfo.cs" Link="Example\ExampleIdleGame\Rank\RankInfo.cs" />
+    
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\Role\RoleInfo.cs" Link="Example\ExampleIdleGame\Role\RoleInfo.cs" />
     
     <Compile Include="..\..\Unity\Codes\Model\Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" Link="Example\ExampleIdleGame\ServerInfo\ServerInfo.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="..\..\Unity\Assets\Mono\Module\NetworkTCP\**\*.cs">
       <Link>Module\NetworkTCP\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Codes\Model\Module\Actor\IActorRankInfoMessage.cs" Link="Module\Actor\IActorRankInfoMessage.cs" />
     <Compile Include="..\..\Unity\Codes\Model\Module\Numeric\INumericWatcher.cs">
       <Link>Module\Numeric\INumericWatcher.cs</Link>
     </Compile>
