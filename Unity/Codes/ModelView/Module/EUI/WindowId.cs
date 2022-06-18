@@ -18,5 +18,6 @@
         WindowID_ItemPopUp,
         WindowID_Forge,
         WindowID_Task,
+        WindowID_Rank,
     }
 }
