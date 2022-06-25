@@ -83,6 +83,10 @@ namespace ET
             if (isNewUnit)
             {
                 unit = UnitFactory.Create(gateMapComponent.Scene, player.Id, UnitType.Player); // player.Id跟player.UnitId一样
+
+                List<RoleInfo> roleInfos = await DBManagerComponent.Instance.GetZoneDB(player.DomainZone()).Query<RoleInfo>(d => d.Id == player.UnitId);
+                unit.AddComponent(roleInfos[0]);
+
                 UnitCacheHelper.AddOrUpdateUnitAllCache(unit);
             }
 

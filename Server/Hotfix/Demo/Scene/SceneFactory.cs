@@ -60,7 +60,7 @@ namespace ET
                     scene.AddComponent<UnitCacheComponent>();
                     break;
                 case SceneType.Rank:
-                    scene.AddComponent<RankInfoComponent>().LoadRankInfo();
+                    scene.AddComponent<RankInfosComponent>().LoadRankInfo().Coroutine(); // 视频里好像没有Coroutine
                     break;
                     #endregion
             }

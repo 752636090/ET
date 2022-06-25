@@ -16,6 +16,7 @@ namespace ET
             self.View.E_BagButton.AddListenerAsync(() => { return self.OnBagButtonClickHandler(); }); // 猜的
             self.View.E_MakeButton.AddListenerAsync(() => { return self.OnMakeButtonClickHandler(); }); // 猜的
             self.View.E_TaskButton.AddListenerAsync(() => { return self.OnTaskButtonClickHandler(); }); // 猜的
+            self.View.E_RankButton.AddListenerAsync(() => { return self.OnRankButtonClickHandler(); }); // 猜的
             RedDotHelper.AddRedDotNodeView(self.ZoneScene(), "Role", self.View.E_RoleButton.gameObject, Vector3.one, new Vector3(75, 55, 0));
             RedDotHelper.AddRedDotNodeView(self.ZoneScene(), "Forge", self.View.E_MakeButton.gameObject, Vector3.one, new Vector3(75, 55, 0)); // 猜的
             RedDotHelper.AddRedDotNodeView(self.ZoneScene(), "Task", self.View.E_TaskButton.gameObject, Vector3.one, new Vector3(75, 55, 0)); // 猜的
@@ -91,6 +92,13 @@ namespace ET
         public static async ETTask OnTaskButtonClickHandler(this DlgMain self)
         {
             self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Task);
+            await ETTask.CompletedTask;
+        }
+
+        // 整个都是猜的
+        public static async ETTask OnRankButtonClickHandler(this DlgMain self)
+        {
+            self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Rank);
             await ETTask.CompletedTask;
         }
     }

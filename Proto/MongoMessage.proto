@@ -31,3 +31,10 @@ message UnitCache2Other_GetUnit //IActorResponse
 	repeated Entity EntityList = 4;
 	repeated string ComponentNameList = 5;
 }
+
+
+message Map2Rank_AddOrUpdateRankInfo //IActorMessage
+{
+	int32 RpcId = 90;
+	RankInfo RankInfo = 1;
+}

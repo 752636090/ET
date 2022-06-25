@@ -58,4 +58,16 @@ namespace ET
 
 	}
 
+	[Message(MongoOpcode.Map2Rank_AddOrUpdateRankInfo)]
+	[ProtoContract]
+	public partial class Map2Rank_AddOrUpdateRankInfo: Object, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public RankInfo RankInfo { get; set; }
+
+	}
+
 }

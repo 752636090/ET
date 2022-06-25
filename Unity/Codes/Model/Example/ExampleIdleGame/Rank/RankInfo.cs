@@ -1,5 +1,6 @@
 ﻿namespace ET
 {
+    [ComponentOf(typeof(Unit))]
     public class RankInfo : Entity, IAwake, IDestroy
     {
         public long UnitId;

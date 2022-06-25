@@ -39,7 +39,7 @@ namespace ET
 
 		public static void OnRankItemLoopHandler(this DlgRank self, Transform transform, int index)
         {
-			Scroll_Item_rank scrollItemRank = self.ScrollItemRanks[index].Bind(transform);
+			Scroll_Item_rank scrollItemRank = self.ScrollItemRanks[index].BindTrans(transform);
 			RankInfo rankInfo = self.ZoneScene().GetComponent<RankComponent>().GetRankInfoByIndex(index);
 
 			int order = index + 1;
@@ -66,7 +66,7 @@ namespace ET
                 }
 
 				int count = self.ZoneScene().GetComponent<RankComponent>().GetRankCount();
-				self.AddUIScrollItems(ref self.ScrollItemRank, count);
+				self.AddUIScrollItems(ref self.ScrollItemRanks, count);
 				self.View.E_RankLoopVerticalScrollRect.SetVisible(true, count);
             }
             catch (Exception e)

@@ -228,6 +228,40 @@ namespace ET
      		}
      	}
 
+		public UnityEngine.UI.Button E_RankButton
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_E_RankButton == null )
+     			{
+		    		this.m_E_RankButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"Center/E_Rank");
+     			}
+     			return this.m_E_RankButton;
+     		}
+     	}
+
+		public UnityEngine.UI.Image E_RankImage
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_E_RankImage == null )
+     			{
+		    		this.m_E_RankImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"Center/E_Rank");
+     			}
+     			return this.m_E_RankImage;
+     		}
+     	}
+
 		public void DestroyWidget()
 		{
 			this.m_E_RoleButton = null;
@@ -243,6 +277,8 @@ namespace ET
 			this.m_E_RoleLevelText = null;
 			this.m_E_GoldText = null;
 			this.m_E_ExpText = null;
+			this.m_E_RankButton = null;
+			this.m_E_RankImage = null;
 			this.uiTransform = null;
 		}
 
@@ -259,6 +295,8 @@ namespace ET
 		private UnityEngine.UI.Text m_E_RoleLevelText = null;
 		private UnityEngine.UI.Text m_E_GoldText = null;
 		private UnityEngine.UI.Text m_E_ExpText = null;
+		private UnityEngine.UI.Button m_E_RankButton = null;
+		private UnityEngine.UI.Image m_E_RankImage = null;
 		public Transform uiTransform = null;
 	}
 }

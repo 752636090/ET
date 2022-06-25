@@ -9,7 +9,7 @@ namespace ET
             Rank2C_GetRanksInfo rank2CGetRanksInfo = null;
             try
             {
-                rank2CGetRanksInfo = (Rank2C_GetRanksInfo)await ZoneScene.GetComponent<SessionComponent>().Session.Call(new Rank2C_GetRanksInfo() { });
+                rank2CGetRanksInfo = (Rank2C_GetRanksInfo)await ZoneScene.GetComponent<SessionComponent>().Session.Call(new C2Rank_GetRanksInfo() { });
             }
             catch (Exception e)
             {

@@ -754,7 +754,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     Android: NET452;ILRuntime
-    Standalone: DISABLE_ILRUNTIME_DEBUG
+    Standalone: DISABLE_ILRUNTIME_DEBUG;ODIN_INSPECTOR;ODIN_INSPECTOR_3
     WebGL: NET452;ILRuntime
     iPhone: NET452;ILRuntime
   additionalCompilerArguments: {}
