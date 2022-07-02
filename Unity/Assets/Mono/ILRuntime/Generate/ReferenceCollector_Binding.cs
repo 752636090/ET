@@ -18,43 +18,19 @@ namespace ILRuntime.Runtime.Generated
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
+            BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
             Type type = typeof(global::ReferenceCollector);
-            Dictionary<string, List<MethodInfo>> genericMethods = new Dictionary<string, List<MethodInfo>>();
-            List<MethodInfo> lst = null;                    
-            foreach(var m in type.GetMethods())
-            {
-                if(m.IsGenericMethodDefinition)
-                {
-                    if (!genericMethods.TryGetValue(m.Name, out lst))
-                    {
-                        lst = new List<MethodInfo>();
-                        genericMethods[m.Name] = lst;
-                    }
-                    lst.Add(m);
-                }
-            }
-            args = new Type[]{typeof(UnityEngine.GameObject)};
-            if (genericMethods.TryGetValue("Get", out lst))
-            {
-                foreach(var m in lst)
-                {
-                    if(m.MatchGenericParameters(args, typeof(UnityEngine.GameObject), typeof(System.String)))
-                    {
-                        method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, Get_0);
-
-                        break;
-                    }
-                }
-            }
+            args = new Type[]{typeof(System.String)};
+            method = type.GetMethod("GetObject", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, GetObject_0);
 
 
         }
 
 
-        static StackObject* Get_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetObject_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -68,7 +44,7 @@ namespace ILRuntime.Runtime.Generated
             global::ReferenceCollector instance_of_this_method = (global::ReferenceCollector)typeof(global::ReferenceCollector).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.Get<UnityEngine.GameObject>(@key);
+            var result_of_this_method = instance_of_this_method.GetObject(@key);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

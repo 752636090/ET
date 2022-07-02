@@ -47,6 +47,9 @@
                             // 通知游戏逻辑服下线Unit角色逻辑，并将数据存入数据库
                             M2G_RequestExitGame m2GRequestExitGame = (M2G_RequestExitGame)await MessageHelper.CallLocationActor(player.UnitId, new G2M_RequestExitGame());
 
+                            // 通知聊天服下线聊天Unit
+                            Chat2G_RequestExitChat chat2GRequestExitChat = (Chat2G_RequestExitChat)await MessageHelper.CallActor(player.ChatInfoInstanceId, new G2Chat_RequestExitChat());
+
                             // 通知移除账号角色登录信息
                             long LoginCenterConfigSceneId = StartSceneConfigCategory.Instance.LoginCenterConfig.InstanceId;
                             L2G_RemoveLoginRecord L2G_RemoveLoginRecord = (L2G_RemoveLoginRecord)await MessageHelper.CallActor(LoginCenterConfigSceneId, new G2L_RemoveLoginRecord
@@ -57,7 +60,6 @@
                     } 
                 }
 
-                player.PlayerState = PlayerState.Disconnect;
                 player.DomainScene().GetComponent<PlayerComponent>()?.Remove(player.AccountId);
                 player?.Dispose();
                 await TimerComponent.Instance.WaitAsync(300); // 为了防止Player身上有异步操作

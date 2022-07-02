@@ -56,8 +56,10 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<AsyncOperation>();
             appdomain.DelegateManager.RegisterMethodDelegate<System.Type, ILRuntime.Runtime.Intepreter.ILTypeInstance>();
             appdomain.DelegateManager.RegisterMethodDelegate<System.Int64, ILRuntime.Runtime.Intepreter.ILTypeInstance>();
-            
-            
+            appdomain.DelegateManager.RegisterMethodDelegate<UnityEngine.Transform, System.Int32>(); // 猜的
+            appdomain.DelegateManager.RegisterMethodDelegate<System.Int32, ILRuntime.Runtime.Intepreter.ILTypeInstance>(); // 猜的
+
+
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Object, ET.ETTask>();
             appdomain.DelegateManager.RegisterFunctionDelegate<ILTypeInstance, bool>();
@@ -90,6 +92,14 @@ namespace ET
                 return new Comparison<KeyValuePair<int, int>>((x, y) =>
                 {
                     return ((Func<KeyValuePair<int, int>, KeyValuePair<int, int>, int>)act)(x, y);
+                });
+            });
+
+            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.TweenCallback>((act) =>
+            {
+                return new DG.Tweening.TweenCallback(() =>
+                {
+                    ((Action)act)(); // 猜的
                 });
             });
             

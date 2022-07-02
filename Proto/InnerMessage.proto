@@ -337,17 +337,15 @@ message Chat2G_EnterChat // IActorResponse
 	int64 ChatInfoUnitInstanceId = 1;
 }
 
-// 没用到
 //ResponseType Chat2G_RequestExitChat
 message G2Chat_RequestExitChat // IActorRequest
 {
 	int32 RpcId = 90;
 }
 
-// 没用到
 message Chat2G_RequestExitChat // IActorResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;
-
+	string Message = 92;
 }

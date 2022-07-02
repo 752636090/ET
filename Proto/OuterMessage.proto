@@ -769,10 +769,6 @@ message Chat2C_SendChatInfo // IActorChatInfoResponse
 
 message Chat2C_NoticeChatInfo // IActorMessage
 {
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
-
 	string Name = 1;
 	string ChatMessage = 2;
 }

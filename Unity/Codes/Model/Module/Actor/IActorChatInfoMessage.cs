@@ -9,7 +9,7 @@
     {
     }
 
-    public interface IActorChatInfoRespinse : IActorResponse
+    public interface IActorChatInfoResponse : IActorResponse
     {
     }
 }

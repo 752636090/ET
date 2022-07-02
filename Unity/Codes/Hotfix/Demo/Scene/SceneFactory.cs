@@ -19,6 +19,7 @@ namespace ET
             zoneScene.AddComponent<ForgeComponent>();
             zoneScene.AddComponent<TasksComponent>(); // ²ÂµÄ
             zoneScene.AddComponent<RankComponent>(); // ²ÂµÄ
+            zoneScene.AddComponent<ChatComponent>(); // ²ÂµÄ
             #endregion
 
             Game.EventSystem.Publish(new EventType.AfterCreateZoneScene() {ZoneScene = zoneScene});

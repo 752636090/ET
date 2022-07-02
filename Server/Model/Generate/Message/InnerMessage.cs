@@ -674,7 +674,6 @@ namespace ET
 
 	}
 
-// 没用到
 	[ResponseType(nameof(Chat2G_RequestExitChat))]
 	[Message(InnerOpcode.G2Chat_RequestExitChat)]
 	[ProtoContract]
@@ -685,7 +684,6 @@ namespace ET
 
 	}
 
-// 没用到
 	[Message(InnerOpcode.Chat2G_RequestExitChat)]
 	[ProtoContract]
 	public partial class Chat2G_RequestExitChat: Object, IActorResponse
@@ -695,6 +693,9 @@ namespace ET
 
 		[ProtoMember(91)]
 		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
 
 	}
 
