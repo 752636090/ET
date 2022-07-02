@@ -115,6 +115,7 @@
     <Compile Include="..\..\Unity\Codes\Model\Module\ActorLocation\IActorLocationMessage.cs">
       <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Codes\Model\Module\Actor\IActorChatInfoMessage.cs" Link="Module\Actor\IActorChatInfoMessage.cs" />
     <Compile Include="..\..\Unity\Codes\Model\Module\Actor\IActorMessage.cs">
       <Link>Module\Actor\IActorMessage.cs</Link>
     </Compile>

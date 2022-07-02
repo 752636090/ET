@@ -62,6 +62,9 @@ namespace ET
                 case SceneType.Rank:
                     scene.AddComponent<RankInfosComponent>().LoadRankInfo().Coroutine(); // 视频里好像没有Coroutine
                     break;
+                case SceneType.ChatInfo:
+                    scene.AddComponent<ChatInfoUnitsComponent>();
+                    break;
                     #endregion
             }
 
