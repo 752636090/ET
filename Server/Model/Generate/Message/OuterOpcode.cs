@@ -97,5 +97,8 @@ namespace ET
 		 public const ushort RankInfoProto = 10094;
 		 public const ushort C2Rank_GetRanksInfo = 10095;
 		 public const ushort Rank2C_GetRanksInfo = 10096;
+		 public const ushort C2Chat_SendChatInfo = 10097;
+		 public const ushort Chat2C_SendChatInfo = 10098;
+		 public const ushort Chat2C_NoticeChatInfo = 10099;
 	}
 }

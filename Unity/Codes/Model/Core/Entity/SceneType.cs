@@ -18,6 +18,8 @@
 		UnitCache = 9,
 
 		Rank = 10,
+
+		ChatInfo = 11,
         #endregion
 
         // 客户端Model层
