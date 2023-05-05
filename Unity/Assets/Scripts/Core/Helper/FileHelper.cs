@@ -6,7 +6,14 @@ namespace ET
 {
 	public static class FileHelper
 	{
-		public static void GetAllFiles(List<string> files, string dir)
+		public static List<string> GetAllFiles(string dir, string searchPattern = "*")
+		{
+			List<string> list = new List<string>();
+			GetAllFiles(list, dir, searchPattern);
+			return list;
+		}
+		
+		public static void GetAllFiles(List<string> files, string dir, string searchPattern = "*")
 		{
 			string[] fls = Directory.GetFiles(dir);
 			foreach (string fl in fls)
@@ -17,12 +24,16 @@ namespace ET
 			string[] subDirs = Directory.GetDirectories(dir);
 			foreach (string subDir in subDirs)
 			{
-				GetAllFiles(files, subDir);
+				GetAllFiles(files, subDir, searchPattern);
 			}
 		}
 		
 		public static void CleanDirectory(string dir)
 		{
+			if (!Directory.Exists(dir))
+			{
+				return;
+			}
 			foreach (string subdir in Directory.GetDirectories(dir))
 			{
 				Directory.Delete(subdir, true);		
@@ -91,30 +102,6 @@ namespace ET
 					ReplaceExtensionName(subDir, extensionName, newExtensionName);
 				}
 			}
-		}
-		
-		public static bool CopyFile(string sourcePath, string targetPath, bool overwrite)
-		{
-			string sourceText = null;
-			string targetText = null;
-
-			if (File.Exists(sourcePath))
-			{
-				sourceText = File.ReadAllText(sourcePath);
-			}
-
-			if (File.Exists(targetPath))
-			{
-				targetText = File.ReadAllText(targetPath);
-			}
-
-			if (sourceText != targetText && File.Exists(sourcePath))
-			{
-				File.Copy(sourcePath, targetPath, overwrite);
-				return true;
-			}
-
-			return false;
 		}
 	}
 }

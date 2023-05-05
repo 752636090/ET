@@ -7,64 +7,75 @@ using System.Text;
 
 namespace ET
 {
-    public class OnGenerateCSProjectProcessor : AssetPostprocessor
+    public class OnGenerateCSProjectProcessor: AssetPostprocessor
     {
         public static string OnGeneratedCSProject(string path, string content)
         {
-            
-            if (path.EndsWith("Unity.Hotfix.csproj"))
+            if (path.EndsWith("Unity.Core.csproj"))
             {
-                content =  content.Replace("<Compile Include=\"Assets\\Scripts\\Hotfix\\Empty.cs\" />", string.Empty);
-                content =  content.Replace("<None Include=\"Assets\\Scripts\\Hotfix\\Unity.Hotfix.asmdef\" />", string.Empty);
-            }
-            
-            if (path.EndsWith("Unity.HotfixView.csproj"))
-            {
-                content =  content.Replace("<Compile Include=\"Assets\\Scripts\\HotfixView\\Empty.cs\" />", string.Empty);
-                content =  content.Replace("<None Include=\"Assets\\Scripts\\HotfixView\\Unity.HotfixView.asmdef\" />", string.Empty);
-            }
-            
-            if (path.EndsWith("Unity.Model.csproj"))
-            {
-                content =  content.Replace("<Compile Include=\"Assets\\Scripts\\Model\\Empty.cs\" />", string.Empty);
-                content =  content.Replace("<None Include=\"Assets\\Scripts\\Model\\Unity.Model.asmdef\" />", string.Empty);
-            }
-            
-            if (path.EndsWith("Unity.ModelView.csproj"))
-            {
-                content =  content.Replace("<Compile Include=\"Assets\\Scripts\\ModelView\\Empty.cs\" />", string.Empty);
-                content =  content.Replace("<None Include=\"Assets\\Scripts\\ModelView\\Unity.ModelView.asmdef\" />", string.Empty);
-            }
-            
-            if (path.EndsWith("Unity.Hotfix.csproj"))
-            {
-                return GenerateCustomProject(path, content, 
-                    @"..\Codes\Hotfix\Client\**\*.cs Client", 
-                    @"..\Codes\Hotfix\Share\**\*.cs Share");
+                return GenerateCustomProject(path, content);
             }
 
-            if (path.EndsWith("Unity.HotfixView.csproj"))
+            if (Define.EnableCodes)
             {
-                return GenerateCustomProject(path, content, 
-                    @"..\Codes\HotfixView\Client\**\*.cs Client", 
-                    @"..\Codes\HotfixView\Share\**\*.cs Share"); 
-            }
+                if (path.EndsWith("Unity.Hotfix.Codes.csproj"))
+                {
+                    content = GenerateCustomProject(path, content);
+                }
 
-            if (path.EndsWith("Unity.Model.csproj"))
-            {
-                return GenerateCustomProject(path, content, 
-                    @"..\Codes\Model\Client\**\*.cs Client",
-                    @"..\Codes\Model\Share\**\*.cs Share",
-                    @"..\Codes\Generate\Client\**\*.cs Generate");
-            }
+                if (path.EndsWith("Unity.Model.Codes.csproj"))
+                {
+                    content = GenerateCustomProject(path, content);
+                }
 
-            if (path.EndsWith("Unity.ModelView.csproj"))
-            {
-                return GenerateCustomProject(path, content, 
-                    @"..\Codes\ModelView\Client\**\*.cs Client",
-                    @"..\Codes\ModelView\Share\**\*.cs Share");
+                if (path.EndsWith("Unity.HotfixView.Codes.csproj"))
+                {
+                    content = GenerateCustomProject(path, content);
+                }
+
+                if (path.EndsWith("Unity.ModelView.Codes.csproj"))
+                {
+                    content = GenerateCustomProject(path, content);
+                }
             }
-            
+            else
+            {
+                if (path.EndsWith("Unity.Hotfix.csproj"))
+                {
+                    content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\Hotfix\\Empty.cs\" />", string.Empty);
+                    content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\Hotfix\\Unity.Hotfix.asmdef\" />", string.Empty);
+
+                    content = GenerateCustomProject(path, content,
+                        @"Assets\Scripts\Codes\Hotfix\**\*.cs %(RecursiveDir)%(FileName)%(Extension)");
+                }
+
+                if (path.EndsWith("Unity.HotfixView.csproj"))
+                {
+                    content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\HotfixView\\Empty.cs\" />", string.Empty);
+                    content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\HotfixView\\Unity.HotfixView.asmdef\" />", string.Empty);
+                    content = GenerateCustomProject(path, content,
+                        @"Assets\Scripts\Codes\HotfixView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)");
+                }
+
+                if (path.EndsWith("Unity.Model.csproj"))
+                {
+                    content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\Model\\Empty.cs\" />", string.Empty);
+                    content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\Model\\Unity.Model.asmdef\" />", string.Empty);
+                    content = GenerateCustomProject(path, content,
+                        @"Assets\Scripts\Codes\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\Model\Share\**\*.cs Share\%(RecursiveDir)%(FileName)%(Extension)",
+                        @"Assets\Scripts\Codes\Model\Generate\ClientServer\**\*.cs Generate\%(RecursiveDir)%(FileName)%(Extension)");
+                }
+
+                if (path.EndsWith("Unity.ModelView.csproj"))
+                {
+                    content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\ModelView\\Empty.cs\" />", string.Empty);
+                    content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\ModelView\\Unity.ModelView.asmdef\" />", string.Empty);
+                    content = GenerateCustomProject(path, content,
+                        @"Assets\Scripts\Codes\ModelView\**\*.cs %(RecursiveDir)%(FileName)%(Extension)");
+                }
+            }
             return content;
         }
 
@@ -85,14 +96,14 @@ namespace ET
                 string linkStr = ss[1];
                 XmlElement compile = newDoc.CreateElement("Compile", newDoc.DocumentElement.NamespaceURI);
                 XmlElement link = newDoc.CreateElement("Link", newDoc.DocumentElement.NamespaceURI);
-                link.InnerText = $"{linkStr}\\%(RecursiveDir)%(FileName)%(Extension)";
+                link.InnerText = linkStr;
                 compile.AppendChild(link);
                 compile.SetAttribute("Include", p);
                 itemGroup.AppendChild(compile);
             }
 
             var projectReference = newDoc.CreateElement("ProjectReference", newDoc.DocumentElement.NamespaceURI);
-            projectReference.SetAttribute("Include", @"..\Codes\Analyzer\Share.Analyzer.csproj");
+            projectReference.SetAttribute("Include", @"..\Share\Analyzer\Share.Analyzer.csproj");
             projectReference.SetAttribute("OutputItemType", @"Analyzer");
             projectReference.SetAttribute("ReferenceOutputAssembly", @"false");
 
@@ -110,7 +121,6 @@ namespace ET
 
             using (StringWriter sw = new StringWriter())
             {
-
                 using (XmlTextWriter tx = new XmlTextWriter(sw))
                 {
                     tx.Formatting = Formatting.Indented;
