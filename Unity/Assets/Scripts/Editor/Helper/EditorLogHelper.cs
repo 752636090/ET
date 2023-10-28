@@ -7,12 +7,12 @@ namespace ET
     {
         static EditorLogHelper()
         {
-            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-            EditorApplication.update += CheckCompolingFinish;
+            //EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+            //EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+            //EditorApplication.update += CheckCompolingFinish;
         }
 
-        private static void CheckCompolingFinish()
+        public static void CheckCompolingFinish()
         {
             if (!EditorApplication.isCompiling)
             {
@@ -21,7 +21,7 @@ namespace ET
             }
         }
 
-        private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        public static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
             switch (state)
             {

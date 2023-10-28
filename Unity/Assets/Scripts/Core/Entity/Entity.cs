@@ -76,16 +76,19 @@ namespace ET
                 }
 
 #if ENABLE_VIEW && UNITY_EDITOR
-                if (value)
+                if (UnityEngine.Application.isPlaying)
                 {
-                    this.ViewGO = new UnityEngine.GameObject(this.ViewName);
-                    this.ViewGO.AddComponent<ComponentView>().Component = this;
-                    this.ViewGO.transform.SetParent(this.Parent == null? 
-                            UnityEngine.GameObject.Find("Global/Scenes").transform : this.Parent.ViewGO.transform);
-                }
-                else
-                {
-                    UnityEngine.Object.Destroy(this.ViewGO);
+                    if (value)
+                    {
+                        this.ViewGO = new UnityEngine.GameObject(this.ViewName);
+                        this.ViewGO.AddComponent<ComponentView>().Component = this;
+                        this.ViewGO.transform.SetParent(this.Parent == null ?
+                                UnityEngine.GameObject.Find("Global/Scenes").transform : this.Parent.ViewGO.transform);
+                    }
+                    else
+                    {
+                        UnityEngine.Object.Destroy(this.ViewGO);
+                    } 
                 }
 #endif
             }

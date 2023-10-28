@@ -14,23 +14,27 @@ namespace ET
 		private async ETTask StartAsync()
 		{
 			DontDestroyOnLoad(gameObject);
-			
+
+#if !UNITY_EDITOR // UNITY_EDITOR已经在EditorInitializeOnLoad里做了
 			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
 				Log.Error(e.ExceptionObject.ToString());
-			};
+			}; 
+#endif
 
-			// 命令行参数
-			string[] args = "".Split(" ");
+            // 命令行参数
+            string[] args = "".Split(" ");
 			Parser.Default.ParseArguments<Options>(args)
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 				.WithParsed((o)=>World.Instance.AddSingleton(o));
 			Options.Instance.StartConfig = $"StartConfig/Localhost";
 			
 			World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
-			ETTask.ExceptionHandler += Log.Error;
-			
-			World.Instance.AddSingleton<TimeInfo>();
+#if !UNITY_EDITOR // UNITY_EDITOR已经在EditorInitializeOnLoad里做了
+            ETTask.ExceptionHandler += Log.Error; 
+#endif
+
+            World.Instance.AddSingleton<TimeInfo>();
 			World.Instance.AddSingleton<FiberManager>();
 
 			await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);

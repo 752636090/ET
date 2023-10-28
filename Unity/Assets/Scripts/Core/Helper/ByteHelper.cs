@@ -125,5 +125,10 @@ namespace ET
 			hash += hash << 5;
 			return hash;
 		}
+
+		public static long Hash(this byte[] data)
+		{
+			return Hash(data, 0, data.Length);
+		}
 	}
 }

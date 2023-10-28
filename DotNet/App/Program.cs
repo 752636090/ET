@@ -7,6 +7,20 @@ namespace ET
     {
         public static void Main()
         {
+            #region 测试
+            //ClassB b = new ClassB();
+            //b.A1.A = 100;
+            //Console.WriteLine(b.A1 == b.A2);
+            //Console.WriteLine(MongoHelper.Serialize(b));
+            //Console.WriteLine(MongoHelper.ToJson(b));
+            //ClassB b_Json = MongoHelper.FromJson<ClassB>(MongoHelper.ToJson(b));
+            //Console.WriteLine(b_Json.A1 == b_Json.A2);
+            //Console.WriteLine(b_Json.A1.A);
+            //ClassB b_Bson = MongoHelper.Deserialize<ClassB>(MongoHelper.Serialize(b));
+            //Console.WriteLine(b_Bson.A1 == b_Bson.A2);
+            //Console.WriteLine(b_Bson.A1.A);
+            #endregion
+
             //这里大家看着可能比较困惑，为什么要绕一大圈呢，之前这里直接调用Model层，现在却要在CoderLoader中获取Model的程序集找到Entry入口再调用
             //原因是，之前DotNet.App直接依赖Model，但是在客户端，之前的Mono却不依赖Model。这导致前端跟后端程序集依赖不太一样
             //所以这次加了个Loader的程序集，客户端的Mono程序集也改成Loader，这样前后端Model都引用Loader，Loader通过反射去调用Model的Entry。
@@ -15,10 +29,10 @@ namespace ET
             //客户端服务端不热更不共享的组件可以写到Loader中，比如表现层需要一个组件不需要热更，可以写在Loader中，这样性能更高。如果客户端跟服务端共享的并且不需要热更的
             //的组件可以写在Core中
             Entry.Init();
-            
+
             Init init = new();
             init.Start();
-            
+
             while (true)
             {
                 Thread.Sleep(1);

@@ -17,5 +17,5 @@
         "!ENABLE_DLL"
     ],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

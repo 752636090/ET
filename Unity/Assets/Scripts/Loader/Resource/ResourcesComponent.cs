@@ -46,7 +46,7 @@ namespace ET
     {
         public void Awake()
         {
-            YooAssets.Initialize();
+            YooAssets.Initialize(); 
             BetterStreamingAssets.Initialize();
         }
 

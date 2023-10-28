@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f98eda423a307240b0b898015f94918, type: 3}
+  m_Name: SerialNodeObject
+  m_EditorClassIdentifier: 
+  SerialNode:
+    rid: 4940392167537639428
+  references:
+    version: 2
+    RefIds:
+    - rid: 4940392167537639428
+      type: {class: SetIntNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 1
+        EnableSaveEdit: 0
+        SaveID: 0
+        Key: 
