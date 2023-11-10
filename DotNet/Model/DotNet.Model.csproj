@@ -49,9 +49,6 @@
         <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup> 
     <ItemGroup>
-      <Folder Include="Client\LockStep\" />
-    </ItemGroup> 
-    <ItemGroup>
       <Reference Include="Sirenix.OdinInspector.Attributes">
         <HintPath>..\..\Unity\Assets\Plugins\Sirenix\Assemblies\Sirenix.OdinInspector.Attributes.dll</HintPath>
       </Reference>
