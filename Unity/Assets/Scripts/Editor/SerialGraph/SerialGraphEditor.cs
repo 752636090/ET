@@ -172,6 +172,35 @@ namespace ET
             GraphName = null;
         }
 
+        [HorizontalGroup("1", width: 80)]
+        //[VerticalGroup("1/2")]
+        [Button("折叠选中")]
+        [EnableIf("@GraphView != null")]
+        private void FoldSelections()
+        {
+            foreach (ISelectable item in GraphView.selection)
+            {
+                if (item is EditorSerialNode node)
+                {
+                    node.expanded = false;
+                }
+            }
+        }
+        [HorizontalGroup("1", width: 80)]
+        //[VerticalGroup("1/2")]
+        [Button("展开选中")]
+        [EnableIf("@GraphView != null")]
+        private void ExpandSelections()
+        {
+            foreach (ISelectable item in GraphView.selection)
+            {
+                if (item is EditorSerialNode node)
+                {
+                    node.expanded = true;
+                }
+            }
+        }
+
         private void OnSelectGraph()
         {
             if (GraphView != null && rootVisualElement.Contains(GraphView))
