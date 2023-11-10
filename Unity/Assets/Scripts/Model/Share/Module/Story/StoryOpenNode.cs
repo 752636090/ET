@@ -26,5 +26,10 @@ namespace ET.Story
         [Output(typeConstraint: TypeConstraint.Strict, capacity: Capacity.Single)]
         [LabelText("")]
         public StoryOpenAloneNodePort Next;    // 下一个状态
+
+        //[LabelText("可重复播放")]
+        //[LabelWidth(64)]
+        ////[ShowIf("@IsHeadCabType() == false")]
+        //public bool IsRepeat = false;
     }
 }

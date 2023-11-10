@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 namespace ET
 {
     [Serializable]
-    public class SerialGraph
+    public class SerialGraph : Object
     {
         // 行为树的Id,生成后唯一
         [ReadOnly]
@@ -37,6 +37,13 @@ namespace ET
 
         [ReadOnly]
         public SerialGraphType Type;
+
+        /// <summary>
+        /// 比如剧情Graph的Owner是StoryComponent
+        /// </summary>
+        [BsonIgnore]
+        [NonSerialized]
+        public SerialGraphBlackboard Blackboard;
     }
 
     public enum SerialGraphType

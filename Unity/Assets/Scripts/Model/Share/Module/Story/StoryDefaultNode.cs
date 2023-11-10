@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ET.Story
 {
     [Serializable]
-    public abstract class StoryDefaultNode : SerialNode, ISystemSerialNode
+    public abstract class StoryDefaultNode : SerialNode, ISystemSerialNode, INodeActiveTimes
     {
         /// <summary>
         /// 标记是否已经激活
@@ -12,6 +12,19 @@ namespace ET.Story
         [HideInInspector]
         [NonSerialized]
         public int ActiveTimes = 0;
+
+        public void AddTime()
+        {
+            ActiveTimes = 1;
+        }
+        public int GetTimes()
+        {
+            return ActiveTimes;
+        }
+        public void ClearTimes()
+        {
+            ActiveTimes = 0;
+        }
     }
 }
 

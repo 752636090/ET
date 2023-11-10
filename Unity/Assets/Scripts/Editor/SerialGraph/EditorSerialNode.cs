@@ -75,7 +75,14 @@ namespace ET
                     portAttribute is InputAttribute ? EditorDirection.Input : EditorDirection.Output,
                     (Port.Capacity)portAttribute.Capacity,
                     memberInfo.GetReturnType());
-                port.portName = memberInfo.GetCustomAttribute<LabelTextAttribute>()?.Text ?? item.Key;
+                if (memberInfo.GetCustomAttribute<HideLabelAttribute>(true) == null)
+                {
+                    port.portName = memberInfo.GetCustomAttribute<LabelTextAttribute>()?.Text ?? item.Key; 
+                }
+                else
+                {
+                    port.portName = "";
+                }
                 port.portColor = memberInfo.GetReturnType().GetTypeColor();
                 port.userData = item.Value;
                 (portAttribute is InputAttribute ? inputContainer : outputContainer).Add(port);

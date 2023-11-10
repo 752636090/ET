@@ -99,6 +99,10 @@ namespace ET
                 {
                     if (Interlocked.Increment(ref NumItems) <= MaxCapacity)
                     {
+                        if (obj is IReset reset)
+                        {
+                            reset.Reset();
+                        }
                         _items.Enqueue(obj);
                         return;
                     }

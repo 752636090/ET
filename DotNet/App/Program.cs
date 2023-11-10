@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace ET
@@ -19,6 +20,10 @@ namespace ET
             //ClassB b_Bson = MongoHelper.Deserialize<ClassB>(MongoHelper.Serialize(b));
             //Console.WriteLine(b_Bson.A1 == b_Bson.A2);
             //Console.WriteLine(b_Bson.A1.A);
+            //ListComponent<int> list1 = null;
+            //ListComponent<int> list2 = new();
+            //Console.WriteLine(list1 is List<int>);
+            //Console.WriteLine(list2 is List<int>);
             #endregion
 
             //这里大家看着可能比较困惑，为什么要绕一大圈呢，之前这里直接调用Model层，现在却要在CoderLoader中获取Model的程序集找到Entry入口再调用

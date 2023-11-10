@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace ET
 {
-#if DOTNET
-    [AttributeUsage(AttributeTargets.Field)]
-    public class SerializeReferenceAttribute : Attribute
-    {
+//#if DOTNET
+//    [AttributeUsage(AttributeTargets.Field)]
+//    public class SerializeReferenceAttribute : Attribute
+//    {
 
-    }
-#endif
+//    }
+//#endif
 
     namespace NodeDefine
     {

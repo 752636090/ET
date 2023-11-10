@@ -199,7 +199,7 @@ namespace ET
                 return false;
             }
 
-            if (File.Exists($"Assets/Bundles/Graphs/{SerialGraphType}/{id}.bson"))
+            if (File.Exists($"Assets/Bundles/Graphs/{SerialGraphType}/{id}.bytes"))
             {
                 EditorUtility.DisplayDialog("错误", $"已存在id为{id}的{SerialGraphType}配置", "确定");
                 return false;

@@ -16,5 +16,6 @@ namespace ET
         public DialogNodePort OutPort;
 
         public override bool IsSaveNode => true;
+        public override bool CanParallel => false;
     }
 }

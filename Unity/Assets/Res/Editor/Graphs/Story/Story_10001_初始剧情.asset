@@ -34,7 +34,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 4
+      Data: 13
     - Name: 
       Entry: 7
       Data: 
@@ -142,10 +142,280 @@ MonoBehaviour:
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 631
+      Data: 1098.19141
     - Name: 
       Entry: 4
-      Data: 12.9599915
+      Data: 139.499969
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 7
+      Data: 6|ET.EditorSerialNodeInfo, Unity.Editor
+    - Name: Remark
+      Entry: 6
+      Data: 
+    - Name: Position
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1098.19141
+    - Name: 
+      Entry: 4
+      Data: 298.499969
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 7
+      Data: 7|ET.EditorSerialNodeInfo, Unity.Editor
+    - Name: Remark
+      Entry: 6
+      Data: 
+    - Name: Position
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1098.19141
+    - Name: 
+      Entry: 4
+      Data: 456.999939
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 7
+    - Name: $v
+      Entry: 7
+      Data: 8|ET.EditorSerialNodeInfo, Unity.Editor
+    - Name: Remark
+      Entry: 6
+      Data: 
+    - Name: Position
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1388.19141
+    - Name: 
+      Entry: 4
+      Data: 139.499969
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 8
+    - Name: $v
+      Entry: 7
+      Data: 9|ET.EditorSerialNodeInfo, Unity.Editor
+    - Name: Remark
+      Entry: 6
+      Data: 
+    - Name: Position
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1388.19141
+    - Name: 
+      Entry: 4
+      Data: 298.499969
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 9
+    - Name: $v
+      Entry: 7
+      Data: 10|ET.EditorSerialNodeInfo, Unity.Editor
+    - Name: Remark
+      Entry: 6
+      Data: 
+    - Name: Position
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1388.19141
+    - Name: 
+      Entry: 4
+      Data: 456.999939
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 10
+    - Name: $v
+      Entry: 7
+      Data: 11|ET.EditorSerialNodeInfo, Unity.Editor
+    - Name: Remark
+      Entry: 6
+      Data: 
+    - Name: Position
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 816.1
+    - Name: 
+      Entry: 4
+      Data: 298.5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 11
+    - Name: $v
+      Entry: 7
+      Data: 12|ET.EditorSerialNodeInfo, Unity.Editor
+    - Name: Remark
+      Entry: 6
+      Data: 
+    - Name: Position
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1680.69141
+    - Name: 
+      Entry: 4
+      Data: 298.499969
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 12
+    - Name: $v
+      Entry: 7
+      Data: 13|ET.EditorSerialNodeInfo, Unity.Editor
+    - Name: Remark
+      Entry: 6
+      Data: 
+    - Name: Position
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1356.06165
+    - Name: 
+      Entry: 4
+      Data: 835.897644
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 13
+    - Name: $v
+      Entry: 7
+      Data: 14|ET.EditorSerialNodeInfo, Unity.Editor
+    - Name: Remark
+      Entry: 6
+      Data: 
+    - Name: Position
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1788.49988
+    - Name: 
+      Entry: 4
+      Data: 523.5
     - Name: 
       Entry: 8
       Data: 
@@ -168,7 +438,16 @@ MonoBehaviour:
     - rid: 4940392236937117704
     - rid: 4940392236937117705
     - rid: 4940392236937117706
-    - rid: 4940392258262794319
+    - rid: 8325405501261873157
+    - rid: 8325405501261873163
+    - rid: 8325405501261873170
+    - rid: 8325405501261873172
+    - rid: 8325405501261873198
+    - rid: 8325405501261873226
+    - rid: 8325405501261873241
+    - rid: 8325405501261873243
+    - rid: 8325405502485823537
+    - rid: 8325405516484837425
     Ports:
     - Id: 1
       NodeId: 1
@@ -180,7 +459,7 @@ MonoBehaviour:
       Name: Enter
     - Id: 3
       NodeId: 2
-      TargetIds: 09000000
+      TargetIds: 
       Name: ExitConditions
     - Id: 4
       NodeId: 2
@@ -200,16 +479,116 @@ MonoBehaviour:
       Name: ExitConditions
     - Id: 8
       NodeId: 3
-      TargetIds: 
+      TargetIds: 18000000
       Name: PlayPort
     - Id: 9
       NodeId: 4
-      TargetIds: 03000000
-      Name: StateIn
+      TargetIds: 1a000000
+      Name: ChoicePort
     - Id: 10
       NodeId: 4
       TargetIds: 
-      Name: State
+      Name: ConditionPort
+    - Id: 11
+      NodeId: 4
+      TargetIds: 12000000
+      Name: OutPort
+    - Id: 12
+      NodeId: 5
+      TargetIds: 1a000000
+      Name: ChoicePort
+    - Id: 13
+      NodeId: 5
+      TargetIds: 
+      Name: ConditionPort
+    - Id: 14
+      NodeId: 5
+      TargetIds: 14000000
+      Name: OutPort
+    - Id: 15
+      NodeId: 6
+      TargetIds: 1a000000
+      Name: ChoicePort
+    - Id: 16
+      NodeId: 6
+      TargetIds: 
+      Name: ConditionPort
+    - Id: 17
+      NodeId: 6
+      TargetIds: 16000000
+      Name: OutPort
+    - Id: 18
+      NodeId: 7
+      TargetIds: 0b000000
+      Name: InPort
+    - Id: 19
+      NodeId: 7
+      TargetIds: 1b000000
+      Name: OutPort
+    - Id: 20
+      NodeId: 8
+      TargetIds: 0e000000
+      Name: InPort
+    - Id: 21
+      NodeId: 8
+      TargetIds: 1b000000
+      Name: OutPort
+    - Id: 22
+      NodeId: 9
+      TargetIds: 11000000
+      Name: InPort
+    - Id: 23
+      NodeId: 9
+      TargetIds: 1b000000
+      Name: OutPort
+    - Id: 24
+      NodeId: 10
+      TargetIds: 1e00000008000000
+      Name: InPort
+    - Id: 25
+      NodeId: 10
+      TargetIds: 
+      Name: ConditionPort
+    - Id: 26
+      NodeId: 10
+      TargetIds: 090000000c0000000f000000
+      Name: OutPort
+    - Id: 27
+      NodeId: 11
+      TargetIds: 130000001500000017000000
+      Name: InPort
+    - Id: 28
+      NodeId: 11
+      TargetIds: 21000000
+      Name: OutPort
+    - Id: 29
+      NodeId: 12
+      TargetIds: 23000000
+      Name: InPort
+    - Id: 30
+      NodeId: 12
+      TargetIds: 18000000
+      Name: LessPort
+    - Id: 31
+      NodeId: 12
+      TargetIds: 
+      Name: EqualPort
+    - Id: 32
+      NodeId: 12
+      TargetIds: 
+      Name: MorePort
+    - Id: 33
+      NodeId: 13
+      TargetIds: 1c000000
+      Name: InPort
+    - Id: 34
+      NodeId: 13
+      TargetIds: 
+      Name: ConditionPort
+    - Id: 35
+      NodeId: 13
+      TargetIds: 1d000000
+      Name: OutPort
     Type: 0
   references:
     version: 2
@@ -223,12 +602,60 @@ MonoBehaviour:
       data:
         Id: 2
     - rid: 4940392236937117706
-      type: {class: StoryStartPlayNode, ns: ET.Story, asm: Unity.Model}
+      type: {class: StoryStartNode, ns: ET.Story, asm: Unity.Model}
       data:
         Id: 3
-    - rid: 4940392258262794319
-      type: {class: CheckIntNode, ns: ET.Common, asm: Unity.Model}
+    - rid: 8325405501261873157
+      type: {class: RandomNode, ns: ET.Common, asm: Unity.Model}
       data:
         Id: 4
-        Key: 
+        Weight: 1
+    - rid: 8325405501261873163
+      type: {class: RandomNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 5
+        Weight: 1
+    - rid: 8325405501261873170
+      type: {class: RandomNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 6
+        Weight: 1
+    - rid: 8325405501261873172
+      type: {class: SetIntNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 7
+        Key: a
         Value: 1
+    - rid: 8325405501261873198
+      type: {class: SetIntNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 8
+        Key: a
+        Value: 2
+    - rid: 8325405501261873226
+      type: {class: SetIntNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 9
+        Key: a
+        Value: 3
+    - rid: 8325405501261873241
+      type: {class: HoldNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 10
+        DoResult: 0
+    - rid: 8325405501261873243
+      type: {class: WaitTimeNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 11
+        MilliSeconds: 2000
+    - rid: 8325405502485823537
+      type: {class: CompareIntNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 12
+        Key: a
+        Value: 20
+    - rid: 8325405516484837425
+      type: {class: HoldNode, ns: ET.Common, asm: Unity.Model}
+      data:
+        Id: 13
+        DoResult: 1

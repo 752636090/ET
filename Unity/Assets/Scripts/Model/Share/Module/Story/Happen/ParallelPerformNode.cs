@@ -2,7 +2,7 @@
 using ET.NodeDefine;
 using Sirenix.OdinInspector;
 
-namespace ET.Common
+namespace ET.Story
 {
     [Serializable]
     public class ParallelPerformNode : HappenNode

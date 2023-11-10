@@ -24,4 +24,9 @@ namespace ET
             A1 = A2 = new ClassA();
         }
     }
+
+    public class ClassC : ClassA
+    {
+
+    }
 }

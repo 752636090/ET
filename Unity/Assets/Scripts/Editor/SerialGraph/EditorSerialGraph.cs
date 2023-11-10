@@ -27,7 +27,7 @@ namespace ET
         {
             get
             {
-                return $"Assets/Bundles/Graphs/{SerialGraph.Type}/{SerialGraph.Id}.bson";
+                return $"Assets/Bundles/Graphs/{SerialGraph.Type}/{SerialGraph.Id}.bytes";
             }
         }
 
@@ -75,10 +75,12 @@ namespace ET
                     Id = ++maxPortId,
                     NodeId = newNode.Id,
                     Name = member.Name,
+                    Node = newNode,
                 };
                 SerialGraph.Ports.Add(port);
                 SerialGraph.PortDict[port.Id] = port;
                 newNode.PortDict[member.Name] = port;
+                Debug.Log(member.Name);
             }
             SerialGraphEditor.Instance.EditorSerialGraph.EditorNodeInfoDict[newNode.Id] = new EditorSerialNodeInfo()
             {
@@ -122,6 +124,8 @@ namespace ET
                 {
                     SerialPort targetPort = SerialGraph.PortDict[targetPortId];
                     targetPort?.TargetIds.Remove(port.Id);
+                    targetPort?.Connections?.Remove(port);
+                    targetPort?.TargetNodes?.Remove(port.Node);
                 }
 
                 SerialGraph.Ports.Remove(port);
@@ -133,22 +137,80 @@ namespace ET
             EditorNodeInfoDict.Remove(node.Id);
         }
 
-        public void Connect(SerialPort port1, SerialPort port2)
+        public bool Connect(SerialPort port1, SerialPort port2)
         {
             if (!port1.TargetIds.Contains(port2.Id))
             {
-                port1.TargetIds.Add(port2.Id); 
+                port1.TargetIds.Add(port2.Id);
+                port1.TargetIds.Sort((id1, id2) => EditorNodeInfoDict[SerialGraph.GetPort(id1).NodeId].Position.y
+                    .CompareTo(EditorNodeInfoDict[SerialGraph.GetPort(id2).NodeId].Position.y));
+                port1.Connections?.Add(port2);
+                port1.TargetNodes?.Add(port2.Node);
             }
             if (!port2.TargetIds.Contains(port1.Id))
             {
-                port2.TargetIds.Add(port1.Id); 
+                port2.TargetIds.Add(port1.Id);
+                port2.TargetIds.Sort((id1, id2) => EditorNodeInfoDict[SerialGraph.GetPort(id1).NodeId].Position.y
+                    .CompareTo(EditorNodeInfoDict[SerialGraph.GetPort(id2).NodeId].Position.y));
+                port2.Connections?.Add(port1);
+                port2.TargetNodes?.Add(port1.Node);
             }
+            if (CheckConditionClosedLoop(port1, port2))
+            {
+                Debug.LogError($"<color=#78641E>条件</color>禁止闭环! 从节点 [{port1.Node.Id}] 连接到节点 [{port2.Node.Id}] 已取消");
+                Disconnect(port1, port2);
+                return false;
+            }
+            return true;
         }
 
         public void Disconnect(SerialPort port1, SerialPort port2)
         {
             port1.TargetIds.Remove(port2.Id);
+            port1.Connections?.Remove(port2);
+            port1.TargetNodes?.Remove(port2.Node);
             port2.TargetIds.Remove(port1.Id);
+            port2.Connections?.Remove(port1);
+            port2.TargetNodes?.Remove(port1.Node);
+        }
+
+        private bool CheckConditionClosedLoop(SerialPort checkPort, SerialPort linkPort)
+        {
+            if (checkPort.Node is not ConditionNode || linkPort.Node is not ConditionNode)
+            {
+                // TODO 调用错了，临时加的判断
+                return false;
+            }
+            if (checkPort.NodeId == linkPort.NodeId)
+            {
+                return true;
+            }
+
+            List<SerialPort> list = null;
+            if (linkPort.Name == "State")
+            {
+                list = linkPort.Node.GetPort("StateIn")?.GetConnections();
+            }
+            else
+            {
+                list = linkPort.Node.GetPort("State")?.GetConnections();
+            }
+            if (list == null)
+            {
+                return false;
+            }
+
+            foreach (SerialPort port in list)
+            {
+                if (port.Node is ConditionNode)
+                {
+                    if (CheckConditionClosedLoop(checkPort, port))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }
