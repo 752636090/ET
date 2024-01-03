@@ -45,7 +45,7 @@ namespace ET
                 //}
                 //else
                 {
-                    entity.StoryCompleted();
+                    entity.GetParent<StoryComponent>().StoryCompleted(entity);
                 }
             }
 

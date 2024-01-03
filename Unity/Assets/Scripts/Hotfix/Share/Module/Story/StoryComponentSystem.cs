@@ -13,6 +13,7 @@ namespace ET
 {
     [EntitySystemOf(typeof(StoryComponent))]
     [FriendOf(typeof(StoryComponent))]
+    [FriendOfAttribute(typeof(ET.StoryEntity))]
     public static partial class StoryComponentSystem
     {
         [EntitySystem]
@@ -30,7 +31,7 @@ namespace ET
         //public static async ETTask AAA(this StoryComponent self)
         //{
         //    await self.Fiber().TimerComponent.WaitAsync(2000);
-            
+
         //}
 
         [EntitySystem]
@@ -69,6 +70,40 @@ namespace ET
         {
             // TODO
             Log.Debug("显示对话选项");
+        }
+
+        public static void StoryCompleted(this StoryComponent self, StoryEntity story)
+        {
+            Log.Debug($"剧情事件{story.GraphId}完成");
+            if (story.State == StoryState.Completed
+                || story.State == StoryState.CloseAfterOpen
+                || story.State == StoryState.Close)
+            {
+                return;
+            }
+            //CloseTimeLimit(graphName);
+            story.State = StoryState.Completed;
+            //RemoveCheckNote(graphName);
+            //StoryGraph graph = GetGraph(graphName);
+            //if (graph != null)
+            //{
+            //    NewNoteList.Remove(graph);
+            //}
+            //UpdateRomingMainStoryText();
+
+            //if (graph != null)
+            //{
+            //    graph.startnode.ClearHunter();
+            //}
+
+            //CheckCondition(typeof(HaveStoryFinishCondition));
+
+            //GameEventManager.Instance.FireEvent(GameEventType.OnStoryComplated, new object[] { graphName });
+
+            if (!story.GetParent<StoryComponent>().IsProcessingStory)
+            {
+                story.GetParent<StoryComponent>().ExitStory();    // 走一次清理
+            }
         }
 
         public static void ExitStory(this StoryComponent self)
@@ -380,7 +415,7 @@ namespace ET
             if (resultobjs != null)
             {
                 resultobjs.Clear();
-                ObjectPool.Instance.Recycle(resultobjs); 
+                ObjectPool.Instance.Recycle(resultobjs);
             }
         }
 

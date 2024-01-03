@@ -4,6 +4,7 @@
     //{
     //    public ResultNode Node;
     //}
+    [AbstractDeclare]
     public abstract class AResultNodeHandler<T> : AContinueNodeHandler<T>, IResultNodeHandler where T : ResultNode
     {
         protected override bool Active(T node)

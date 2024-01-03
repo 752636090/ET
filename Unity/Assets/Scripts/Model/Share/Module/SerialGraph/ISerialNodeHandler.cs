@@ -5,6 +5,14 @@ using ET.NodeDefine;
 
 namespace ET
 {
+    /// <summary>
+    /// 解决分析器报错
+    /// </summary>
+    public class AbstractDeclareAttribute : BaseAttribute
+    {
+
+    }
+
     public abstract class TypeKeyBaseAttribute : BaseAttribute
     {
         public Type Type { get; }

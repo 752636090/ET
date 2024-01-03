@@ -16,6 +16,7 @@ namespace ET
         }
     }
 
+    [AbstractDeclare]
     public abstract class AContinueNodeHandler<T> : ASerialNodeHandler<T>, IContinueNodeHandler where T : ContinueNode
     {
         public bool HandleActive(ContinueNode node)

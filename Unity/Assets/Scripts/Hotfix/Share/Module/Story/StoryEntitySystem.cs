@@ -6,6 +6,7 @@ namespace ET
 {
     [EntitySystemOf(typeof(StoryEntity))]
     [FriendOf(typeof(StoryEntity))]
+    [FriendOfAttribute(typeof(ET.StoryComponent))]
     public static partial class StoryEntitySystem
     {
         [EntitySystem]
@@ -50,40 +51,6 @@ namespace ET
                 {
                     break;
                 }
-            }
-        }
-
-        public static void StoryCompleted(this StoryEntity self)
-        {
-            Log.Debug($"剧情事件{self.GraphId}完成");
-            if (self.State == StoryState.Completed
-                || self.State == StoryState.CloseAfterOpen
-                || self.State == StoryState.Close)
-            {
-                return;
-            }
-            //CloseTimeLimit(graphName);
-            self.State = StoryState.Completed;
-            //RemoveCheckNote(graphName);
-            //StoryGraph graph = GetGraph(graphName);
-            //if (graph != null)
-            //{
-            //    NewNoteList.Remove(graph);
-            //}
-            //UpdateRomingMainStoryText();
-
-            //if (graph != null)
-            //{
-            //    graph.startnode.ClearHunter();
-            //}
-
-            //CheckCondition(typeof(HaveStoryFinishCondition));
-
-            //GameEventManager.Instance.FireEvent(GameEventType.OnStoryComplated, new object[] { graphName });
-
-            if (!self.GetParent<StoryComponent>().IsProcessingStory)
-            {
-                self.GetParent<StoryComponent>().ExitStory();    // 走一次清理
             }
         }
 

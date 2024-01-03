@@ -20,6 +20,7 @@ namespace ET
         }
     }
 
+    [AbstractDeclare]
     public abstract class AConditionNodeHandler<T> : ASerialNodeHandler<T>, IConditionNodeHandler where T : ConditionNode
     {
         protected abstract bool Check(T node, IConditionNodeParam param);

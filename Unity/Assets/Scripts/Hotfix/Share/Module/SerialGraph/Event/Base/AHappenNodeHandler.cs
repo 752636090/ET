@@ -11,6 +11,7 @@
         }
     }
 
+    [AbstractDeclare]
     public abstract class AHappenNodeHandler<T> : AContinueNodeHandler<T>, IHappenNodeHandler where T : HappenNode
     {
 
