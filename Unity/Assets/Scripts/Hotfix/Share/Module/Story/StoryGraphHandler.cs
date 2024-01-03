@@ -5,7 +5,7 @@ namespace ET
     [SerialGraphHandler(SerialGraphType.Story)]
     public class StoryGraphHandler : ASerialGraphHandler
     {
-        protected override async ETTask EnterHold(SerialGraph graph, HoldNode holdNode)
+        protected override async ETTask EnterHold(Entity entity, HoldNode holdNode)
         {
             //FindTalkingNpc(holdNode.GetPort("ConditionPort"), (node) =>
             //{
@@ -14,7 +14,7 @@ namespace ET
             await ETTask.CompletedTask;
         }
 
-        protected override async ETTask ExitHold(SerialGraph graph, HoldNode holdNode)
+        protected override async ETTask ExitHold(Entity entity, HoldNode holdNode)
         {
             //FindTalkingNpc(holdNode.GetPort("ConditionPort"), (npcNode) =>
             //{
@@ -23,17 +23,17 @@ namespace ET
             await ETTask.CompletedTask;
         }
 
-        protected override void CheckComplete(SerialGraph graph)
+        protected override void CheckComplete(Entity entity)
         {
             //if (IsHunterClearProgress)
             //{
             //    return;
             //}
-            StoryEntity entity = graph.Blackboard.GetEntity<StoryEntity>();
-            if (entity.State != StoryState.Failed
-                && entity.State != StoryState.CloseAfterOpen
-                && entity.State != StoryState.Completed
-                && entity.State != StoryState.TimeOut)
+            StoryEntity story = entity as StoryEntity;
+            if (story.State != StoryState.Failed
+                && story.State != StoryState.CloseAfterOpen
+                && story.State != StoryState.Completed
+                && story.State != StoryState.TimeOut)
             {
                 //if ((entity as StoryEntity).OpenNode.IsRepeat)
                 //{
@@ -45,7 +45,7 @@ namespace ET
                 //}
                 //else
                 {
-                    entity.GetParent<StoryComponent>().StoryCompleted(entity);
+                    entity.GetParent<StoryComponent>().StoryCompleted(story);
                 }
             }
 
@@ -55,9 +55,9 @@ namespace ET
             }
         }
 
-        protected override void Exit(SerialGraph graph)
+        protected override void Exit(Entity entity)
         {
-            graph.GetEntity<StoryEntity>().GetParent<StoryComponent>().ExitStory();
+            entity.GetParent<StoryComponent>().ExitStory();
         }
 
         //if (IsGameEnding)

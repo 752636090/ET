@@ -3,18 +3,18 @@
 namespace ET
 {
     [HappenNodeHandler(typeof(WaitTimeNode))]
-    public class WaitTimeNodeHandler : AHappenNodeHandler<WaitTimeNode>
+    public class WaitTimeNodeHandler : AHappenNodeHandler<Entity, WaitTimeNode>
     {
-        protected override bool Active(WaitTimeNode node)
+        protected override bool Active(Entity entity, WaitTimeNode node)
         {
-            Run(node).Coroutine();
+            Run(entity, node).Coroutine();
             return true;
         }
 
-        private async ETTask Run(WaitTimeNode node)
+        private async ETTask Run(Entity entity, WaitTimeNode node)
         {
-            await node.Graph.GetEntity().Fiber().Root.GetComponent<TimerComponent>().WaitAsync(node.MilliSeconds);
-            node.Graph.ContinueArrange(node, "OutPort");
+            await entity.Fiber().Root.GetComponent<TimerComponent>().WaitAsync(node.MilliSeconds);
+            (entity as IGraphEntity).ContinueArrange(node, "OutPort");
         }
     }
 }

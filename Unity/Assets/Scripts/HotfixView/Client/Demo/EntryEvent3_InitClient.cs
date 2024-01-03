@@ -17,8 +17,10 @@ namespace ET.Client
             root.AddComponent<PlayerComponent>();
             root.AddComponent<CurrentScenesComponent>();
 
-            StoryComponent.GraphBytesDict = new();
-            StoryComponent.GraphBytesDict[10001] = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>("Assets/Bundles/Graphs/Story/10001.bytes")).bytes;
+            IGraphsComponent.GraphConfigDict = new();
+            SerialGraph graph = MongoHelper.Deserialize<SerialGraph>((await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>("Assets/Bundles/Graphs/Story/10001.bytes")).bytes);
+            graph.AfterDeserialize();
+            IGraphsComponent.GraphConfigDict.Add(SerialGraphType.Story, 10001, graph);
             root.AddComponent<StoryComponent>();
 
             // 根据配置修改掉Main Fiber的SceneType

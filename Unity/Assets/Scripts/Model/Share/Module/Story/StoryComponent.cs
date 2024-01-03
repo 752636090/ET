@@ -8,24 +8,26 @@ namespace ET
     public class StoryComponent : Entity, IGraphsComponent, IAwake, ISerializeToEntity, IDeserialize
     {
         [BsonIgnore]
-        [StaticField]
-        public static Dictionary<int, byte[]> GraphBytesDict { get; set; }
+        public SerialGraphType GraphType => SerialGraphType.Story;
+        //[BsonIgnore]
+        //[StaticField]
+        //public static Dictionary<int, SerialGraph> GraphConfigDict { get; set; }
         [BsonIgnore]
         public Dictionary<int, StoryEntity> StoryDict = new();
         [BsonIgnore]
-        public UnOrderMultiMap<Type, SerialPort> HoldNodes { get; set; }
+        public UnOrderMultiMap<Type, long> HoldNodes { get; set; }
         // 事件被获知的条件按类型划分, 每项对应一组事件
         [BsonIgnore]
-        public UnOrderMultiMap<Type, SerialPort> OpenConditionNodes = new();
+        public UnOrderMultiMap<Type, long> OpenConditionNodes = new();
         // 事件获知前关闭的条件按类型划分, 每项对应一组事件
         [BsonIgnore]
-        public UnOrderMultiMap<Type, SerialPort> CloseConditionNodes = new();
+        public UnOrderMultiMap<Type, long> CloseConditionNodes = new();
         // 事件获知后关闭的条件按类型划分, 每项对应一组事件
         [BsonIgnore]
-        public UnOrderMultiMap<Type, SerialPort> CloseStartedConditionNodes = new();
+        public UnOrderMultiMap<Type, long> CloseStartedConditionNodes = new();
         // 事件播放的条件按类型划分, 每项对应一组事件
         [BsonIgnore]
-        public UnOrderMultiMap<Type, SerialPort> StartConditionNodes = new();
+        public UnOrderMultiMap<Type, long> StartConditionNodes = new();
         [BsonIgnore]
         private bool isProcessingStory;
         [BsonIgnore]
@@ -34,6 +36,7 @@ namespace ET
             get { return isProcessingStory; }
             set { isProcessingStory = value; }
         }
+
         /// <summary>
         /// 一个触发条件的检测引发了多个事件的播放, 则排队等待第一个事件播放完后优先重新检测此队列
         /// </summary>

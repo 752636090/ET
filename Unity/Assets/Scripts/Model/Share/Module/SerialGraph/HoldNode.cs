@@ -8,7 +8,7 @@ namespace ET.Common
     [System.Serializable]
     [NodeWidth(150)]
     [NodeName("流程判断")]
-    public class HoldNode : HappenNode, INodeActiveTimes, IReset
+    public class HoldNode : HappenNode, INodeActiveTimes
     {
         [Input(typeConstraint: TypeConstraint.Strict)]
         [LabelText("")]
@@ -27,30 +27,6 @@ namespace ET.Common
 
         public override bool IsSaveNode => true;
 
-        [System.NonSerialized]
-        [BsonIgnore]
-        private int checkSucessTimes = 0;
-
-        public void AddTime()
-        {
-            checkSucessTimes = 1;
-        }
-
-        public int GetTimes()
-        {
-            return checkSucessTimes;
-        }
-
-        public void ClearTimes()
-        {
-            checkSucessTimes = 0;
-        }
-
-        public void Reset()
-        {
-            checkSucessTimes = 0;
-        }
-
-        
+        public string ActiveTimeKey { get; set; }
     }
 }

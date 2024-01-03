@@ -56,9 +56,16 @@ namespace ET
         //public Dictionary<string, List<int>> GraphHoldList = new Dictionary<string, List<int>>();
 
         [BsonIgnore]
-        [StaticField]
-        public static Dictionary<int, byte[]> GraphBytesDict { get; set; }
+        public SerialGraphType GraphType { get; }
+
+        /// <summary>
+        /// Value：Port的运行时在组件内的唯一Id
+        /// </summary>
         [BsonIgnore]
-        public UnOrderMultiMap<Type, SerialPort> HoldNodes { get; set; }
+        public UnOrderMultiMap<Type, long> HoldNodes { get; set; }
+
+        [BsonIgnore]
+        [StaticField]
+        public static MultiDictionary<SerialGraphType, int, SerialGraph> GraphConfigDict = new();
     }
 }

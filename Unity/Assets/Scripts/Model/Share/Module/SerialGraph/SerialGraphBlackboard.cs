@@ -26,7 +26,22 @@ namespace ET
         [BsonIgnoreIfNull]
         public List<int> Results;
 
+        [BsonIgnore]
+        public SerialGraph Graph
+        {
+            get
+            {
+                return (Entity as IGraphEntity).Graph;
+            }
+        }
 
+        private SerialGraphBlackboard() { }
+
+        public SerialGraphBlackboard(Entity entity)
+        {
+            Cts = new ETCancellationToken();
+            Entity = entity;
+        }
 
         // 要注意针对值类型的处理
         public void AddOrUpdate<T>(string key, T value)
@@ -48,7 +63,7 @@ namespace ET
         // 如果想要获取的类型在values中找不到,抛出异常
         public T Get<T>(string key)
         {
-            if (!values.TryGetValue(key, out var obj))
+            if (!values.TryGetValue(key, out object obj))
             {
                 // 抛出异常
                 return default;
@@ -101,6 +116,31 @@ namespace ET
         //{
         //    return ModuleSaveData;
         //}
+
+        public void AddActiveTime(INodeActiveTimes node)
+        {
+            if (!values.TryGetValue(node.ActiveTimeKey, out object value))
+            {
+                AddOrUpdate(node.ActiveTimeKey, 0);
+            }
+
+            AddOrUpdate(node.ActiveTimeKey, 1);
+        }
+
+        public int GetActiveTime(INodeActiveTimes node)
+        {
+            if (!values.TryGetValue(node.ActiveTimeKey, out object value))
+            {
+                return 0;
+            }
+
+            return Get<int>(node.ActiveTimeKey);
+        }
+
+        public void ClearActiveTime(INodeActiveTimes node)
+        {
+            AddOrUpdate(node.ActiveTimeKey, 0);
+        }
 
 
 

@@ -3,11 +3,11 @@
 namespace ET
 {
     [HappenNodeHandler(typeof(HoldNode))]
-    public class HoldNodeHandler : AHappenNodeHandler<HoldNode>
+    public class HoldNodeHandler : AHappenNodeHandler<Entity, HoldNode>
     {
-        protected override bool Active(HoldNode node)
+        protected override bool Active(Entity entity, HoldNode node)
         {
-            node.Continue();
+            node.Continue(entity);
             return false;
         }
     }

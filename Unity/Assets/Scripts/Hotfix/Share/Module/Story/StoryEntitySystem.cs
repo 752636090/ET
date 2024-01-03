@@ -13,22 +13,18 @@ namespace ET
         public static void Awake(this StoryEntity self, int graphId)
         {
             self.GraphId = graphId;
-            self.Blackboard = new SerialGraphBlackboard();
             self.Deserialize();
         }
 
         [EntitySystem]
         public static void Deserialize(this StoryEntity self)
         {
-            if (!StoryComponent.GraphBytesDict.TryGetValue(self.GraphId, out byte[] bytes))
+            if (!IGraphsComponent.GraphConfigDict[SerialGraphType.Story].TryGetValue(self.GraphId, out SerialGraph graph))
             {
                 Log.Error($"不存在剧情事件 Id:{self.GraphId}");
             }
-            self.Graph = MongoHelper.Deserialize<SerialGraph>(bytes);
-            self.Graph.AfterDeserialize();
-            self.Blackboard.Cts = new ETCancellationToken();
-            self.Blackboard.Entity = self;
-            self.Graph.Blackboard = self.Blackboard;
+            self.Blackboard = new(self);
+            self.Graph = graph;
             foreach (SerialNode node in self.Graph.Nodes)
             {
                 bool found = false;
@@ -68,18 +64,18 @@ namespace ET
                 // 未获知
                 case StoryState.NotOpen:
                     // 事件按发现条件归类至指定列表
-                    self.Graph.RecordConditionCheck(self.GetParent<StoryComponent>().OpenConditionNodes, openConditionRootPort);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().OpenConditionNodes, openConditionRootPort);
                     // 事件按关闭条件归类至指定列表
-                    self.Graph.RecordConditionCheck(self.GetParent<StoryComponent>().CloseConditionNodes, openExitCondition);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().CloseConditionNodes, openExitCondition);
                     break;
 
                 //已获知
                 case StoryState.Opened:
-                    self.OpenNode.AddTime();
+                    self.Blackboard.AddActiveTime(self.OpenNode);
                     // 事件按播放条件归类至指定列表
-                    self.Graph.RecordConditionCheck(self.GetParent<StoryComponent>().StartConditionNodes, startConditionRootPort);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().StartConditionNodes, startConditionRootPort);
                     // 事件按关闭条件归类至指定列表
-                    self.Graph.RecordConditionCheck(self.GetParent<StoryComponent>().CloseStartedConditionNodes, startExitCondition);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().CloseStartedConditionNodes, startExitCondition);
                     break;
 
                 // 已播放
@@ -94,7 +90,7 @@ namespace ET
                                 continue;
                             }
 
-                            self.Graph.RecordConditionCheck(self.GetParent<StoryComponent>().HoldNodes, node.GetPort("ConditionPort"));
+                            self.RecordConditionCheck(self.GetParent<StoryComponent>().HoldNodes, node.GetPort("ConditionPort"));
                         }
                     }
                     //if (entity.StartNode.repeatTask && entity.HeadNode.taskLineType != StoryHeadInfoNode.TaskLineType.Cab)
@@ -107,14 +103,14 @@ namespace ET
                     //    ExistTimeLimitNodeGraphList.Add(graph);
                     //}
                     // 事件按关闭条件归类至指定列表
-                    self.Graph.RecordConditionCheck(self.GetParent<StoryComponent>().CloseStartedConditionNodes, startExitCondition);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().CloseStartedConditionNodes, startExitCondition);
                     break;
 
                 // 完成或失败
                 case StoryState.Completed:
                 case StoryState.Failed:
-                    self.OpenNode.AddTime();
-                    self.StartNode.AddTime();
+                    self.Blackboard.AddActiveTime(self.OpenNode);
+                    self.Blackboard.AddActiveTime(self.StartNode);
                     break;
                 // 逾期
                 case StoryState.TimeOut:

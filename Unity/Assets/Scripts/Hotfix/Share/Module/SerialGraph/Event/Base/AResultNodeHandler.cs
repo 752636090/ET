@@ -5,19 +5,19 @@
     //    public ResultNode Node;
     //}
     [AbstractDeclare]
-    public abstract class AResultNodeHandler<T> : AContinueNodeHandler<T>, IResultNodeHandler where T : ResultNode
+    public abstract class AResultNodeHandler<TEntity, TNode> : AContinueNodeHandler<TEntity, TNode>, IResultNodeHandler where TEntity : Entity where TNode : ResultNode
     {
-        protected override bool Active(T node)
+        protected override bool Active(TEntity entity, TNode node)
         {
-            node.Graph.RecordPrize(node);
+            (entity as IGraphEntity).RecordPrize(node);
             return true;
         }
 
-        public bool HandleOnResult(ResultNode node)
+        public bool HandleOnResult(Entity entity, ResultNode node)
         {
-            return OnResult(node as T);
+            return OnResult(entity as TEntity, node as TNode);
         }
 
-        protected abstract bool OnResult(T node);
+        protected abstract bool OnResult(TEntity entity, TNode node);
     }
 }

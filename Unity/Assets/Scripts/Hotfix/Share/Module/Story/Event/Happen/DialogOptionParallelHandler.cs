@@ -8,16 +8,17 @@ namespace ET
     [SameClassParallelHandler(typeof(DialogOptionNode))]
     public class DialogOptionParallelHandler : ASameClassParallelHandler
     {
-        protected override void Continue(SerialGraph graph, List<SerialNode> nodes)
+        protected override void Continue(Entity entity, List<SerialNode> nodes)
         {
             Log.Debug($"{nodes.Count} --Cast<DialogOptionNode>--> {nodes.Cast<DialogOptionNode>().Count()}");
-            StoryComponent storyComponent = graph.Blackboard.Entity as StoryComponent;
+            StoryEntity story = entity as StoryEntity;
+            StoryComponent storyComponent = (entity as StoryEntity).GetParent<StoryComponent>();
             ListComponent<DialogOptionNode> optionNodes = ListComponent<DialogOptionNode>.Create();
             foreach (DialogOptionNode optionNode in nodes.Cast<DialogOptionNode>())
             {
-                bool canActive = SerialGraphEventSystem.Instance.Active(optionNode);
+                bool canActive = SerialGraphEventSystem.Instance.Active(story, optionNode);
 
-                if ((graph.Blackboard.Entity as StoryComponent).IsOptionClosed(graph, optionNode) == false
+                if (storyComponent.IsOptionClosed(story, optionNode) == false
                     && canActive)
                 {
                     optionNodes.Add(optionNode);

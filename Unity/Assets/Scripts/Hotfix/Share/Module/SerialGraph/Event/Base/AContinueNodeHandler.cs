@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 namespace ET
 {
     // 应该没用了
-    [ContinueNodeHandler(typeof(ContinueNode))]
-    public class ContinueNodeHandler : AContinueNodeHandler<ContinueNode>
-    {
-        protected override bool Active(ContinueNode node)
-        {
-            return true;
-        }
-    }
+    //[ContinueNodeHandler(typeof(ContinueNode))]
+    //public class ContinueNodeHandler : AContinueNodeHandler<ContinueNode>
+    //{
+    //    protected override bool Active(Entity entity, ContinueNode node)
+    //    {
+    //        return true;
+    //    }
+    //}
 
     [AbstractDeclare]
-    public abstract class AContinueNodeHandler<T> : ASerialNodeHandler<T>, IContinueNodeHandler where T : ContinueNode
+    public abstract class AContinueNodeHandler<TEntity, TNode> : ASerialNodeHandler<TEntity, TNode>, IContinueNodeHandler where TEntity : Entity where TNode : ContinueNode
     {
-        public bool HandleActive(ContinueNode node)
+        public bool HandleActive(Entity entity, ContinueNode node)
         {
-            return Active(node as T);
+            return Active(entity as TEntity, node as TNode);
         }
 
-        protected abstract bool Active(T node);
+        protected abstract bool Active(TEntity entity, TNode node);
     }
 }

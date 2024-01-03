@@ -37,13 +37,6 @@ namespace ET
 
         [ReadOnly]
         public SerialGraphType Type;
-
-        /// <summary>
-        /// 比如剧情Graph的Owner是StoryComponent
-        /// </summary>
-        [BsonIgnore]
-        [NonSerialized]
-        public SerialGraphBlackboard Blackboard;
     }
 
     public enum SerialGraphType

@@ -10,13 +10,13 @@ namespace ET
     [SameClassParallelHandler(typeof(RandomNode))]
     public class RandomParallelHandler : ASameClassParallelHandler
     {
-        protected override void Continue(SerialGraph graph, List<SerialNode> nodes)
+        protected override void Continue(Entity entity, List<SerialNode> nodes)
         {
             using ListComponent<RandomNode> randomNodes = ListComponent<RandomNode>.Create();
             int totalWeight = 0;
             foreach (RandomNode node in nodes)
             {
-                if (SerialGraphEventSystem.Instance.Active(node))
+                if (SerialGraphEventSystem.Instance.Active(entity, node))
                 {
                     randomNodes.Add(node);
                     totalWeight += node.Weight;
@@ -29,7 +29,7 @@ namespace ET
                 pass += randomNode.Weight;
                 if (ran < pass)
                 {
-                    randomNode.Continue();
+                    randomNode.Continue(entity);
                     break;
                 }
             }

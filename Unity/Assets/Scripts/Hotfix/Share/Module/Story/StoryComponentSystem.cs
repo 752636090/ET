@@ -19,7 +19,7 @@ namespace ET
         [EntitySystem]
         public static void Awake(this StoryComponent self)
         {
-            foreach (int id in StoryComponent.GraphBytesDict.Keys)
+            foreach (int id in IGraphsComponent.GraphConfigDict[SerialGraphType.Story].Keys)
             {
                 self.AddStory(id);
             }
@@ -50,16 +50,16 @@ namespace ET
             self.StoryDict.Add(id, entity);
         }
 
-        public static bool IsOptionClosed(this StoryComponent self, SerialGraph graph, DialogOptionNode node)
+        public static bool IsOptionClosed(this StoryComponent self, StoryEntity story, DialogOptionNode node)
         {
             int saveID = node.Id;
             if (node.ShowSelected)
             {
                 // 为了兼容一开始不让反复选择, 之后又改为可重复选择的情况
-                graph.Blackboard.GetEntity<StoryEntity>().TurnedOffOptions.Remove(saveID);
+                story.TurnedOffOptions.Remove(saveID);
                 return false;
             }
-            if (graph.Blackboard.GetEntity<StoryEntity>().TurnedOffOptions.Contains(saveID))
+            if (story.TurnedOffOptions.Contains(saveID))
             {
                 return true;
             }
@@ -190,17 +190,18 @@ namespace ET
             return true;
         }
 
-        private static void CheckConditionNode(this StoryComponent self, UnOrderMultiMap<Type, SerialPort> graphConditionNodes,
+        private static void CheckConditionNode(this StoryComponent self, UnOrderMultiMap<Type, long> graphConditionNodes,
             Type conditionType, IConditionNodeParam param, ActionCheckStorySuccess callFunc,
             bool onlyOneTrigger = false, bool tryTriggerAtStoryOut = false, bool checkNodeTimes = true)
         {
-            if (!graphConditionNodes.TryGetValue(conditionType, out List<SerialPort> ports))
+            if (!graphConditionNodes.TryGetValue(conditionType, out List<long> ports))
             {
                 return;
             }
             List<CheckAtStoryOut> triggerList = new List<CheckAtStoryOut>();
-            foreach (SerialPort port in ports)
+            foreach (long portInstanceId in ports)
             {
+                SerialPort port = SerialGraphHelper.GetPortByInstanceId(self, portInstanceId);
                 if (self.StoryDict.TryGetValue(port.Node.Graph.Id, out StoryEntity story))
                 {
                     if (story.State == StoryState.Failed
@@ -214,7 +215,7 @@ namespace ET
                 }
 
                 List<ConditionNode> successList = new List<ConditionNode>();
-                bool trigger = story.Graph.CheckConditionFromRoot(port, conditionType, param, successList, checkNodeTimes);
+                bool trigger = story.CheckConditionFromRoot(port, conditionType, param, successList, checkNodeTimes);
                 if (trigger)
                 {
                     CheckAtStoryOut check = ObjectPool.Instance.Fetch<CheckAtStoryOut>();
@@ -322,7 +323,7 @@ namespace ET
             //    Debug.LogWarningFormat("事件触发了但是主角没有创建{0}", startNode.graph.name);
             //    return false;
             //}
-            StoryEntity entity = startNode.Graph.GetEntity<StoryEntity>();
+            StoryEntity entity = self.StoryDict[startNode.Graph.Id];
             self.IsProcessingStory = true;
 
             //FindTalkingNpc(startNode.GetInputPort("conditionPort"), (npcID) =>
@@ -330,7 +331,7 @@ namespace ET
             //    RemoveTalkingNpc(npcID);
             //});
 
-            startNode.AddTime();   // 标记已触发
+            entity.Blackboard.AddActiveTime(startNode);   // 标记已触发
             entity.State = StoryState.Started;
             Log.Warning($"触发事件 {startNode.Graph.Id}");
 
@@ -343,7 +344,7 @@ namespace ET
             //}
             //else
             {
-                startNode.Graph.ContinueArrange(startNode, "PlayPort");
+                entity.ContinueArrange(startNode, "PlayPort");
             }
             return true;
         }
@@ -363,7 +364,7 @@ namespace ET
             {
                 SerialPort port = check.Port;
                 ActionCheckStorySuccess callfunc = check.CallFunc;
-                StoryEntity entity = port.Node.Graph.GetEntity<StoryEntity>();
+                StoryEntity entity = self.StoryDict[port.Node.Graph.Id];
                 if (entity != null)
                 {
                     if (entity.State == StoryState.Failed
@@ -377,7 +378,7 @@ namespace ET
 
                 List<ConditionNode> successList = ObjectPool.Instance.Fetch<List<ConditionNode>>();
                 check.SuccessList = successList;
-                bool trigger = entity.Graph.CheckConditionFromRoot(port, check.ConditionType, check.Param, successList);
+                bool trigger = entity.CheckConditionFromRoot(port, check.ConditionType, check.Param, successList);
                 if (trigger)
                 {
                     triggerList.Add(check); // 只保留条件通过的
@@ -469,8 +470,9 @@ namespace ET
         }
         private static Action<List<object>> OnCheckHoldAtStoryOut_Cb(this StoryComponent self, SerialNode node, List<ConditionNode> successList)
         {
+            StoryEntity story = self.StoryDict[node.Graph.Id];
             HoldNode holdnode = node as HoldNode;
-            List<int> holdlist = node.Graph.Blackboard.HoldNodes;
+            List<int> holdlist = story.Blackboard.HoldNodes;
             if (holdlist == null || holdlist.Contains(holdnode.Id) == false)
             {
                 Log.Warning($"触发{node.Graph.Id}流程判断{holdnode.Id}时, 没有找到存档数据");
@@ -484,8 +486,8 @@ namespace ET
                 //{
                 //    RemoveTalkingNpc(npcNode);
                 //});
-                holdnode.Graph.AddHoldNodeTimesIfSameSource(holdnode);
-                holdnode.Continue();
+                story.AddHoldNodeTimesIfSameSource(holdnode);
+                holdnode.Continue(story);
             };
         }
 
@@ -557,8 +559,8 @@ namespace ET
             {
                 return;
             }
-            StoryEntity entity = openNode.Graph.GetEntity<StoryEntity>();
-            openNode.AddTime();   // 标记已触发
+            StoryEntity entity = self.StoryDict[openNode.Graph.Id];
+            entity.Blackboard.AddActiveTime(openNode);   // 标记已触发
             SerialGraph graph = openNode.Graph;
             entity.State = StoryState.Opened;
 
@@ -568,14 +570,14 @@ namespace ET
 
             //if (graph.headnode.taskLineType != StoryHeadInfoNode.TaskLineType.Cab)
             //{
-            if (entity.StartNode.CheckCondition("ExitConditions") == false)
+            if (entity.StartNode.CheckCondition(entity, "ExitConditions") == false)
             {
                 // 事件按播放条件归类至指定列表
                 SerialPort startConditionRootPort = entity.StartNode.GetPort("conditionPort");
-                graph.RecordConditionCheck(self.StartConditionNodes, startConditionRootPort);
+                entity.RecordConditionCheck(self.StartConditionNodes, startConditionRootPort);
 
                 // 事件按关闭条件归类至指定列表
-                graph.RecordConditionCheck(self.CloseStartedConditionNodes, /*graph.headnode.taskLineType == StoryHeadInfoNode.TaskLineType.Cab ? null : */entity.StartNode.GetPort("ExitConditions"));
+                entity.RecordConditionCheck(self.CloseStartedConditionNodes, /*graph.headnode.taskLineType == StoryHeadInfoNode.TaskLineType.Cab ? null : */entity.StartNode.GetPort("ExitConditions"));
 
                 //// 事件按跳出条件归类至指定列表
                 //if (graph.startnode.repeatTask)

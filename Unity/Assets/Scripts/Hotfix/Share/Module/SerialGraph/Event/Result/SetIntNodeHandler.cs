@@ -3,12 +3,13 @@
 namespace ET
 {
     [ResultNodeHandler(typeof(SetIntNode))]
-    public class SetIntNodeHandler : AResultNodeHandler<SetIntNode>
+    public class SetIntNodeHandler : AResultNodeHandler<Entity, SetIntNode>
     {
-        protected override bool OnResult(SetIntNode node)
+        protected override bool OnResult(Entity entity, SetIntNode node)
         {
-            node.Graph.Blackboard.AddOrUpdate(node.Key, node.Graph.Blackboard.Get<int>(node.Key) + node.Value);
-            Log.Debug(node.Graph.Blackboard.Get<int>(node.Key).ToString());
+            SerialGraphBlackboard blackboard = (entity as IGraphEntity).Blackboard;
+            blackboard.AddOrUpdate(node.Key, blackboard.Get<int>(node.Key) + node.Value);
+            Log.Debug(blackboard.Get<int>(node.Key).ToString());
             return true;
         }
     }

@@ -2,7 +2,6 @@
 {
     public interface INodeActiveTimes
     {
-        public void AddTime();
-        public int GetTimes();
+        public string ActiveTimeKey { get; set; }
     }
 }

@@ -20,6 +20,10 @@ namespace ET
                 self.NodeDict[node.Id] = node;
                 node.PortDict.Clear();
                 node.Graph = self;
+                if (node is INodeActiveTimes activeTimes)
+                {
+                    activeTimes.ActiveTimeKey = $"{node.Id}_ActiveTime";
+                }
             }
 
             foreach (SerialPort port in self.Ports)
@@ -66,13 +70,14 @@ namespace ET
             return self.GetNode(port.NodeId);
         }
 
-        public static void ContinueArrange(this SerialGraph self, SerialNode node, string continuePort)
+        public static void ContinueArrange(this IGraphEntity graphEntity, SerialNode node, string continuePort)
         {
             if (node == null || node.GetPort(continuePort) == null)
             {
                 Log.Error("后续节点null");
                 return;
             }
+            Entity entity = graphEntity as Entity;
             // 取后续所有节点(已排序)
             List<SerialPort> nextList = node.GetPort(continuePort).GetConnections();
             Dictionary<Type, List<SerialNode>> specialParallelDict = new Dictionary<Type, List<SerialNode>>();
@@ -96,8 +101,8 @@ namespace ET
                 {
                     // 流程判断
                     HoldNode holdnode = port.Node as HoldNode;
-                    holdnode.TrySendResult();
-                    if (findOneHoldNodePass == null && holdnode.CheckCondition())
+                    holdnode.TrySendResult(graphEntity);
+                    if (findOneHoldNodePass == null && holdnode.CheckCondition(entity))
                     {
                         findOneHoldNodePass = holdnode;
                     }
@@ -110,14 +115,14 @@ namespace ET
                 {
                     if (nextNode.CanParallel)
                     {
-                        SerialGraphEventSystem.Instance.Active(continueNode);
+                        SerialGraphEventSystem.Instance.Active(entity as Entity, continueNode);
                     }
                     else
                     {
                         if (!hasMutex)
                         {
                             hasMutex = true;
-                            SerialGraphEventSystem.Instance.Active(continueNode);
+                            SerialGraphEventSystem.Instance.Active(entity as Entity, continueNode);
                         }
                         else
                         {
@@ -134,82 +139,73 @@ namespace ET
             // 处理流程判断
             if (findOneHoldNodePass != null)
             {
-                SerialGraphEventSystem.Instance.ExitHold(self, findOneHoldNodePass);
+                SerialGraphEventSystem.Instance.ExitHold(entity, findOneHoldNodePass);
 
                 // 有满足条件的hold, 则其他可以略过
                 foreach (HoldNode holdnode in waitingHoldList)
                 {
-                    holdnode.AddTime();
-                    SerialGraphEventSystem.Instance.ExitHold(self, holdnode);
+                    graphEntity.Blackboard.AddActiveTime(holdnode);
+                    SerialGraphEventSystem.Instance.ExitHold(entity, holdnode);
                 }
-                findOneHoldNodePass.AddTime();
-                SerialGraphEventSystem.Instance.Active(findOneHoldNodePass);
+                graphEntity.Blackboard.AddActiveTime(findOneHoldNodePass);
+                SerialGraphEventSystem.Instance.Active(entity, findOneHoldNodePass);
             }
             else
             {
                 // 没有满足条件的hold, 全部进入等待状态
                 foreach (HoldNode holdnode in waitingHoldList)
                 {
-                    holdnode.Hold();
+                    holdnode.Hold(graphEntity);
                 }
             }
 
             foreach (KeyValuePair<Type, List<SerialNode>> item in specialParallelDict)
             {
-                SerialGraphEventSystem.Instance.ContinueParallel(item.Key, self, item.Value);
+                SerialGraphEventSystem.Instance.ContinueParallel(entity, item.Key, item.Value);
             }
 
             // 没有后续节点, 发奖结束事件
             if (nextList.Count == 0)
             {
-                self.SendResult();
-                SerialGraphEventSystem.Instance.CheckComplete(self);
+                graphEntity.SendResult();
+                SerialGraphEventSystem.Instance.CheckComplete(entity);
             }
             else
             {
                 // 后续全是流程判断且都未满足, 暂时退出事件
                 if (nextList.Count == waitingHoldList.Count)
                 {
-                    SerialGraphEventSystem.Instance.Exit(self);
+                    SerialGraphEventSystem.Instance.Exit(entity);
                 }
             }
         }
 
-        public static void SetCurrentNode(this SerialGraph self, HappenNode node)
+        public static void SetCurrentNode(this IGraphEntity entity, HappenNode node)
         {
-            self.Blackboard.SetCurrentNode(node);
+            entity.Blackboard.SetCurrentNode(node);
         }
 
-        public static HappenNode GetCurrentNode(this SerialGraph self)
+        public static HappenNode GetCurrentNode(this IGraphEntity entity)
         {
-            return self.Blackboard.GetCurrentNode();
-        }
-
-        public static Entity GetEntity(this SerialGraph self)
-        {
-            return self.Blackboard.Entity;
-        }
-
-        public static T GetEntity<T>(this SerialGraph self) where T : Entity
-        {
-            return self.Blackboard.Entity as T;
+            return entity.Blackboard.GetCurrentNode();
         }
 
         /// <summary>
         /// 一个事件申请进入等待阶段
         /// </summary>
-        public static void RecordHold(this SerialGraph self, SerialPort conditionsPort)
+        public static void RecordHold(this IGraphEntity graphEntity, SerialPort conditionsPort)
         {
-            if (!self.AddHoldSaveData(conditionsPort))
+            Entity entity = graphEntity as Entity;
+            if (!graphEntity.AddHoldSaveData(conditionsPort))
             {
                 return;
             }
-            self.RecordConditionCheck((self.GetEntity().Parent as IGraphsComponent).HoldNodes, conditionsPort); ;
-            SerialGraphEventSystem.Instance.EnterHold(self, conditionsPort.Node as HoldNode);
+            graphEntity.RecordConditionCheck((entity.Parent as IGraphsComponent).HoldNodes, conditionsPort); ;
+            SerialGraphEventSystem.Instance.EnterHold(entity, conditionsPort.Node as HoldNode);
         }
 
         // 记录hold节点
-        private static bool AddHoldSaveData(this SerialGraph self, SerialPort conditionsPort)
+        private static bool AddHoldSaveData(this IGraphEntity entity, SerialPort conditionsPort)
         {
             if (conditionsPort.GetConnections().Count <= 0)
             {
@@ -217,11 +213,11 @@ namespace ET
             }
             //SerialGraphsComponent cacheData = self.GetCacheData();
             HoldNode holdnode = conditionsPort.Node as HoldNode;
-            List<int> ports = self.Blackboard.HoldNodes;
+            List<int> ports = entity.Blackboard.HoldNodes;
             if (ports == null)
             {
                 ports = new List<int>();
-                self.Blackboard.HoldNodes = ports;
+                entity.Blackboard.HoldNodes = ports;
             }
             if (ports.Contains(holdnode.Id))
             {
@@ -231,17 +227,18 @@ namespace ET
             return true;
         }
 
-        public static void RecordConditionCheck(this SerialGraph self, UnOrderMultiMap<Type, SerialPort> conditionPorts, SerialPort rootPort)
+        public static void RecordConditionCheck(this IGraphEntity graphEntity, UnOrderMultiMap<Type, long> conditionPorts, SerialPort rootPort)
         {
-            self.RecordConditionCheck(conditionPorts, rootPort, rootPort);
+            graphEntity.RecordConditionCheck(conditionPorts, rootPort, rootPort);
         }
 
-        public static void RecordConditionCheck(this SerialGraph self, UnOrderMultiMap<Type, SerialPort> conditionPorts, SerialPort conditionsPort, SerialPort rootPort)
+        public static void RecordConditionCheck(this IGraphEntity graphEntity, UnOrderMultiMap<Type, long> conditionPorts, SerialPort conditionsPort, SerialPort rootPort)
         {
             if (conditionPorts == null || conditionsPort == null || rootPort == null)
             {
                 return;
             }
+            long rootPortInstanceId = rootPort.GetInstanceId();
             foreach (SerialPort port in conditionsPort.GetConnections())
             {
                 Type type = port.Node.GetType();
@@ -250,9 +247,9 @@ namespace ET
                     // 不是条件
                     continue;
                 }
-                if (!conditionPorts.Contains(type, rootPort))
+                if (!conditionPorts.Contains(type, rootPortInstanceId))
                 {
-                    conditionPorts.Add(type, rootPort);
+                    conditionPorts.Add(type, rootPortInstanceId);
                 }
                 SerialPort nextPort;
                 if (port.Name == "State")
@@ -265,29 +262,29 @@ namespace ET
                 }
                 if (nextPort != null)
                 {
-                    self.RecordConditionCheck(conditionPorts, nextPort, rootPort);
+                    graphEntity.RecordConditionCheck(conditionPorts, nextPort, rootPort);
                 }
             }
         }
 
-        public static void RecordPrize(this SerialGraph self, ResultNode node)
+        public static void RecordPrize(this IGraphEntity graphEntity, ResultNode node)
         {
-            List<int> nodelist = self.Blackboard.Results;
+            List<int> nodelist = graphEntity.Blackboard.Results;
             if (nodelist == null)
             {
                 nodelist = new List<int>();
-                self.Blackboard.Results = nodelist;
+                graphEntity.Blackboard.Results = nodelist;
             }
             nodelist.Add(node.Id);
-            node.Continue();
+            node.Continue(graphEntity as Entity);
         }
 
-        public static void SendResult(this SerialGraph self)
+        public static void SendResult(this IGraphEntity graphEntity)
         {
-            List<int> idList = self.Blackboard.Results;
-            bool success = self.ForeachNodeBySaveIds<ResultNode>(idList, node =>
+            List<int> idList = graphEntity.Blackboard.Results;
+            bool success = graphEntity.Graph.ForeachNodeBySaveIds<ResultNode>(idList, node =>
             {
-                SerialGraphEventSystem.Instance.OnResult(node);
+                SerialGraphEventSystem.Instance.OnResult(graphEntity as Entity, node);
                 //if (node is StoryFailNode)
                 //{
                 //    StoryFailed(graph.name);
@@ -303,7 +300,7 @@ namespace ET
             });
             if (success)
             {
-                self.Blackboard.Results.Clear();
+                graphEntity.Blackboard.Results.Clear();
             }
         }
 
@@ -331,10 +328,10 @@ namespace ET
             return success;
         }
 
-        public static bool CheckConditionFromRoot(this SerialGraph graph, SerialPort port, Type conditionType, IConditionNodeParam param, List<ConditionNode> successList, bool checkNodeTimes = true)
+        public static bool CheckConditionFromRoot(this IGraphEntity graphEntity, SerialPort port, Type conditionType, IConditionNodeParam param, List<ConditionNode> successList, bool checkNodeTimes = true)
         {
             INodeActiveTimes node = port.Node as INodeActiveTimes;
-            if (checkNodeTimes && node.GetTimes() > 0)
+            if (checkNodeTimes && graphEntity.Blackboard.Get<int>(node.ActiveTimeKey) > 0)
             {
                 return false;
             }
@@ -348,7 +345,7 @@ namespace ET
                 //Direction io = port.IsInput ? NodePort.IO.Input : NodePort.IO.Output;
 
                 // 检测本层并向下一层继续检测是否有指定类型的条件, 并检测条件链是否满足
-                if (rootCondition.CheckConditionLineWithType(conditionType, param, io, successList))
+                if (rootCondition.CheckConditionLineWithType(graphEntity as Entity, conditionType, param, io, successList))
                 {
                     return true;
                 }
@@ -359,12 +356,12 @@ namespace ET
         /// <summary>
         /// 标记所有同源的hold节点都已触发
         /// </summary>
-        public static void AddHoldNodeTimesIfSameSource(this SerialGraph self, HoldNode holdBode)
+        public static void AddHoldNodeTimesIfSameSource(this IGraphEntity graphEntity, HoldNode holdBode)
         {
             List<SerialPort> fromList = holdBode.GetPort("InPort").GetConnections();
             if (fromList.Count == 0)
             {
-                self.HoldNodeUsed(holdBode);
+                graphEntity.HoldNodeUsed(holdBode);
                 return;
             }
             foreach (SerialPort from in fromList)
@@ -374,20 +371,20 @@ namespace ET
                     if (port.Node is HoldNode)
                     {
                         HoldNode childnode = port.Node as HoldNode;
-                        self.HoldNodeUsed(childnode);
+                        graphEntity.HoldNodeUsed(childnode);
                     }
                 }
             }
         }
 
-        public static void HoldNodeUsed(this SerialGraph self, HoldNode holdNode)
+        public static void HoldNodeUsed(this IGraphEntity graphEntity, HoldNode holdNode)
         {
-            if (holdNode.GetTimes() <= 0)
+            if (graphEntity.Blackboard.GetActiveTime(holdNode) <= 0)
             {
-                holdNode.AddTime();
-                self.Blackboard.HoldNodes.Remove(holdNode.Id);
+                graphEntity.Blackboard.AddActiveTime(holdNode);
+                graphEntity.Blackboard.HoldNodes.Remove(holdNode.Id);
 
-                SerialGraphEventSystem.Instance.ExitHold(self, holdNode);
+                SerialGraphEventSystem.Instance.ExitHold(graphEntity as Entity, holdNode);
             }
         }
         #endregion
@@ -417,6 +414,26 @@ namespace ET
                 }
             }
             return self.TargetNodes;
+        }
+
+        /// <summary>
+        /// 一个功能组件内的唯一ID
+        /// </summary>
+        public static long GetInstanceId(this SerialPort self)
+        {
+            return ((long)self.Node.Graph.Id << 32) | (long)self.Id;
+        }
+
+        public static SerialPort GetPortByInstanceId(IGraphsComponent graphsComponent, long instanceId)
+        {
+            int graphId = (int)(instanceId >> 32);
+            int portId = (int)(instanceId - graphId);
+            return GetGraph(graphsComponent.GraphType, graphId).GetPort(portId);
+        }
+
+        public static SerialGraph GetGraph(SerialGraphType type, int id)
+        {
+            return IGraphsComponent.GraphConfigDict[type][id];
         }
         #endregion
 
@@ -479,7 +496,7 @@ namespace ET
             return node.Graph.NodeDict[targetPort.NodeId] as T;
         }
 
-        public static bool CheckCondition(this SerialNode node, string portName = "ConditionPort")
+        public static bool CheckCondition(this SerialNode node, Entity entity, string portName = "ConditionPort")
         {
             List<SerialPort> conditions = node.GetPort(portName).GetConnections();
             if (conditions == null || conditions.Count == 0)
@@ -492,7 +509,7 @@ namespace ET
                 {
                     continue;
                 }
-                if (SerialGraphEventSystem.Instance.CheckAllConnectNode(conditionNode, Direction.Input))
+                if (SerialGraphEventSystem.Instance.CheckAllConnectNode(entity, conditionNode, Direction.Input))
                 {
                     return true;
                 }
@@ -502,7 +519,7 @@ namespace ET
         #endregion
 
         #region ConditionNode
-        public static bool CheckAllExceptSelf(this ConditionNode self, Direction io, List<ConditionNode> line = null)
+        public static bool CheckAllExceptSelf(this ConditionNode self, Entity entity, Direction io, List<ConditionNode> line = null)
         {
             List<int> connections = null;
             if (io == Direction.Output)
@@ -522,7 +539,7 @@ namespace ET
                     {
                         return true;
                     }
-                    return SerialGraphEventSystem.Instance.CheckAllConnectNode(self, io, line);
+                    return SerialGraphEventSystem.Instance.CheckAllConnectNode(entity, self, io, line);
                 });
             }
             return true;
@@ -564,25 +581,25 @@ namespace ET
         /// <summary>
         /// 按io的方向查找是否有conditionType类型的条件, 找到后以此条件开始向两个方向判断所有条件是否满足, 返回结果
         /// </summary>
-        public static bool CheckConditionLineWithType(this ConditionNode self, Type conditionType, IConditionNodeParam param, Direction io, List<ConditionNode> line)
+        public static bool CheckConditionLineWithType(this ConditionNode self, Entity entity, Type conditionType, IConditionNodeParam param, Direction io, List<ConditionNode> line)
         {
-            if (self.GetType() == conditionType && SerialGraphEventSystem.Instance.CheckCondition(self, param))
+            if (self.GetType() == conditionType && SerialGraphEventSystem.Instance.CheckCondition(entity, self, param))
             {
-                return SerialGraphEventSystem.Instance.CheckAllConnectNode(self, io, line) && self.CheckAllExceptSelf(io == Direction.Input ? Direction.Output : Direction.Input, line);
+                return SerialGraphEventSystem.Instance.CheckAllConnectNode(entity, self, io, line) && self.CheckAllExceptSelf(entity, io == Direction.Input ? Direction.Output : Direction.Input, line);
             }
             // 找出指定类型的条件
             if (io == Direction.Output)
             {
-                return self.GetPort("State").GetConnections().Exists(n => (n.Node as ConditionNode).CheckConditionLineWithType(conditionType, param, io, line));
+                return self.GetPort("State").GetConnections().Exists(n => (n.Node as ConditionNode).CheckConditionLineWithType(entity, conditionType, param, io, line));
             }
-            return self.GetPort("StateIn").GetConnections().Exists(n => (n.Node as ConditionNode).CheckConditionLineWithType(conditionType, param, io, line));
+            return self.GetPort("StateIn").GetConnections().Exists(n => (n.Node as ConditionNode).CheckConditionLineWithType(entity, conditionType, param, io, line));
         }
 
-        public static bool BaseCheckAllConnectNode(this ConditionNode self, Direction io, List<ConditionNode> line = null)
+        public static bool BaseCheckAllConnectNode(this ConditionNode self, Entity entity, Direction io, List<ConditionNode> line = null)
         {
             // 这里是基类的处理, 直接判断后续节点, this的条件是否能通过应当子类override这个函数去处理, 成功后base到这里
             line?.Add(self); // 走到基类这里的肯定是已经成功的
-            bool result = self.CheckAllExceptSelf(io, line);
+            bool result = self.CheckAllExceptSelf(entity, io, line);
             if (result == false)
             {
                 line?.Remove(self);
@@ -592,36 +609,36 @@ namespace ET
         #endregion
 
         #region ContinueNode
-        public static void Continue(this ContinueNode self, string outPort = null)
+        public static void Continue(this ContinueNode self, Entity entity, string outPort = null)
         {
             if (self is HoldNode)
             {
                 Log.Debug($"触发{self.Graph.Id}流程判断{self.Id} UTC时间{TimeInfo.Instance.ToDateTime(TimeInfo.Instance.ServerNow())}");
-                if (self.Graph.GetEntity() is StoryEntity story)
+                if (entity is StoryEntity story)
                 {
                     story.GetParent<StoryComponent>().IsProcessingStory = true;
                 }
             }
-            self.Graph.ContinueArrange(self, outPort ?? self.DefaultOutPort);
+            (entity as IGraphEntity).ContinueArrange(self, outPort ?? self.DefaultOutPort);
         }
         #endregion
 
         #region HoldNode
-        public static void Hold(this HoldNode self)
+        public static void Hold(this HoldNode self, IGraphEntity graphEntity)
         {
             // 重新等待检测
-            self.ClearTimes();
+            graphEntity.Blackboard.ClearActiveTime(self);
             // 等待条件满足再继续
             SerialPort conditionPort = self.GetPort("ConditionPort");
-            self.Graph.RecordHold(conditionPort);
+            graphEntity.RecordHold(conditionPort);
         }
 
-        public static void TrySendResult(this HoldNode self)
+        public static void TrySendResult(this HoldNode self, IGraphEntity graphEntity)
         {
             // 发放奖励
             if (self.DoResult)
             {
-                self.Graph.SendResult();
+                graphEntity.SendResult();
             }
         }
         #endregion

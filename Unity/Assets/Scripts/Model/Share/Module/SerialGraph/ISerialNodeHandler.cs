@@ -40,7 +40,7 @@ namespace ET
 
     }
 
-    public abstract class ASerialNodeHandler<T> : ISerialNodeHandler
+    public abstract class ASerialNodeHandler<TEntity, TNode> : ISerialNodeHandler where TEntity : Entity
     {
 
     }
@@ -55,9 +55,9 @@ namespace ET
 
     public interface IConditionNodeHandler : ISerialNodeHandler
     {
-        bool HandleCheck(ConditionNode node, IConditionNodeParam param);
+        bool HandleCheck(Entity entity, ConditionNode node, IConditionNodeParam param);
 
-        bool HandleCheckAllConnectNode(ConditionNode node, Direction direction, List<ConditionNode> line = null);
+        bool HandleCheckAllConnectNode(Entity entity, ConditionNode node, Direction direction, List<ConditionNode> line = null);
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -70,7 +70,7 @@ namespace ET
 
     public interface IContinueNodeHandler : ISerialNodeHandler
     {
-        bool HandleActive(ContinueNode node);
+        bool HandleActive(Entity entity, ContinueNode node);
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -95,7 +95,7 @@ namespace ET
 
     public interface IResultNodeHandler : IContinueNodeHandler
     {
-        bool HandleOnResult(ResultNode node);
+        bool HandleOnResult(Entity entity, ResultNode node);
     }
 
 
@@ -113,12 +113,12 @@ namespace ET
 
     public abstract class ASameClassParallelHandler : ISameClassParallelHandler
     {
-        public void ContinueArrange(SerialGraph graph, List<SerialNode> nodes)
+        public void ContinueArrange(Entity entity, List<SerialNode> nodes)
         {
-            Continue(graph, nodes);
+            Continue(entity, nodes);
         }
 
-        protected abstract void Continue(SerialGraph graph, List<SerialNode> nodes);
+        protected abstract void Continue(Entity entity, List<SerialNode> nodes);
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -138,16 +138,16 @@ namespace ET
 
     public abstract class ASerialGraphHandler : ISerialGraphHandler
     {
-        protected abstract ETTask EnterHold(SerialGraph graph, HoldNode holdNode);
-        protected abstract ETTask ExitHold(SerialGraph graph, HoldNode holdNode);
-        protected abstract void CheckComplete(SerialGraph graph);
-        protected abstract void Exit(SerialGraph graph);
+        protected abstract ETTask EnterHold(Entity entity, HoldNode holdNode);
+        protected abstract ETTask ExitHold(Entity entity, HoldNode holdNode);
+        protected abstract void CheckComplete(Entity entity);
+        protected abstract void Exit(Entity entity);
 
-        public async ETTask HandleAfterHold(SerialGraph graph, HoldNode holdNode)
+        public async ETTask HandleAfterHold(Entity entity, HoldNode holdNode)
         {
             try
             {
-                await EnterHold(graph, holdNode);
+                await EnterHold(entity, holdNode);
             }
             catch (Exception e)
             {
@@ -155,11 +155,11 @@ namespace ET
             }
         }
 
-        public async ETTask HandleBeforeHold(SerialGraph graph, HoldNode holdNode)
+        public async ETTask HandleBeforeHold(Entity entity, HoldNode holdNode)
         {
             try
             {
-                await ExitHold(graph, holdNode);
+                await ExitHold(entity, holdNode);
             }
             catch (Exception e)
             {
@@ -167,11 +167,11 @@ namespace ET
             }
         }
 
-        public void HandleCheckComplete(SerialGraph graph)
+        public void HandleCheckComplete(Entity entity)
         {
             try
             {
-                CheckComplete(graph);
+                CheckComplete(entity);
             }
             catch (Exception e)
             {
@@ -179,11 +179,11 @@ namespace ET
             }
         }
 
-        public void HandleExit(SerialGraph graph)
+        public void HandleExit(Entity entity)
         {
             try
             {
-                Exit(graph);
+                Exit(entity);
             }
             catch (Exception e)
             {

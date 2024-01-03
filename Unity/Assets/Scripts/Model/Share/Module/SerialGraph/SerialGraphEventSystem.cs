@@ -115,7 +115,7 @@ namespace ET
             }
         }
 
-        public bool CheckCondition(ConditionNode node, IConditionNodeParam param)
+        public bool CheckCondition(Entity entity, ConditionNode node, IConditionNodeParam param)
         {
             if (!allConditionNodeHandlers.TryGetValue(node.GetType(), out IConditionNodeHandler handler))
             {
@@ -123,10 +123,10 @@ namespace ET
                 return false;
             }
 
-            return handler.HandleCheck(node, param);
+            return handler.HandleCheck(entity, node, param);
         }
 
-        public bool CheckAllConnectNode(ConditionNode node, Direction direction, List<ConditionNode> line = null)
+        public bool CheckAllConnectNode(Entity entity, ConditionNode node, Direction direction, List<ConditionNode> line = null)
         {
             if (!allConditionNodeHandlers.TryGetValue(node.GetType(), out IConditionNodeHandler handler))
             {
@@ -134,7 +134,7 @@ namespace ET
                 return false;
             }
 
-            return handler.HandleCheckAllConnectNode(node, direction);
+            return handler.HandleCheckAllConnectNode(entity, node, direction);
         }
 
         public bool HasParallelHandler(Type nodeType)
@@ -142,7 +142,7 @@ namespace ET
             return allSameClassParallelHandlers.ContainsKey(nodeType);
         }
 
-        public void ContinueParallel(Type type, SerialGraph graph, List<SerialNode> nodes)
+        public void ContinueParallel(Entity entity, Type type, List<SerialNode> nodes)
         {
             if (nodes == null || nodes.Count == 0)
             {
@@ -161,10 +161,10 @@ namespace ET
                 return;
             }
 
-            aHandler.ContinueArrange(graph, nodes);
+            aHandler.ContinueArrange(entity, nodes);
         }
 
-        public bool Active(ContinueNode node)
+        public bool Active(Entity entity, ContinueNode node)
         {
             if (!allContinueNodeHandlers.TryGetValue(node.GetType(), out IContinueNodeHandler handler))
             {
@@ -172,10 +172,10 @@ namespace ET
                 return false;
             }
 
-            return handler.HandleActive(node);
+            return handler.HandleActive(entity, node);
         }
 
-        public void OnResult(ResultNode node)
+        public void OnResult(Entity entity, ResultNode node)
         {
             if (!allResultNodeHandlers.TryGetValue(node.GetType(), out IResultNodeHandler handler))
             {
@@ -183,11 +183,12 @@ namespace ET
                 return;
             }
 
-            handler.HandleOnResult(node);
+            handler.HandleOnResult(entity, node);
         }
 
-        public void EnterHold(SerialGraph graph, HoldNode holdNode)
+        public void EnterHold(Entity entity, HoldNode holdNode)
         {
+            SerialGraph graph = (entity as IGraphEntity).Graph;
             if (!allGraphHandlers.TryGetValue(graph.Type, out ISerialGraphHandler handler))
             {
                 Log.Debug($"{graph.Type}没有ISerialGraphHandler");
@@ -199,11 +200,12 @@ namespace ET
                 return;
             }
 
-            aHandler.HandleAfterHold(graph, holdNode).Coroutine();
+            aHandler.HandleAfterHold(entity, holdNode).Coroutine();
         }
 
-        public void ExitHold(SerialGraph graph, HoldNode holdNode)
+        public void ExitHold(Entity entity, HoldNode holdNode)
         {
+            SerialGraph graph = (entity as IGraphEntity).Graph;
             if (!allGraphHandlers.TryGetValue(graph.Type, out ISerialGraphHandler handler))
             {
                 Log.Debug($"{graph.Type}没有ISerialGraphHandler");
@@ -215,11 +217,12 @@ namespace ET
                 return;
             }
 
-            aHandler.HandleBeforeHold(graph, holdNode).Coroutine();
+            aHandler.HandleBeforeHold(entity, holdNode).Coroutine();
         }
 
-        public void CheckComplete(SerialGraph graph)
+        public void CheckComplete(Entity entity)
         {
+            SerialGraph graph = (entity as IGraphEntity).Graph;
             if (!allGraphHandlers.TryGetValue(graph.Type, out ISerialGraphHandler handler))
             {
                 Log.Debug($"{graph.Type}没有ISerialGraphHandler");
@@ -231,11 +234,12 @@ namespace ET
                 return;
             }
 
-            aHandler.HandleCheckComplete(graph);
+            aHandler.HandleCheckComplete(entity);
         }
 
-        public void Exit(SerialGraph graph)
+        public void Exit(Entity entity)
         {
+            SerialGraph graph = (entity as IGraphEntity).Graph;
             if (!allGraphHandlers.TryGetValue(graph.Type, out ISerialGraphHandler handler))
             {
                 Log.Debug($"{graph.Type}没有ISerialGraphHandler");
@@ -247,7 +251,7 @@ namespace ET
                 return;
             }
 
-            aHandler.HandleExit(graph);
+            aHandler.HandleExit(entity);
         }
     }
 }
