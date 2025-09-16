@@ -19,6 +19,7 @@ namespace ET
         private readonly Dictionary<Type, IContinueNodeHandler> allContinueNodeHandlers = new();
         private readonly Dictionary<Type, ISameClassParallelHandler> allSameClassParallelHandlers = new();
         private readonly Dictionary<Type, IHappenNodeHandler> allHappenNodeHandlers = new();
+        private readonly Dictionary<Type, IWaitableHappenNodeHandler> allWaitableHappenNodeHandlers = new();
         private readonly Dictionary<SerialGraphType, ISerialGraphHandler> allGraphHandlers = new();
         private readonly Dictionary<Type, IResultNodeHandler> allResultNodeHandlers = new();
 
@@ -37,6 +38,7 @@ namespace ET
             //CollectPolymHandlers(typeof(SerialNode), allSameClassParallelHandlers);
 
             CollectHandlers<HappenNodeHandlerAttribute, IHappenNodeHandler>(allHappenNodeHandlers);
+            CollectHandlers<WaitableHappenNodeHandlerAttribute, IWaitableHappenNodeHandler>(allWaitableHappenNodeHandlers);
             //CollectPolymHandlers(typeof(HappenNode), allHappenNodeHandlers);
 
             CollectHandlers<ResultNodeHandlerAttribute, IResultNodeHandler>(allResultNodeHandlers);
@@ -115,18 +117,34 @@ namespace ET
             }
         }
 
-        public bool CheckCondition(Entity entity, ConditionNode node, IConditionNodeParam param)
+        /// <summary>
+        /// 注意(先不管这条注意事项)通用节点一定要把泛型TEntity声明成Entity(基类)
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckConditionParam<TEntity, TNode, TParam>(TEntity entity, TNode node, TParam param) where TEntity : Entity where TNode : ConditionNode where TParam : struct
         {
             if (!allConditionNodeHandlers.TryGetValue(node.GetType(), out IConditionNodeHandler handler))
             {
-                Log.Debug($"类型{node.GetType()}没有AConditionNodeHandler");
+                Log.Debug($"类型{node.GetType()}没有IConditionNodeHandler");
                 return false;
             }
+            if (handler is AConditionNodeHandler<TEntity, TNode, TParam> aHandler1)
+            {
+                return aHandler1.HandleCheckParam(entity, node, param);
+            }
+            else if (handler is AConditionNodeHandler<Entity, TNode, TParam> aHandler2)
+            {
+                return aHandler2.HandleCheckParam(entity, node, param);
+            }
 
-            return handler.HandleCheck(entity, node, param);
+            Log.Error($"没有AConditionNodeHandler<{entity.GetType()}, {node.GetType()}, {param.GetType()}> " +
+                $"且没有AConditionNodeHandler<Entity, {node.GetType()}, {param.GetType()}>");
+            Log.Error($"{handler.GetType().BaseType}\n{typeof(AConditionNodeHandler<TEntity, TNode, TParam>)}");
+            Log.Debug($"{typeof(TNode)}");
+            return false;
         }
 
-        public bool CheckAllConnectNode(Entity entity, ConditionNode node, Direction direction, List<ConditionNode> line = null)
+        public bool CheckAllConnectNode(Entity entity, ConditionNode node, NodeDefine.Direction direction, List<ConditionNode> line = null)
         {
             if (!allConditionNodeHandlers.TryGetValue(node.GetType(), out IConditionNodeHandler handler))
             {
@@ -134,7 +152,18 @@ namespace ET
                 return false;
             }
 
-            return handler.HandleCheckAllConnectNode(entity, node, direction);
+            if (!handler.HandleCheck(entity, node, direction, line))
+            {
+                return false;
+            }
+
+            line?.Add(node); // 走到基类这里的肯定是已经成功的
+            bool result = node.CheckAllExceptSelf(entity, direction, line);
+            if (result == false)
+            {
+                line?.Remove(node);
+            }
+            return result;
         }
 
         public bool HasParallelHandler(Type nodeType)
@@ -173,6 +202,17 @@ namespace ET
             }
 
             return handler.HandleActive(entity, node);
+        }
+
+        public async ETTask HappenStartWait(Entity entity, HappenNode node, ETCancellationToken cancellationToken = null)
+        {
+            if (!allWaitableHappenNodeHandlers.TryGetValue(node.GetType(), out IWaitableHappenNodeHandler handler))
+            {
+                Log.Debug($"类型{node.GetType()}没有IWaitableHappenNodeHandler");
+                return;
+            }
+
+            await handler.HandleStartWait(entity, node, cancellationToken);
         }
 
         public void OnResult(Entity entity, ResultNode node)
@@ -237,6 +277,9 @@ namespace ET
             aHandler.HandleCheckComplete(entity);
         }
 
+        /// <summary>
+        /// 暂时退出
+        /// </summary>
         public void Exit(Entity entity)
         {
             SerialGraph graph = (entity as IGraphEntity).Graph;

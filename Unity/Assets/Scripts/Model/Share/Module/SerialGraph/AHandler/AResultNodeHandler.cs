@@ -13,11 +13,11 @@
             return true;
         }
 
-        public bool HandleOnResult(Entity entity, ResultNode node)
+        public void HandleOnResult(Entity entity, ResultNode node)
         {
-            return OnResult(entity as TEntity, node as TNode);
+            OnResult(entity as TEntity, node as TNode);
         }
 
-        protected abstract bool OnResult(TEntity entity, TNode node);
+        protected abstract void OnResult(TEntity entity, TNode node);
     }
 }

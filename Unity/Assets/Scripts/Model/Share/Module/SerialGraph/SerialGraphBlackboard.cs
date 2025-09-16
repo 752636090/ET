@@ -1,10 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 using System;
 using System.Collections.Generic;
 
 namespace ET
 {
-    public class SerialGraphBlackboard : IDisposable // 不继承Entity 实现下IDispose把Value<T> 扔池里
+    public class SerialGraphBlackboard : Object, IDisposable // 不继承Entity 实现下IDispose把Value<T> 扔池里
     {
         // 在哪个实体身上运行的,技能的就是Spell,任务的就是Quest
         [BsonIgnore]
@@ -13,6 +14,8 @@ namespace ET
         //为了方便各种异步情况下行为树的运行,节点的执行返回类型设计为ETTask,参数       中携带一个取消标记ETCancelTokenSource,方便外部及时中断整颗树的运行.
         [BsonIgnore]
         public ETCancellationToken Cts { get; set; }
+        [BsonElement]
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         private Dictionary<string, object> values = new();
         //public long InstanceId { get; }
         [BsonIgnore]
@@ -43,8 +46,14 @@ namespace ET
             Entity = entity;
         }
 
+        public void AfterDeserialize(Entity entity)
+        {
+            Cts = new ETCancellationToken();
+            Entity = entity;
+        }
+
         // 要注意针对值类型的处理
-        public void AddOrUpdate<T>(string key, T value)
+        public void Set<T>(string key, T value)
         {
             // 防止装箱拆箱问题
             if (typeof(T).IsValueType)
@@ -75,6 +84,30 @@ namespace ET
             }
             return (T)obj;
 
+        }
+
+        public void Remove(string key)
+        {
+            if (values.TryGetValue(key, out object obj))
+            {
+                if (obj is IValueObject valueObject)
+                {
+                    valueObject.Dispose();
+                }
+                values.Remove(key);
+            }
+        }
+
+        public void Clear()
+        {
+            foreach (object obj in values.Values)
+            {
+                if (obj is IValueObject valueObject)
+                {
+                    valueObject.Dispose();
+                }
+            }
+            values.Clear();
         }
 
         public void SetCurrentNode(HappenNode node)
@@ -121,10 +154,10 @@ namespace ET
         {
             if (!values.TryGetValue(node.ActiveTimeKey, out object value))
             {
-                AddOrUpdate(node.ActiveTimeKey, 0);
+                Set(node.ActiveTimeKey, 0);
             }
 
-            AddOrUpdate(node.ActiveTimeKey, 1);
+            Set(node.ActiveTimeKey, 1);
         }
 
         public int GetActiveTime(INodeActiveTimes node)
@@ -139,21 +172,26 @@ namespace ET
 
         public void ClearActiveTime(INodeActiveTimes node)
         {
-            AddOrUpdate(node.ActiveTimeKey, 0);
+            Set(node.ActiveTimeKey, 0);
         }
 
 
 
+    }
 
-        interface IValueObject : IReset { }
-        class ValueObject<T> : IValueObject
+    public interface IValueObject : IReset, IDisposable { }
+    public class ValueObject<T> : Object, IValueObject
+    {
+        public T Value;
+
+        public void Dispose()
         {
-            public T Value;
+            ObjectPool.Instance.Recycle(this);
+        }
 
-            public void Reset()
-            {
-                Value = default;
-            }
+        public void Reset()
+        {
+            Value = default;
         }
     }
 }

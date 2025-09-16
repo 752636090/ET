@@ -26,8 +26,8 @@ namespace ET
             {
                 Debug.LogError($"{startNode.GetType()} {startPort.Name}");
             }
-            MemberInfo startMenberInfo = startNode.GetType().GetMember(startPort.Name)[0];
-            bool startIsInput = startMenberInfo.GetCustomAttribute<PortAttribute>() is InputAttribute;
+            MemberInfo startMemberInfo = startNode.GetType().GetMember(startPort.Name)[0];
+            bool startIsInput = startMemberInfo.GetCustomAttribute<PortAttribute>() is InputAttribute;
             //TypeConstraint startTypeConstraint = startMenberInfo.GetCustomAttribute<PortAttribute>().TypeConstraint;
             foreach (Port port in ports)
             {
@@ -45,7 +45,8 @@ namespace ET
                 //Debug.Log(targetNode.GetType());
                 //Debug.Log(targetMenberInfo.Name);
                 //TypeConstraint targetTypeConstraint = targetMenberInfo.GetCustomAttribute<PortAttribute>().TypeConstraint;
-                if (CanConnect(startIsInput ? startMenberInfo : targetMemberInfo, startIsInput ? targetMemberInfo : startMenberInfo))
+                if (CanConnect(startIsInput ? startPort : targetPort, startIsInput ? targetPort : startPort,
+                    startIsInput ? startMemberInfo : targetMemberInfo, startIsInput ? targetMemberInfo : startMemberInfo))
                 {
                     compatiblePorts.Add(port);
                 }
@@ -64,22 +65,52 @@ namespace ET
             base.AddToSelection(selectable);
         }
 
-        private bool CanConnect(MemberInfo inputMenberInfo, MemberInfo outputMemberInfo)
+        private bool CanConnect(SerialPort inputPort, SerialPort outputPort, MemberInfo inputMenberInfo, MemberInfo outputMemberInfo)
         {
-            TypeConstraint inputTypeConstraint = inputMenberInfo.GetCustomAttribute<PortAttribute>().TypeConstraint;
-            TypeConstraint outputTypeConstraint = outputMemberInfo.GetCustomAttribute<PortAttribute>().TypeConstraint;
+            if (inputPort.Node == outputPort.Node)
+            {
+                return false;
+            }
+
+            //Type inputType = inputPort.GetType();
+            //Type outputType = outputPort.GetType();
+            PortAttribute inputAttribute = inputMenberInfo.GetCustomAttribute<PortAttribute>();
+            TypeConstraint inputTypeConstraint = inputAttribute.TypeConstraint;
+            PortAttribute outputAttribute = outputMemberInfo.GetCustomAttribute<PortAttribute>();
+            TypeConstraint outputTypeConstraint = outputAttribute.TypeConstraint;
             Type inputType = inputMenberInfo.GetReturnType();
             Type outputType = outputMemberInfo.GetReturnType();
             // If there isn't one of each, they can't connect
             if (inputMenberInfo == null || outputMemberInfo == null) return false;
+
             // Check input type constraints
             if (inputTypeConstraint == TypeConstraint.Inherited && !inputType.IsAssignableFrom(outputType)) return false;
             if (inputTypeConstraint == TypeConstraint.Strict && inputType != outputType) return false;
             if (inputTypeConstraint == TypeConstraint.InheritedInverse && !outputType.IsAssignableFrom(inputType)) return false;
+
+            if (!string.IsNullOrEmpty(inputAttribute.CheckValid))
+            {
+                MethodInfo methodInfo = inputPort.Node.GetType().GetMethod(inputAttribute.CheckValid, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                if (!(bool)methodInfo.Invoke(inputPort.Node, new object[] { outputPort }))
+                {
+                    return false;
+                }
+            }
+
             // Check output type constraints
             if (outputTypeConstraint == TypeConstraint.Inherited && !inputType.IsAssignableFrom(outputType)) return false;
             if (outputTypeConstraint == TypeConstraint.Strict && inputType != outputType) return false;
             if (outputTypeConstraint == TypeConstraint.InheritedInverse && !outputType.IsAssignableFrom(inputType)) return false;
+
+            if (!string.IsNullOrEmpty(outputAttribute.CheckValid))
+            {
+                MethodInfo methodInfo = outputPort.Node.GetType().GetMethod(outputAttribute.CheckValid, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                if (!(bool)methodInfo.Invoke(outputPort.Node, new object[] { inputPort }))
+                {
+                    return false;
+                }
+            }
+
             // Success
             return true;
         }

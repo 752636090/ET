@@ -21,6 +21,8 @@ namespace ET
         {
             public TypeConstraint TypeConstraint;
             public Capacity Capacity;
+            public string ShowIf;
+            public string CheckValid;
 
             /// <summary> Mark a serializable field as an input port. You can access this through <see cref="GetInputPort(string)"/> </summary>
             /// <param name="backingValue">Should we display the backing value for this port as an editor field? </param>
@@ -157,6 +159,13 @@ namespace ET
             {
                 Name = name;
             }
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        [AttributeUsage(AttributeTargets.Field)]
+        public class GraphUniqueIdAttribute : Attribute
+        {
+
         }
     }
 

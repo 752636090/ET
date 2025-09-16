@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ET.Common
 {
     [System.Serializable]
-    [NodeWidth(150)]
+    //[NodeWidth(150)]
     [NodeName("流程判断")]
     public class HoldNode : HappenNode, INodeActiveTimes
     {

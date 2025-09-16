@@ -53,4 +53,19 @@ namespace ET
     }
 
     public interface IHeadSerialNode { }
+
+    public interface INodeLoad
+    {
+        void OnLoad();
+    }
+
+    public interface IUniqueIdNode
+    {
+        void SetUniqueId(int id);
+    }
+
+    public interface IBeforeSaveNode
+    {
+        string BeforeSave();
+    }
 }

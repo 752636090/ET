@@ -1,10 +1,25 @@
 ﻿using ET.Story;
+using Sirenix.OdinInspector;
+using Sirenix.Utilities;
+using Sirenix.Utilities.Editor;
+using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace ET
 {
     public class StoryGraphEditor : SerialGraphEditor
     {
+        public override SerialGraphType SerialGraphType => SerialGraphType.Story;
+
+        [MenuItem("Tools/连连看/打开剧情事件编辑器", priority = 0)]
+        public static void Open()
+        {
+            SerialGraphEditor window = GetWindow<StoryGraphEditor>();
+            window.position = GUIHelper.GetEditorWindowRect().AlignCenter(1000, 700);
+        }
+
         protected override void InitNewGraph()
         {
             base.InitNewGraph();

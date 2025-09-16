@@ -10,7 +10,7 @@ namespace ET
     public static class SerialGraphHelper
     {
         #region SerialGraph
-        public static void AfterDeserialize(this SerialGraph self)
+        public static void AfterDeserialize(this SerialGraph self, bool triggerOnLoad = true)
         {
             self.PortDict.Clear();
             self.NodeDict.Clear();
@@ -28,11 +28,22 @@ namespace ET
 
             foreach (SerialPort port in self.Ports)
             {
-                port.Connections?.Clear();
-                port.TargetNodes?.Clear();
+                port.Connections = null;
+                port.TargetNodes = null;
                 port.Node = self.NodeDict[port.NodeId];
                 self.PortDict[port.Id] = port;
                 self.NodeDict[port.NodeId].PortDict[port.Name] = port;
+            }
+
+            if (triggerOnLoad)
+            {
+                foreach (SerialNode node in self.Nodes)
+                {
+                    if (node is INodeLoad load)
+                    {
+                        load.OnLoad();
+                    }
+                } 
             }
 
 #if UNITY_EDITOR
@@ -60,6 +71,11 @@ namespace ET
             return node;
         }
 
+        public static T GetNode<T>(this SerialGraph self, int nodeId) where T : SerialNode
+        {
+            return self.GetNode(nodeId) as T;
+        }
+
         public static SerialNode GetNodeByPortId(this SerialGraph self, int portId)
         {
             if (!self.PortDict.TryGetValue(portId, out SerialPort port))
@@ -70,14 +86,26 @@ namespace ET
             return self.GetNode(port.NodeId);
         }
 
-        public static void ContinueArrange(this IGraphEntity graphEntity, SerialNode node, string continuePort)
+        public static T GetHead<T>(this SerialGraph self) where T : SerialNode, IHeadSerialNode
         {
-            if (node == null || node.GetPort(continuePort) == null)
+            return self.GetNode(self.HeadId) as T;
+        }
+
+        [EnableAccessEntiyChild]
+        public static void ContinueArrange(this IGraphEntity graphEntity, SerialNode node, string continuePort = null)
+        {
+            continuePort ??= (node as ContinueNode)?.DefaultOutPort;
+            if (node == null || continuePort == null || node.GetPort(continuePort) == null)
             {
                 Log.Error("后续节点null");
                 return;
             }
             Entity entity = graphEntity as Entity;
+            if (entity.IsDisposed)
+            {
+                Log.Warning("旧节点在读档后无法继续");
+                return;
+            }
             // 取后续所有节点(已排序)
             List<SerialPort> nextList = node.GetPort(continuePort).GetConnections();
             Dictionary<Type, List<SerialNode>> specialParallelDict = new Dictionary<Type, List<SerialNode>>();
@@ -116,6 +144,10 @@ namespace ET
                     if (nextNode.CanParallel)
                     {
                         SerialGraphEventSystem.Instance.Active(entity as Entity, continueNode);
+                        if (continueNode is HappenNode happenNode && happenNode.IsWaitable)
+                        {
+                            entity.AddComponent<HappenNodeWaitingComponent, HappenNode>(happenNode);
+                        }
                     }
                     else
                     {
@@ -123,6 +155,10 @@ namespace ET
                         {
                             hasMutex = true;
                             SerialGraphEventSystem.Instance.Active(entity as Entity, continueNode);
+                            if (continueNode is HappenNode happenNode && happenNode.IsWaitable)
+                            {
+                                entity.AddComponent<HappenNodeWaitingComponent, HappenNode>(happenNode);
+                            }
                         }
                         else
                         {
@@ -200,7 +236,7 @@ namespace ET
             {
                 return;
             }
-            graphEntity.RecordConditionCheck((entity.Parent as IGraphsComponent).HoldNodes, conditionsPort); ;
+            graphEntity.RecordConditionCheck((entity.Parent as IGraphsComponent).HoldPorts, conditionsPort); ;
             SerialGraphEventSystem.Instance.EnterHold(entity, conditionsPort.Node as HoldNode);
         }
 
@@ -227,18 +263,17 @@ namespace ET
             return true;
         }
 
-        public static void RecordConditionCheck(this IGraphEntity graphEntity, UnOrderMultiMap<Type, long> conditionPorts, SerialPort rootPort)
+        public static void RecordConditionCheck(this IGraphEntity graphEntity, UnOrderMultiMap<Type, SerialPort> conditionPorts, SerialPort rootPort)
         {
             graphEntity.RecordConditionCheck(conditionPorts, rootPort, rootPort);
         }
 
-        public static void RecordConditionCheck(this IGraphEntity graphEntity, UnOrderMultiMap<Type, long> conditionPorts, SerialPort conditionsPort, SerialPort rootPort)
+        public static void RecordConditionCheck(this IGraphEntity graphEntity, UnOrderMultiMap<Type, SerialPort> conditionPorts, SerialPort conditionsPort, SerialPort rootPort)
         {
             if (conditionPorts == null || conditionsPort == null || rootPort == null)
             {
                 return;
             }
-            long rootPortInstanceId = rootPort.GetInstanceId();
             foreach (SerialPort port in conditionsPort.GetConnections())
             {
                 Type type = port.Node.GetType();
@@ -247,9 +282,9 @@ namespace ET
                     // 不是条件
                     continue;
                 }
-                if (!conditionPorts.Contains(type, rootPortInstanceId))
+                if (!conditionPorts.Contains(type, rootPort))
                 {
-                    conditionPorts.Add(type, rootPortInstanceId);
+                    conditionPorts.Add(type, rootPort);
                 }
                 SerialPort nextPort;
                 if (port.Name == "State")
@@ -328,7 +363,10 @@ namespace ET
             return success;
         }
 
-        public static bool CheckConditionFromRoot(this IGraphEntity graphEntity, SerialPort port, Type conditionType, IConditionNodeParam param, List<ConditionNode> successList, bool checkNodeTimes = true)
+        /// <summary>
+        /// 【注意】(先不管这条注意事项)通用节点一定要把泛型TEntity声明成Entity(基类)
+        /// </summary>
+        public static bool CheckConditionFromRoot<TEntity, TNode, TParam>(this TEntity graphEntity, SerialPort port, TParam param, List<ConditionNode> successList, bool checkNodeTimes = true) where TEntity : Entity, IGraphEntity where TNode : ConditionNode where TParam : struct
         {
             INodeActiveTimes node = port.Node as INodeActiveTimes;
             if (checkNodeTimes && graphEntity.Blackboard.Get<int>(node.ActiveTimeKey) > 0)
@@ -341,11 +379,11 @@ namespace ET
             {
                 // 取出一个第一层条件
                 ConditionNode rootCondition = conditionNodePort.Node as ConditionNode;
-                Direction io = conditionNodePort.Name == "State" ? Direction.Input : Direction.Output;
-                //Direction io = port.IsInput ? NodePort.IO.Input : NodePort.IO.Output;
+                NodeDefine.Direction io = conditionNodePort.Name == "State" ? NodeDefine.Direction.Input : NodeDefine.Direction.Output;
+                //NodeDefine.Direction io = port.IsInput ? NodePort.IO.Input : NodePort.IO.Output;
 
                 // 检测本层并向下一层继续检测是否有指定类型的条件, 并检测条件链是否满足
-                if (rootCondition.CheckConditionLineWithType(graphEntity as Entity, conditionType, param, io, successList))
+                if (rootCondition.CheckConditionLineWithType<TEntity, TNode, TParam>(graphEntity, param, io, successList))
                 {
                     return true;
                 }
@@ -416,6 +454,43 @@ namespace ET
             return self.TargetNodes;
         }
 
+        public static T GetTargetNode<T>(this SerialPort self) where T : SerialNode
+        {
+            if (self.TargetIds.Count == 0)
+            {
+                return null;
+            }
+            return self.Node.Graph.GetPort(self.TargetIds[0]).Node as T;
+        }
+
+        public static T DeepFindTargetNode<T>(this SerialPort self) where T : SerialNode
+        {
+            using HashSetComponent<SerialNode> excepts = HashSetComponent<SerialNode>.Create();
+            return self.DeepFindTargetNode<T>(excepts);
+        }
+
+        private static T DeepFindTargetNode<T>(this SerialPort self, HashSetComponent<SerialNode> excepts) where T : SerialNode
+        {
+            if (self.TargetIds.Count == 0)
+            {
+                return null;
+            }
+            excepts.Add(self.Node);
+            foreach (int targetId in self.TargetIds)
+            {
+                SerialPort port = self.Node.Graph.GetPort(targetId);
+                if (port.Node is T t)
+                {
+                    return t;
+                }
+                else if (!excepts.Contains(port.Node))
+                {
+                    return port.DeepFindTargetNode<T>(excepts);
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// 一个功能组件内的唯一ID
         /// </summary>
@@ -424,17 +499,12 @@ namespace ET
             return ((long)self.Node.Graph.Id << 32) | (long)self.Id;
         }
 
-        public static SerialPort GetPortByInstanceId(IGraphsComponent graphsComponent, long instanceId)
-        {
-            int graphId = (int)(instanceId >> 32);
-            int portId = (int)(instanceId - graphId);
-            return GetGraph(graphsComponent.GraphType, graphId).GetPort(portId);
-        }
-
-        public static SerialGraph GetGraph(SerialGraphType type, int id)
-        {
-            return IGraphsComponent.GraphConfigDict[type][id];
-        }
+        //public static SerialPort GetPortByInstanceId(IGraphsComponent graphsComponent, long instanceId)
+        //{
+        //    int graphId = (int)(instanceId >> 32);
+        //    int portId = (int)(instanceId & int.MaxValue);
+        //    return Configs.SerialGraph.GetGraph(graphsComponent.GraphType, graphId).GetPort(portId);
+        //}
         #endregion
 
         #region SerialNode
@@ -442,7 +512,7 @@ namespace ET
         {
             if (!node.PortDict.TryGetValue(name, out SerialPort port))
             {
-                Log.Error($"Id为{node.Graph.Id}的Graph中Id为{node.Id}的节点的{name}没有Port信息");
+                Log.Error($"Id为{node.Graph.Id}的Graph中Id为{node.Id}的节点的{name}没有Port信息 唯一ID：{(node.Graph.Id << 16) | node.Id}");
                 return null;
             }
 
@@ -509,7 +579,7 @@ namespace ET
                 {
                     continue;
                 }
-                if (SerialGraphEventSystem.Instance.CheckAllConnectNode(entity, conditionNode, Direction.Input))
+                if (SerialGraphEventSystem.Instance.CheckAllConnectNode(entity, conditionNode, NodeDefine.Direction.Input))
                 {
                     return true;
                 }
@@ -519,10 +589,10 @@ namespace ET
         #endregion
 
         #region ConditionNode
-        public static bool CheckAllExceptSelf(this ConditionNode self, Entity entity, Direction io, List<ConditionNode> line = null)
+        public static bool CheckAllExceptSelf(this ConditionNode self, Entity entity, NodeDefine.Direction io, List<ConditionNode> line = null)
         {
             List<int> connections = null;
-            if (io == Direction.Output)
+            if (io == NodeDefine.Direction.Output)
             {
                 connections = self.GetPort("State").TargetIds;
             }
@@ -535,18 +605,18 @@ namespace ET
                 return connections.Exists(n =>
                 {
                     SerialNode node = self.Graph.GetNodeByPortId(n);
-                    if (node is ConditionNode == false)
+                    if (node is not ConditionNode nextConditionNode)
                     {
                         return true;
                     }
-                    return SerialGraphEventSystem.Instance.CheckAllConnectNode(entity, self, io, line);
+                    return SerialGraphEventSystem.Instance.CheckAllConnectNode(entity, nextConditionNode, io, line);
                 });
             }
             return true;
         }
 
         // 找到第一个发现的conditionType类型条件节点
-        public static SerialNode FindConditionType(this ConditionNode self, Type conditionType, Direction io)
+        public static SerialNode FindConditionType(this ConditionNode self, Type conditionType, NodeDefine.Direction io)
         {
             if (self.GetType() == conditionType)
             {
@@ -554,7 +624,7 @@ namespace ET
             }
             // 找出指定类型的条件
             List<SerialPort> connections = null;
-            if (io == Direction.Output)
+            if (io == NodeDefine.Direction.Output)
             {
                 connections = self.GetPort("State").GetConnections();
             }
@@ -580,31 +650,20 @@ namespace ET
 
         /// <summary>
         /// 按io的方向查找是否有conditionType类型的条件, 找到后以此条件开始向两个方向判断所有条件是否满足, 返回结果
+        /// 【注意】(先不管这条注意事项)通用节点一定要把泛型TEntity声明成Entity(基类)
         /// </summary>
-        public static bool CheckConditionLineWithType(this ConditionNode self, Entity entity, Type conditionType, IConditionNodeParam param, Direction io, List<ConditionNode> line)
+        public static bool CheckConditionLineWithType<TEntity, TNode, TParam>(this ConditionNode self, TEntity entity, TParam param, NodeDefine.Direction io, List<ConditionNode> line) where TEntity : Entity, IGraphEntity where TNode : ConditionNode where TParam : struct
         {
-            if (self.GetType() == conditionType && SerialGraphEventSystem.Instance.CheckCondition(entity, self, param))
+            if (self.GetType() == typeof(TNode) && SerialGraphEventSystem.Instance.CheckConditionParam(entity, self as TNode, param))
             {
-                return SerialGraphEventSystem.Instance.CheckAllConnectNode(entity, self, io, line) && self.CheckAllExceptSelf(entity, io == Direction.Input ? Direction.Output : Direction.Input, line);
+                return SerialGraphEventSystem.Instance.CheckAllConnectNode(entity, self, io, line) && self.CheckAllExceptSelf(entity, io == NodeDefine.Direction.Input ? NodeDefine.Direction.Output : NodeDefine.Direction.Input, line);
             }
             // 找出指定类型的条件
-            if (io == Direction.Output)
+            if (io == NodeDefine.Direction.Output)
             {
-                return self.GetPort("State").GetConnections().Exists(n => (n.Node as ConditionNode).CheckConditionLineWithType(entity, conditionType, param, io, line));
+                return self.GetPort("State").GetConnections().Exists(n => (n.Node as ConditionNode).CheckConditionLineWithType<TEntity, TNode, TParam>(entity, param, io, line));
             }
-            return self.GetPort("StateIn").GetConnections().Exists(n => (n.Node as ConditionNode).CheckConditionLineWithType(entity, conditionType, param, io, line));
-        }
-
-        public static bool BaseCheckAllConnectNode(this ConditionNode self, Entity entity, Direction io, List<ConditionNode> line = null)
-        {
-            // 这里是基类的处理, 直接判断后续节点, this的条件是否能通过应当子类override这个函数去处理, 成功后base到这里
-            line?.Add(self); // 走到基类这里的肯定是已经成功的
-            bool result = self.CheckAllExceptSelf(entity, io, line);
-            if (result == false)
-            {
-                line?.Remove(self);
-            }
-            return result;
+            return self.GetPort("StateIn").GetConnections().Exists(n => (n.Node as ConditionNode).CheckConditionLineWithType<TEntity, TNode, TParam>(entity, param, io, line));
         }
         #endregion
 

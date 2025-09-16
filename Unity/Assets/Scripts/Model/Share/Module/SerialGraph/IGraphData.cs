@@ -48,7 +48,7 @@ namespace ET
         public SerialGraphBlackboard Blackboard { get; set; }
 
         [BsonIgnore]
-        public SerialGraph Graph { get; set; }
+        public SerialGraph Graph { get; }
     }
 
     public interface IGraphsComponent
@@ -62,7 +62,7 @@ namespace ET
         /// Value：Port的运行时在组件内的唯一Id
         /// </summary>
         [BsonIgnore]
-        public UnOrderMultiMap<Type, long> HoldNodes { get; set; }
+        public UnOrderMultiMap<Type, SerialPort> HoldPorts { get; set; }
 
         [BsonIgnore]
         [StaticField]

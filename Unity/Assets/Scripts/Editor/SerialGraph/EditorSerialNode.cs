@@ -17,6 +17,9 @@ using Sirenix.Utilities.Editor;
 using System.Xml.Linq;
 using Unity.CodeEditor;
 using Sirenix.Utilities;
+using Sirenix.Reflection.Editor;
+using UnityEditor.UIElements;
+using ET.Client;
 
 namespace ET
 {
@@ -32,6 +35,7 @@ namespace ET
         private SerialNodeObject contentObject;
         public Editor ContentInspector { get; private set; }
         public Dictionary<int, Port> ViewPortDict = new Dictionary<int, Port>();
+        public Dictionary<Port, MethodInfo> ShowIfs = new();
 
         public EditorSerialNode(SerialNode node, Vector2 position) : base()
         {
@@ -43,9 +47,9 @@ namespace ET
             //this.Q("node-border").style.color = Color.green; // 测试，没用
             //style.color = Color.green; // 测试，没用
             NodeTintAttribute nodeTint = node.GetType().GetCustomAttribute<NodeTintAttribute>(true);
+            Color color = nodeTint?.Color ?? Color.grey;
             if (nodeTint != null)
             {
-                Color color = node.GetType().GetCustomAttribute<NodeTintAttribute>()?.Color ?? Color.grey;
                 style.backgroundColor = nodeTint.Color;
                 mainContainer.style.backgroundColor = color;
                 contentContainer.style.backgroundColor = color;
@@ -54,12 +58,15 @@ namespace ET
                 titleContainer.style.backgroundColor = color;
             }
             NodeNameAttribute nodeName = node.GetType().GetCustomAttribute<NodeNameAttribute>();
-            title = $"<size=12><b>{nodeName?.Name ?? SerialNode.GetType().Name}</b></size>";
+            title = $"<size=12><b>{nodeName?.Name ?? SerialNode.GetType().Name} [{node.Id}]</b></size>";
 
             contentObject = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<SerialNodeObject>("Assets/Res/Editor/SerialNodeObject.asset"));
             contentObject.SerialNode = node;
-            ContentInspector = Editor.CreateEditor(contentObject);
-            extensionContainer.Add(new IMGUIContainer(ContentInspector.OnInspectorGUI));
+            //ContentInspector = Editor.CreateEditor(contentObject);
+            //extensionContainer.Add(new IMGUIContainer(ContentInspector.OnInspectorGUI));
+            InspectorElement inspectorElement = new(contentObject);
+            inspectorElement.style.backgroundColor = color;
+            extensionContainer.Add(inspectorElement);
             RefreshExpandedState();
 
             foreach (KeyValuePair<string, SerialPort> item in node.PortDict)
@@ -83,6 +90,10 @@ namespace ET
                 {
                     port.portName = "";
                 }
+                if (!string.IsNullOrEmpty(portAttribute.ShowIf))
+                {
+                    ShowIfs.Add(port, node.GetType().GetMethod(portAttribute.ShowIf, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic));
+                }
                 port.portColor = memberInfo.GetReturnType().GetTypeColor();
                 port.userData = item.Value;
                 (portAttribute is InputAttribute ? inputContainer : outputContainer).Add(port);
@@ -90,7 +101,12 @@ namespace ET
             }
             RefreshPorts();
 
-            Vector2 size = new Vector2(node.GetType().GetCustomAttribute<NodeWidthAttribute>(true)?.Width ?? 100, 100);
+            NodeWidthAttribute nodeWidth = node.GetType().GetCustomAttribute<NodeWidthAttribute>(true);
+            Vector2 size = new(100, 100);
+            if (nodeWidth != null)
+            {
+                style.width = nodeWidth.Width;
+            }
             base.SetPosition(new Rect(position, size));
         }
 
@@ -99,6 +115,47 @@ namespace ET
             SerialGraphEditor.Instance.RegisterCompleteObjectUndo("Node SetPosition");
             base.SetPosition(newPos);
             SerialGraphEditor.Instance.EditorSerialGraph.EditorNodeInfoDict[SerialNode.Id].Position = newPos.position;
+        }
+
+        public override void Select(VisualElement selectionContainer, bool additive)
+        {
+            base.Select(selectionContainer, additive);
+        }
+
+        public override void OnSelected()
+        {
+            base.OnSelected();
+            SerialGraphEditor.Instance.InspectorHelper.Value = SerialNode;
+            Selection.activeObject = SerialGraphEditor.Instance.InspectorHelper;
+        }
+
+        public override void OnUnselected()
+        {
+            base.OnUnselected();
+        }
+
+        public void RefreshShowIfPorts()
+        {
+            foreach (KeyValuePair<Port, MethodInfo> item in ShowIfs)
+            {
+                bool show = (bool)item.Value.Invoke(SerialNode, null);
+                if (!show)
+                {
+                    SerialPort serialPort = item.Key.userData as SerialPort;
+                    if (serialPort.TargetIds.Count > 0)
+                    {
+                        using ListComponent<int> targets = ListComponent<int>.Create();
+                        targets.AddRange(serialPort.TargetIds);
+                        foreach (int targetId in targets)
+                        {
+                            SerialPort targetPort = SerialGraphEditor.Instance.EditorSerialGraph.SerialGraph.GetPort(targetId);
+                            SerialGraphEditor.Instance.EditorSerialGraph.Disconnect(serialPort, targetPort);
+                            SerialGraphEditor.Instance.ReloadView();
+                        } 
+                    }
+                }
+                item.Key.SetEnabled(show);
+            }
         }
 
         public override void CollectElements(HashSet<GraphElement> collectedElementSet, Func<GraphElement, bool> conditionFunc)

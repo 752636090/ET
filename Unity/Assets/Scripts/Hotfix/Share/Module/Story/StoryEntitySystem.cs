@@ -64,18 +64,18 @@ namespace ET
                 // 未获知
                 case StoryState.NotOpen:
                     // 事件按发现条件归类至指定列表
-                    self.RecordConditionCheck(self.GetParent<StoryComponent>().OpenConditionNodes, openConditionRootPort);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().OpenConditionPorts, openConditionRootPort);
                     // 事件按关闭条件归类至指定列表
-                    self.RecordConditionCheck(self.GetParent<StoryComponent>().CloseConditionNodes, openExitCondition);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().CloseConditionPorts, openExitCondition);
                     break;
 
                 //已获知
                 case StoryState.Opened:
                     self.Blackboard.AddActiveTime(self.OpenNode);
                     // 事件按播放条件归类至指定列表
-                    self.RecordConditionCheck(self.GetParent<StoryComponent>().StartConditionNodes, startConditionRootPort);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().StartConditionPorts, startConditionRootPort);
                     // 事件按关闭条件归类至指定列表
-                    self.RecordConditionCheck(self.GetParent<StoryComponent>().CloseStartedConditionNodes, startExitCondition);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().CloseStartedConditionPorts, startExitCondition);
                     break;
 
                 // 已播放
@@ -90,7 +90,7 @@ namespace ET
                                 continue;
                             }
 
-                            self.RecordConditionCheck(self.GetParent<StoryComponent>().HoldNodes, node.GetPort("ConditionPort"));
+                            self.RecordConditionCheck(self.GetParent<StoryComponent>().HoldPorts, node.GetPort("ConditionPort"));
                         }
                     }
                     //if (entity.StartNode.repeatTask && entity.HeadNode.taskLineType != StoryHeadInfoNode.TaskLineType.Cab)
@@ -103,7 +103,7 @@ namespace ET
                     //    ExistTimeLimitNodeGraphList.Add(graph);
                     //}
                     // 事件按关闭条件归类至指定列表
-                    self.RecordConditionCheck(self.GetParent<StoryComponent>().CloseStartedConditionNodes, startExitCondition);
+                    self.RecordConditionCheck(self.GetParent<StoryComponent>().CloseStartedConditionPorts, startExitCondition);
                     break;
 
                 // 完成或失败

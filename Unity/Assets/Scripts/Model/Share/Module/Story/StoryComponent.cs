@@ -1,11 +1,12 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 using System;
 using System.Collections.Generic;
 
 namespace ET
 {
     [ComponentOf(typeof(Scene))]
-    public class StoryComponent : Entity, IGraphsComponent, IAwake, ISerializeToEntity, IDeserialize
+    public class StoryComponent : Entity, IGraphsComponent, IAwake, IDeserialize
     {
         [BsonIgnore]
         public SerialGraphType GraphType => SerialGraphType.Story;
@@ -15,19 +16,19 @@ namespace ET
         [BsonIgnore]
         public Dictionary<int, StoryEntity> StoryDict = new();
         [BsonIgnore]
-        public UnOrderMultiMap<Type, long> HoldNodes { get; set; }
+        public UnOrderMultiMap<Type, SerialPort> HoldPorts { get; set; } = new();
         // 事件被获知的条件按类型划分, 每项对应一组事件
         [BsonIgnore]
-        public UnOrderMultiMap<Type, long> OpenConditionNodes = new();
+        public UnOrderMultiMap<Type, SerialPort> OpenConditionPorts = new();
         // 事件获知前关闭的条件按类型划分, 每项对应一组事件
         [BsonIgnore]
-        public UnOrderMultiMap<Type, long> CloseConditionNodes = new();
+        public UnOrderMultiMap<Type, SerialPort> CloseConditionPorts = new();
         // 事件获知后关闭的条件按类型划分, 每项对应一组事件
         [BsonIgnore]
-        public UnOrderMultiMap<Type, long> CloseStartedConditionNodes = new();
+        public UnOrderMultiMap<Type, SerialPort> CloseStartedConditionPorts = new();
         // 事件播放的条件按类型划分, 每项对应一组事件
         [BsonIgnore]
-        public UnOrderMultiMap<Type, long> StartConditionNodes = new();
+        public UnOrderMultiMap<Type, SerialPort> StartConditionPorts = new();
         [BsonIgnore]
         private bool isProcessingStory;
         [BsonIgnore]
@@ -41,37 +42,68 @@ namespace ET
         /// 一个触发条件的检测引发了多个事件的播放, 则排队等待第一个事件播放完后优先重新检测此队列
         /// </summary>
         [BsonIgnore]
-        public List<CheckAtStoryOut> ListTriggerLaterAtStoryOut = new List<CheckAtStoryOut>();
+        public List<CheckAtStoryOutBase> ListTriggerLaterAtStoryOut = new List<CheckAtStoryOutBase>();
         [BsonIgnore]
         // 由于正在播放一个事件, 新申请的检测排队等待
-        public List<StoryWaitCheck> CheckTypeToWait = new();
+        public List<StoryWaitCheckBase> CheckTypeToWait = new();
 
 
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
+        public Dictionary<string, object> MiscValueDict = new();
 
+        public HashSet<long> ProgressStories = new();
     }
 
     // 事件结束后优先进行的重新检测
-    public class CheckAtStoryOut
+    public class CheckAtStoryOut<TNode, TParam> : CheckAtStoryOutBase where TNode : ConditionNode where TParam : struct/* where TInvokeParam : struct*/
+    {
+        public TParam Param;
+
+        //public Func<StoryEntity, SerialPort, TParam, List<ConditionNode>, bool, bool> CheckConditionFromRootFunc;
+
+        public override bool CheckConditionFromRoot(StoryEntity storyEntity)
+        {
+            return SerialGraphHelper.CheckConditionFromRoot<StoryEntity, TNode, TParam>(storyEntity, Port, Param, SuccessList);
+        }
+    }
+    public abstract class CheckAtStoryOutBase
     {
         public SerialPort Port;
         public Type ConditionType;
-        public IConditionNodeParam Param;
-        public ActionCheckStorySuccess CallFunc;
         public List<ConditionNode> SuccessList;
+        public long InvokeType;
+
+        public abstract bool CheckConditionFromRoot(StoryEntity storyEntity);
+        //public abstract void CallFunc();
+    }
+    public struct CondNullParam
+    {
+        [StaticField]
+        public static CondNullParam Instance = new();
     }
 
-    public delegate Action<List<object>> ActionCheckStorySuccess(SerialNode node, List<ConditionNode> successList = null);
-    public class StoryWaitCheck
+    public delegate Action<CheckStorySuccessResult> CheckStorySuccessFunc(SerialNode node, List<ConditionNode> successList = null);
+    public class StoryWaitCheck<TNode, TParam> : StoryWaitCheckBase
     {
-        /// <summary>
-        /// 需要检测的条件类型
-        /// </summary>
-        public Type ConditionType;
-        public IConditionNodeParam Param;
+        public TParam Param;
+        public Action<StoryComponent, TParam> CheckDelegate;
+
+        public override void Check(StoryComponent storyComponent)
+        {
+            CheckDelegate.Invoke(storyComponent, Param);
+        }
+    }
+    public abstract class StoryWaitCheckBase
+    {
+        ///// <summary>
+        ///// 需要检测的条件类型
+        ///// </summary>
+        //public Type ConditionType;
         /// <summary>
         /// 需要检测的列表类型
         /// </summary>
         public StoryCheckDicType DicType;
+        public abstract void Check(StoryComponent storyComponent);
     }
     /// <summary>
     /// 释放玩家操作后需要进行的条件检测
@@ -81,5 +113,15 @@ namespace ET
         Start,
         Hold,
         All
+    }
+
+    public struct CheckStorySuccessResult
+    {
+        public StoryCondSuccessInvokeParam Param;
+
+        public CheckStorySuccessResult(StoryCondSuccessInvokeParam param)
+        {
+            Param = param;
+        }
     }
 }

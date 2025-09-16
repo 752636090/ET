@@ -13,6 +13,7 @@ namespace ET
 
         private async ETTask Run(Entity entity, WaitTimeNode node)
         {
+            //await entity.Fiber().Root.GetComponent<ScaledTimerComponent>().WaitAsync(node.MilliSeconds);
             await entity.Fiber().Root.GetComponent<TimerComponent>().WaitAsync(node.MilliSeconds);
             (entity as IGraphEntity).ContinueArrange(node, "OutPort");
         }

@@ -5,7 +5,7 @@ using System;
 namespace ET.Story
 {
     [System.Serializable]
-    [NodeWidth(160), NodeTint(100, 70, 70)]
+    [/*NodeWidth(160), */NodeTint(100, 70, 70)]
     public class StoryOpenNode : StoryDefaultNode
     {
         /// <summary>

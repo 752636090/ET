@@ -1,10 +1,13 @@
-﻿using ET.Common;
+﻿using ET.Client;
+using ET.Common;
 using ET.NodeDefine;
 using ET.Story;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
+using Sirenix.OdinInspector.Editor.Internal.UIToolkitIntegration;
+using Sirenix.Serialization;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
 using System;
@@ -20,6 +23,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static TreeEditor.TreeEditorHelper;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using SerializationUtility = Sirenix.Serialization.SerializationUtility;
 
 namespace ET
 {
@@ -30,11 +34,12 @@ namespace ET
         [HorizontalGroup("1")]
         [LabelText("分类")]
         [ReadOnly]
-        public SerialGraphType SerialGraphType;
+        [ShowInInspector]
+        public virtual SerialGraphType SerialGraphType { get; }
         private string graphName;
         [HorizontalGroup("1")]
         [LabelText("文件名")]
-        [ValueDropdown("GetGraphNames")]
+        [ValueDropdown("GetGraphDropdown")]
         [DisableIf("@hasUnsavedChanges")]
         [ShowInInspector]
         public string GraphName
@@ -53,24 +58,25 @@ namespace ET
         //private Dictionary<string, Type> nodeDict = new Dictionary<string, Type>();
         private CreateSerialNodeMenuWindow createNodeMenu;
         public SerialGraphView GraphView { get; private set; }
+        private OdinImGuiElement GraphViewOdinImGuiElement;
         public virtual Type GraphViewType => typeof(SerialGraphView);
         public EditorSerialGraph EditorSerialGraphAsset { get; private set; }
         public EditorSerialGraph EditorSerialGraph { get; private set; }
         public static SerialGraphEditor Instance { get; private set; }
-
-        [MenuItem("Tools/连连看/打开剧情事件编辑器")]
-        public static void TestOpen()
-        {
-            SerialGraphEditor window = GetWindow<StoryGraphEditor>();
-            window.position = GUIHelper.GetEditorWindowRect().AlignCenter(1000, 700);
-        }
+        public CommonScriptableObject InspectorHelper { get; private set; }
 
         private void Awake()
         {
+            InspectorHelper = AssetDatabase.LoadAssetAtPath<CommonScriptableObject>("Assets/Res/Editor/SerialGraphHelper.asset");
+        }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
             Instance = this;
             createNodeMenu = CreateInstance<CreateSerialNodeMenuWindow>();
             Undo.undoRedoEvent += UndoRedoEvent;
-            string lastName = EditorPrefs.GetString(SerialGraphType.ToString());
+            string lastName = EditorPrefs.GetString($"LastGraph_{SerialGraphType}");
             IEnumerable<string> names = GetGraphNames();
             if (names.Contains(lastName))
             {
@@ -78,28 +84,61 @@ namespace ET
             }
             else
             {
-                foreach (string name in GetGraphNames())
-                {
-                    GraphName = name;
-                    break;
-                }
+                GraphName = null;
             }
+            //OnBeginGUI += () =>
+            //{
+            //    if (GraphView != null)
+            //    {
+            //        GUILayout.BeginVertical();
+            //        ImguiElementUtils.EmbedVisualElementAndDrawItHere(GraphViewOdinImGuiElement);
+            //        GUILayout.EndVertical();
+            //    }
+            //};
         }
 
         private void OnInspectorUpdate()
         {
             CheckDirty(); // 每个Node的Inspector没办法监听
+
+            if (GraphView != null)
+            {
+                foreach (EditorSerialNode node in GraphView.nodes)
+                {
+                    node.RefreshShowIfPorts();
+                } 
+            }
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
             Undo.undoRedoEvent -= UndoRedoEvent;
+            InspectorHelper.Value = null;
+            InspectorHelper.Save();
         }
 
         private void OnFocus()
         {
             Instance = this;
+        }
+
+        protected override void OnImGUI()
+        {
+            base.OnImGUI();
+        }
+
+        protected override void DrawEditors()
+        {
+            VisualElement odinContainer = rootVisualElement.Q("Odin ImGUIContainer");
+            odinContainer.style.height = new StyleLength(30);
+            odinContainer.style.position = new StyleEnum<Position>(Position.Absolute);
+            //if (GraphView != null)
+            //{
+            //    rootVisualElement.Insert(0, GraphView);
+            //    //rootVisualElement.Q("Odin ImGUIContainer").Add(GraphViewOdinImGuiElement);
+            //}
+            base.DrawEditors();
         }
 
         //private void CreateGUI()
@@ -112,7 +151,15 @@ namespace ET
 
             GraphView = new SerialGraphView()
             {
-                style = { flexGrow = 1, top = 30 },
+                style =
+                {
+                    flexGrow = 1,
+                    top = 30,
+                    width = Length.Percent(100f),
+                    height = Length.Percent(100f),
+                    //bottom = 30,
+                    //position = new StyleEnum<Position>(Position.Absolute),
+                },
             };
             //GridBackground gridBackground = new GridBackground();
             //GraphView.Insert(0, gridBackground);
@@ -135,15 +182,58 @@ namespace ET
             //Undo.undoRedoPerformed += OnUndoRedoPerformed;
             ReloadView();
 
-            rootVisualElement.Add(GraphView);
+            //rootVisualElement.Insert(0, GraphView);
+            //rootVisualElement/*.Q("Odin ImGUIContainer")*/.Add(GraphView);
+            //GraphViewOdinImGuiElement = new OdinImGuiElement(GraphView);
+            rootVisualElement.Insert(0, GraphView);
         }
 
-        private IEnumerable<string> GetGraphNames()
+        protected virtual IEnumerable<ValueDropdownItem<string>> GetGraphDropdown()
+        {
+            return GetGraphNames().Select(name => new ValueDropdownItem<string>(name, name));
+        }
+
+        protected IEnumerable<string> GetGraphNames()
         {
             //操，GraphView把上面选项挡住了
             //return new string[] { "1", "2" };
             return Directory.GetFiles($"Assets/Res/Editor/Graphs/{SerialGraphType}", "*.asset", SearchOption.AllDirectories)
-                .Select(path => /*path.Split('/').Last().Split('.')[0]*/Path.GetFileNameWithoutExtension(path));
+                .Select(Path.GetFileNameWithoutExtension)
+                .OrderBy(name =>
+                {
+                    int iStart = -1;
+                    int iEnd = -1;
+                    for (int i = 0; i < name.Length; i++)
+                    {
+                        if (iStart == -1)
+                        {
+                            if (char.IsDigit(name[i]))
+                            {
+                                iStart = i;
+                            }
+                        }
+                        else
+                        {
+                            if (!char.IsDigit(name[i]))
+                            {
+                                iEnd = i - 1;
+                                break;
+                            }
+                        }
+                    }
+                    if (iStart >= 0)
+                    {
+                        if (iEnd == -1)
+                        {
+                            iEnd = name.Length - 1;
+                        }
+                        return int.Parse(name.Substring(iStart, iEnd - iStart + 1));
+                    }
+                    else
+                    {
+                        return name[0];
+                    }
+                });
         }
 
         [HorizontalGroup("1")]
@@ -203,6 +293,8 @@ namespace ET
 
         private void OnSelectGraph()
         {
+            InspectorHelper.Value = null;
+            InspectorHelper.Save();
             if (GraphView != null && rootVisualElement.Contains(GraphView))
             {
                 rootVisualElement.Remove(GraphView);
@@ -215,7 +307,7 @@ namespace ET
             EditorSerialGraphAsset = AssetDatabase.LoadAssetAtPath<EditorSerialGraph>(path);
             EditorSerialGraph = Instantiate(EditorSerialGraphAsset);
             EditorSerialGraph.SerialGraph.AfterDeserialize();
-            EditorPrefs.SetString(SerialGraphType.ToString(), GraphName);
+            EditorPrefs.SetString($"LastGraph_{SerialGraphType}", GraphName);
             CreateGraphView();
         }
 
@@ -236,6 +328,7 @@ namespace ET
 
             EditorSerialGraphAsset = CreateInstance<EditorSerialGraph>();
             EditorSerialGraphAsset.SerialGraph.Id = id;
+            EditorSerialGraphAsset.SerialGraph.Type = SerialGraphType;
             EditorSerialGraphAsset.name = name;
             AssetDatabase.CreateAsset(EditorSerialGraphAsset, path);
             GraphName = name;
@@ -289,6 +382,7 @@ namespace ET
             }
             data.Nodes.Sort((a, b) => a.Id.CompareTo(b.Id));
             data.Ports.Sort((a, b) => a.Id.CompareTo(b.Id));
+            //byte[] bson = SerializationUtility.SerializeValueWeak(data, DataFormat.Binary);
             byte[] bson = MongoHelper.Serialize(data);
             return Convert.ToBase64String(bson);
         }
@@ -297,6 +391,7 @@ namespace ET
         {
             try
             {
+                //SerialGraphCopyData data = (SerialGraphCopyData)SerializationUtility.DeserializeValueWeak(Convert.FromBase64String(dataStr), DataFormat.Binary);
                 SerialGraphCopyData data = MongoHelper.Deserialize<SerialGraphCopyData>(Convert.FromBase64String(dataStr));
                 return EditorSerialGraph.SerialGraph.Type == data.GraphType && data.Nodes.Count > 0;
             }
@@ -313,6 +408,8 @@ namespace ET
 
             GraphView.ClearSelection();
 
+            //SerialGraphCopyData data = (SerialGraphCopyData)SerializationUtility.DeserializeValueWeak(Convert.FromBase64String(dataStr), DataFormat.Binary);
+            //data = (SerialGraphCopyData)SerializationUtility.CreateCopy(data);
             SerialGraphCopyData data = MongoHelper.Deserialize<SerialGraphCopyData>(Convert.FromBase64String(dataStr));
             int maxNodeId = EditorSerialGraph.GetMaxNodeId();
             int maxPortId = EditorSerialGraph.GetMaxPortId();
@@ -341,6 +438,7 @@ namespace ET
                 };
                 src2NewNodeIdDict.Add(node.Id, maxNodeId + 1);
                 node.Id = maxNodeId + 1;
+                (node as IUniqueIdNode)?.SetUniqueId((EditorSerialGraph.SerialGraph.Id << 16) | node.Id);
                 maxNodeId++;
                 EditorSerialGraph.SerialGraph.Nodes.Add(node);
                 //EditorSerialGraph.SerialGraph.NodeDict[node.Id] = node;
@@ -353,6 +451,7 @@ namespace ET
             }
 
             #region 处理连线
+            using HashSetComponent<SerialPort> needSortPorts = HashSetComponent<SerialPort>.Create();
             foreach (SerialPort port in data.Ports)
             {
                 List<int> newTargetIds = new List<int>();
@@ -374,6 +473,7 @@ namespace ET
                     }
                 }
                 port.TargetIds = newTargetIds;
+                needSortPorts.Add(port);
             }
             #endregion
 
@@ -386,6 +486,21 @@ namespace ET
                     GraphView.AddToSelection(item);
                 }
             }
+
+            foreach (SerialPort port in needSortPorts)
+            {
+                foreach (int targetPortId in port.TargetIds)
+                {
+                    SerialPort targetPort = EditorSerialGraph.SerialGraph.GetPort(targetPortId);
+                    targetPort.TargetIds.Sort((a, b) =>
+                    {
+                        int node1Id = EditorSerialGraph.SerialGraph.GetPort(a).Node.Id;
+                        int node2Id = EditorSerialGraph.SerialGraph.GetPort(b).Node.Id;
+                        return EditorSerialGraph.CompareNode(EditorSerialGraph.SerialGraph.GetNode(node1Id), EditorSerialGraph.SerialGraph.GetNode(node2Id));
+                    });
+                }
+            }
+
             SetDirty();
         }
 
@@ -470,6 +585,33 @@ namespace ET
                 } 
             }
 
+            if (graphViewChange.movedElements != null)
+            {
+                Undo.RegisterCompleteObjectUndo(EditorSerialGraph, "Move Elements");
+                using HashSetComponent<SerialPort> needSortPorts = HashSetComponent<SerialPort>.Create();
+                foreach (GraphElement item in graphViewChange.movedElements)
+                {
+                    if (item is not EditorSerialNode editorNode)
+                    {
+                        continue;
+                    }
+                    needSortPorts.AddRange(editorNode.SerialNode.PortDict.Values);
+                }
+                foreach (SerialPort port in needSortPorts)
+                {
+                    foreach (int targetPortId in port.TargetIds)
+                    {
+                        SerialPort targetPort = EditorSerialGraph.SerialGraph.GetPort(targetPortId);
+                        targetPort.TargetIds.Sort((a, b) =>
+                        {
+                            int node1Id = EditorSerialGraph.SerialGraph.GetPort(a).Node.Id;
+                            int node2Id = EditorSerialGraph.SerialGraph.GetPort(b).Node.Id;
+                            return EditorSerialGraph.CompareNode(EditorSerialGraph.SerialGraph.GetNode(node1Id), EditorSerialGraph.SerialGraph.GetNode(node2Id));
+                        });
+                    }
+                }
+            }
+
             SetDirty();
             return graphViewChange;
         }
@@ -525,6 +667,8 @@ namespace ET
 
             if (MongoHelper.Serialize(EditorSerialGraph.SerialGraph).Hash() != MongoHelper.Serialize(EditorSerialGraphAsset.SerialGraph).Hash())
             {
+                //Log.Debug(MongoHelper.ToJson(EditorSerialGraph.SerialGraph));
+                //Log.Warning(MongoHelper.ToJson(EditorSerialGraphAsset.SerialGraph));
                 SetDirty();
                 return;
             }
@@ -541,6 +685,20 @@ namespace ET
                 EditorUtility.DisplayDialog("错误", "找不到根节点，不会保存", "知道了");
                 return;
             }
+            EditorSerialGraph.SerialGraph.AfterDeserialize();
+            foreach (SerialNode node in EditorSerialGraph.SerialGraph.Nodes)
+            {
+                if (node is not IBeforeSaveNode check)
+                {
+                    continue;
+                }
+                string error = check.BeforeSave();
+                if (error != null)
+                {
+                    EditorUtility.DisplayDialog("错误", $"因出现以下错误所以不会保存：{error}", "知道了");
+                    return;
+                }
+            }
             EditorSerialGraph.SerialGraph.HeadId = headNode.Id;
             EditorSerialGraph.Export();
             #region 根据bson文件还原，废弃
@@ -555,6 +713,7 @@ namespace ET
             EditorSerialGraphAsset = AssetDatabase.LoadAssetAtPath<EditorSerialGraph>(path);
             EditorSerialGraph = Instantiate(EditorSerialGraphAsset);
             hasUnsavedChanges = false;
+            ReloadView();
         }
 
         public override void DiscardChanges()

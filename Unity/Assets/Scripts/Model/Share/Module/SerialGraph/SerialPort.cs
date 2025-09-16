@@ -14,13 +14,17 @@ namespace ET
         [BsonIgnore]
         [NonSerialized]
         public SerialNode Node;
+        /// <summary>
+        /// 逻辑层不要直接调用
+        /// </summary>
         [BsonIgnore]
         [NonSerialized]
-        // 逻辑层不要直接调用
         public List<SerialPort> Connections;
+        /// <summary>
+        /// 逻辑层不要直接调用
+        /// </summary>
         [BsonIgnore]
         [NonSerialized]
-        // 逻辑层不要直接调用
         public List<SerialNode> TargetNodes;
     }
 }

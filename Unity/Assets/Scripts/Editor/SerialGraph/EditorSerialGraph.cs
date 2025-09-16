@@ -1,11 +1,14 @@
 ﻿using ET.NodeDefine;
 using MongoDB.Bson.Serialization.Attributes;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -25,11 +28,11 @@ namespace ET
 
         public string BsonPath
         {
-            get
-            {
-                return $"Assets/Bundles/Graphs/{SerialGraph.Type}/{SerialGraph.Id}.bytes";
-            }
+            get => $"Assets/Bundles/Graphs/{SerialGraph.Type}/{SerialGraph.Id}.bytes";
         }
+
+        [NonSerialized]
+        public bool CreatedMissingPort = false;
 
         protected override void OnBeforeSerialize()
         {
@@ -39,6 +42,16 @@ namespace ET
         protected override void OnAfterDeserialize()
         {
             base.OnAfterDeserialize();
+
+            // 处理直接复制的资源
+            foreach (SerialNode node in SerialGraph.Nodes)
+            {
+                (node as IUniqueIdNode)?.SetUniqueId((SerialGraph.Id << 16) | node.Id);
+            }
+
+            SerialGraph.AfterDeserialize(false);
+            //DeleteOldPorts();
+            CreateMissingPorts();
             SerialGraph.AfterDeserialize();
         }
 
@@ -49,10 +62,95 @@ namespace ET
             Debug.Log($"保存成功：{BsonPath}");
         }
 
+        [Button("从bson导入")]
+
+        private void Import()
+        {
+            SerialGraph = MongoHelper.Deserialize<SerialGraph>(FileHelper.GetFileBuffer(BsonPath));
+            SerialGraph.AfterDeserialize();
+        }
+
+        public void CheckMissingLine()
+        {
+            foreach (SerialPort port in SerialGraph.Ports)
+            {
+                foreach (int targetId in port.TargetIds)
+                {
+                    SerialPort target = SerialGraph.GetPort(targetId);
+                    if (!target.TargetIds.Contains(port.Id))
+                    {
+                        Log.Error($"{SerialGraph.Type}/{name}: {port.Node.Id}.{port.Name} 与 {target.Node.Id}.{target.Name} 仅单向连接");
+                    }
+                }
+            }
+        }
+
+        // 开发中才需要
+        //public void DeleteOldPorts()
+        //{
+        //    foreach (SerialNode node in SerialGraph.Nodes)
+        //    {
+        //        using ListComponent<KeyValuePair<string, SerialPort>> toRemoves = ListComponent<KeyValuePair<string, SerialPort>>.Create();
+        //        foreach (KeyValuePair<string, SerialPort> item in node.PortDict)
+        //        {
+        //            if (node.GetType().GetMember(item.Key) == null)
+        //            {
+        //                toRemoves.Add(item);
+        //            }
+        //        }
+        //        foreach (KeyValuePair<string, SerialPort> item in toRemoves)
+        //        {
+        //            node.PortDict.Remove(item.Key);
+        //            SerialGraph.PortDict.Remove(item.Value.Id);
+        //            SerialGraph.PortDict.
+        //        }
+        //    }
+        //}
+
+        /// <summary>
+        /// 用于新增Port自动补上
+        /// </summary>
+        public void CreateMissingPorts()
+        {
+            bool changed = false;
+            foreach (SerialNode node in SerialGraph.Nodes)
+            {
+                foreach (MemberInfo member in node.GetType().GetMembers())
+                {
+                    PortAttribute portAttribute = member.GetCustomAttribute<PortAttribute>(true);
+                    if (portAttribute == null)
+                    {
+                        continue;
+                    }
+
+                    if (node.PortDict.ContainsKey(member.Name))
+                    {
+                        continue;
+                    }
+
+                    SerialPort port = new SerialPort()
+                    {
+                        Id = 1 + GetMaxPortId(),
+                        NodeId = node.Id,
+                        Name = member.Name,
+                        Node = node,
+                    };
+                    SerialGraph.Ports.Add(port);
+                    SerialGraph.PortDict[port.Id] = port;
+                    node.PortDict[member.Name] = port;
+                    //Debug.Log(member.Name);
+                    changed = true;
+                } 
+            }
+
+            CreatedMissingPort = changed;
+        }
+
         public EditorSerialNode AddNode(Type type, Vector2 position)
         {
             SerialNode newNode = (SerialNode)Activator.CreateInstance(type);
             newNode.Id = GetMaxNodeId() + 1;
+            (newNode as IUniqueIdNode)?.SetUniqueId((SerialGraph.Id << 16) | newNode.Id);
             SerialGraph.Nodes.Add(newNode);
             SerialGraph.NodeDict[newNode.Id] = newNode;
 
@@ -80,7 +178,7 @@ namespace ET
                 SerialGraph.Ports.Add(port);
                 SerialGraph.PortDict[port.Id] = port;
                 newNode.PortDict[member.Name] = port;
-                Debug.Log(member.Name);
+                //Debug.Log(member.Name);
             }
             SerialGraphEditor.Instance.EditorSerialGraph.EditorNodeInfoDict[newNode.Id] = new EditorSerialNodeInfo()
             {
@@ -88,6 +186,7 @@ namespace ET
             };
             EditorSerialNode editorNode = AddNodeToView(newNode);
             SerialGraphEditor.Instance.SetDirty();
+            SerialGraph.AfterDeserialize();
             return editorNode;
         }
 
@@ -142,16 +241,14 @@ namespace ET
             if (!port1.TargetIds.Contains(port2.Id))
             {
                 port1.TargetIds.Add(port2.Id);
-                port1.TargetIds.Sort((id1, id2) => EditorNodeInfoDict[SerialGraph.GetPort(id1).NodeId].Position.y
-                    .CompareTo(EditorNodeInfoDict[SerialGraph.GetPort(id2).NodeId].Position.y));
+                port1.TargetIds.Sort((id1, id2) => CompareNode(SerialGraph.GetPort(id1).Node, SerialGraph.GetPort(id2).Node));
                 port1.Connections?.Add(port2);
                 port1.TargetNodes?.Add(port2.Node);
             }
             if (!port2.TargetIds.Contains(port1.Id))
             {
                 port2.TargetIds.Add(port1.Id);
-                port2.TargetIds.Sort((id1, id2) => EditorNodeInfoDict[SerialGraph.GetPort(id1).NodeId].Position.y
-                    .CompareTo(EditorNodeInfoDict[SerialGraph.GetPort(id2).NodeId].Position.y));
+                port2.TargetIds.Sort((id1, id2) => CompareNode(SerialGraph.GetPort(id1).Node, SerialGraph.GetPort(id2).Node));
                 port2.Connections?.Add(port1);
                 port2.TargetNodes?.Add(port1.Node);
             }
@@ -162,6 +259,13 @@ namespace ET
                 return false;
             }
             return true;
+        }
+
+        public int CompareNode(SerialNode node1, SerialNode node2)
+        {
+            EditorSerialNodeInfo editorNode1 = EditorNodeInfoDict[node1.Id];
+            EditorSerialNodeInfo editorNode2 = EditorNodeInfoDict[node2.Id];
+            return (-editorNode1.Position.y * 10 + editorNode1.Position.x).CompareTo(-editorNode2.Position.y * 10 + editorNode2.Position.x);
         }
 
         public void Disconnect(SerialPort port1, SerialPort port2)

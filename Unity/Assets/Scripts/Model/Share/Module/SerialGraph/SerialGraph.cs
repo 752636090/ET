@@ -9,8 +9,7 @@ namespace ET
     [Serializable]
     public class SerialGraph : Object
     {
-        // 行为树的Id,生成后唯一
-        [ReadOnly]
+        [LabelText("同类型Graph唯一Id")]
         public int Id;
 
         //[SerializeReference]
@@ -43,5 +42,11 @@ namespace ET
     {
         [LabelText("剧情")]
         Story = 0,
+        [LabelText("技能")]
+        Skill,
+        [LabelText("剧情演出")]
+        Perform,
+        [LabelText("AI")]
+        AI,
     }
 }

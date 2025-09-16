@@ -8,11 +8,11 @@ namespace ET
     public abstract class ResultNode : ContinueNode
     {
         [Input(typeConstraint: TypeConstraint.Inherited)]
-        [LabelText("")]
+        [HideLabel]
         public DialogNodePort InPort;
 
         [Output(typeConstraint: TypeConstraint.Inherited)]
-        [LabelText("")]
+        [HideLabel]
         public DialogNodePort OutPort;
 
         public override bool IsSaveNode => true;

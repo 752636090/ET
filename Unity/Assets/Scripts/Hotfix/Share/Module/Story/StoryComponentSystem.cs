@@ -1,13 +1,10 @@
-﻿using ET.Common;
+﻿using ET.Client;
+using ET.Common;
 using ET.Story;
-using SharpCompress.Common;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ET
 {
@@ -16,6 +13,15 @@ namespace ET
     [FriendOfAttribute(typeof(ET.StoryEntity))]
     public static partial class StoryComponentSystem
     {
+        //[Invoke(TimerInvokeType.TestTick)]
+        //public class StoryTestTimer : ATimer<StoryComponent>
+        //{
+        //    protected override void Run(StoryComponent self)
+        //    {
+        //        self.CheckCondition<TrueCondNode>();
+        //    }
+        //}
+
         [EntitySystem]
         public static void Awake(this StoryComponent self)
         {
@@ -30,46 +36,27 @@ namespace ET
 
         //public static async ETTask AAA(this StoryComponent self)
         //{
-        //    await self.Fiber().TimerComponent.WaitAsync(2000);
+        //    await self.Fiber().ScaledTimerComponent.WaitAsync(2000);
 
         //}
 
         [EntitySystem]
         public static void Deserialize(this StoryComponent self)
         {
+            self.SetMiscValue<string>("CurrentPlace", null);
             foreach (StoryEntity entity in self.Children.Values)
             {
                 self.StoryDict.Add(entity.GraphId, entity);
                 entity.AnalysisGraphConfig();
             }
+            self.CheckAfterLoading();
         }
 
         public static void AddStory(this StoryComponent self, int id)
         {
             StoryEntity entity = self.AddChild<StoryEntity, int>(id);
+            entity.AnalysisGraphConfig();
             self.StoryDict.Add(id, entity);
-        }
-
-        public static bool IsOptionClosed(this StoryComponent self, StoryEntity story, DialogOptionNode node)
-        {
-            int saveID = node.Id;
-            if (node.ShowSelected)
-            {
-                // 为了兼容一开始不让反复选择, 之后又改为可重复选择的情况
-                story.TurnedOffOptions.Remove(saveID);
-                return false;
-            }
-            if (story.TurnedOffOptions.Contains(saveID))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public static void ShowDialogOptions(this StoryComponent self, List<DialogOptionNode> nodes)
-        {
-            // TODO
-            Log.Debug("显示对话选项");
         }
 
         public static void StoryCompleted(this StoryComponent self, StoryEntity story)
@@ -100,9 +87,9 @@ namespace ET
 
             //GameEventManager.Instance.FireEvent(GameEventType.OnStoryComplated, new object[] { graphName });
 
-            if (!story.GetParent<StoryComponent>().IsProcessingStory)
+            if (!self.IsProcessingStory)
             {
-                story.GetParent<StoryComponent>().ExitStory();    // 走一次清理
+                self.ExitStory();    // 走一次清理
             }
         }
 
@@ -110,11 +97,12 @@ namespace ET
         {
             // 原项目有一堆对其它系统的处理
             self.IsProcessingStory = false;
+
+            self.TriggerLater();
         }
 
         public static void CheckAfterLoading(this StoryComponent self)
         {
-            Log.Debug("临时直接检测剧情事件");
             if (!self.IsProcessingStory)
             {
                 self.TriggerLater();
@@ -124,6 +112,7 @@ namespace ET
                 //}
             }
 
+            self.CheckCondition<TrueCondNode>();
             //CheckCondition(typeof(LunarCalendarCondition));
             //CheckCondition(typeof(HaveTraitCondition));
             //CheckCondition(typeof(CheckBuildingBrokenCondition));
@@ -133,9 +122,12 @@ namespace ET
 
         /// <summary>
         /// 检测是否满足了带有指定类型的条件链
+        /// 【注意】(先不管这条注意事项)通用节点一定要把泛型TEntity声明成Entity(基类)
         /// </summary>
-        public static void CheckCondition(this StoryComponent self, Type conditionType, IConditionNodeParam param = null)
+        public static void CheckCondition<TNode, TParam>(this StoryComponent self, TParam param) where TNode : ConditionNode where TParam : struct
         {
+            // TODO 在触发事件的逻辑里应用IConditionNodeParam对象池
+
             //if (IsGameEnding)
             //{
             //    return;
@@ -147,31 +139,31 @@ namespace ET
             //}
 
             // 检测事件是否获知前关闭
-            self.CheckConditionNode(self.CloseConditionNodes, conditionType, param, self.OnCheckExitConditionNode);
+            self.CheckConditionNode<TNode, TParam>(self.CloseConditionPorts, param, StoryCondSuccessInvokeType.CheckExitConditionNode);
             // 检测事件是否被玩家获知
-            self.CheckConditionNode(self.OpenConditionNodes, conditionType, param, self.OnCheckOpenConditionNode);
+            self.CheckConditionNode<TNode, TParam>(self.OpenConditionPorts, param, StoryCondSuccessInvokeType.CheckOpenConditionNode);
             // 检测事件是否获知后关闭
-            self.CheckConditionNode(self.CloseStartedConditionNodes, conditionType, param, self.OnCheckExitConditionNode, false, false, false);
+            self.CheckConditionNode<TNode, TParam>(self.CloseStartedConditionPorts, param, StoryCondSuccessInvokeType.CheckExitConditionNode, false, false, false);
             //// 检测事件是否结束循环
             //self.CheckConditionNode(self.RepeatStoryForceFinishNodes, conditionType, extra, OnCheckRepeatStoryForceFinishNode, false, false, false);
 
             // 玩家一些情况下不触发播放
             if (!self.CheckGameStateCanActiveStory())
             {
-                self.AddCheckTypeToWait(conditionType, param, StoryCheckDicType.Start);
-                self.AddCheckTypeToWait(conditionType, param, StoryCheckDicType.Hold);
+                self.AddCheckTypeToWait<TNode, TParam>(param, StoryCheckDicType.Start);
+                self.AddCheckTypeToWait<TNode, TParam>(param, StoryCheckDicType.Hold);
                 return;
             }
 
             // 可以进行接下来的检测
-            self.OnCheckStartAtStoryOut(conditionType, param);
+            self.OnCheckStartAtStoryOut<TNode, TParam>(param);
             if (self.IsProcessingStory)
             {
-                self.AddCheckTypeToWait(conditionType, param, StoryCheckDicType.Hold);
+                self.AddCheckTypeToWait<TNode, TParam>(param, StoryCheckDicType.Hold);
             }
             else
             {
-                self.OnCheckHoldAtStoryOut(conditionType, param);
+                self.OnCheckHoldAtStoryOut<TNode, TParam>(param);
             }
 
             //if (!self.IsProcessingStory)
@@ -184,24 +176,32 @@ namespace ET
             //}
         }
 
+        public static void CheckCondition<TNode>(this StoryComponent self) where TNode : ConditionNode
+        {
+            self.CheckCondition<TNode, CondNullParam>(CondNullParam.Instance);
+        }
+
         // 判断当前是否可以激活事件
         public static bool CheckGameStateCanActiveStory(this StoryComponent self)
         {
             return true;
         }
 
-        private static void CheckConditionNode(this StoryComponent self, UnOrderMultiMap<Type, long> graphConditionNodes,
-            Type conditionType, IConditionNodeParam param, ActionCheckStorySuccess callFunc,
-            bool onlyOneTrigger = false, bool tryTriggerAtStoryOut = false, bool checkNodeTimes = true)
+        /// <summary>
+        /// 【注意】(先不管这条注意事项)通用节点一定要把泛型TEntity声明成Entity(基类)
+        /// </summary>
+        private static void CheckConditionNode<TNode, TParam>(this StoryComponent self, UnOrderMultiMap<Type, SerialPort> graphConditionNodes,
+            TParam param, long invokeType,
+            bool onlyOneTrigger = false, bool tryTriggerAtStoryOut = false, bool checkNodeTimes = true) where TNode : ConditionNode where TParam : struct/* where TInvokeParam : struct*/
         {
-            if (!graphConditionNodes.TryGetValue(conditionType, out List<long> ports))
+            Type conditionType = typeof(TNode);
+            if (!graphConditionNodes.TryGetValue(conditionType, out List<SerialPort> ports))
             {
                 return;
             }
-            List<CheckAtStoryOut> triggerList = new List<CheckAtStoryOut>();
-            foreach (long portInstanceId in ports)
+            List<CheckAtStoryOut<TNode, TParam>> triggerList = new List<CheckAtStoryOut<TNode, TParam>>();
+            foreach (SerialPort port in ports)
             {
-                SerialPort port = SerialGraphHelper.GetPortByInstanceId(self, portInstanceId);
                 if (self.StoryDict.TryGetValue(port.Node.Graph.Id, out StoryEntity story))
                 {
                     if (story.State == StoryState.Failed
@@ -215,25 +215,26 @@ namespace ET
                 }
 
                 List<ConditionNode> successList = new List<ConditionNode>();
-                bool trigger = story.CheckConditionFromRoot(port, conditionType, param, successList, checkNodeTimes);
+                bool trigger = story.CheckConditionFromRoot<StoryEntity, TNode, TParam>(port, param, successList, checkNodeTimes);
                 if (trigger)
                 {
-                    CheckAtStoryOut check = ObjectPool.Instance.Fetch<CheckAtStoryOut>();
+                    CheckAtStoryOut<TNode, TParam> check = ObjectPool.Instance.Fetch<CheckAtStoryOut<TNode, TParam>>();
                     check.Port = port;
                     check.ConditionType = conditionType;
-                    check.Param = param;
-                    check.CallFunc = callFunc;
+                    check.InvokeType = invokeType;
                     check.SuccessList = successList;
+                    check.Param = param;
+                    //check.CheckConditionFromRootFunc = story.CheckConditionFromRoot<StoryEntity, TNode, TParam>;
                     triggerList.Add(check);
                 }
             }
 
-            List<Action<List<object>>> resultList = new List<Action<List<object>>>();
-            List<List<object>> resultObjsList = new List<List<object>>();
+            using ListComponent<long> resultList = ListComponent<long>.Create();
+            using ListComponent<CheckStorySuccessResult> resultObjsList = ListComponent<CheckStorySuccessResult>.Create();
             int logName = 0;
             for (int i = 0; i < triggerList.Count; i++)
             {
-                CheckAtStoryOut check = triggerList[i];
+                CheckAtStoryOut<TNode, TParam> check = triggerList[i];
                 if (resultList.Count > 0 && onlyOneTrigger)
                 {
                     if (tryTriggerAtStoryOut)
@@ -246,74 +247,70 @@ namespace ET
                     continue;
                 }
                 // 触发
-                Action<List<object>> result = check.CallFunc(check.Port.Node, check.SuccessList);
-                if (result != null)
+                StoryCondSuccessInvokeParam invokeParam = new(self, check.Port.Node, check.SuccessList);
+                long result = EventSystem.Instance.Invoke<StoryCondSuccessInvokeParam, long>(invokeType, invokeParam);
+                if (result > 0)
                 {
                     resultList.Add(result);
-                    List<object> resultObjs = ObjectPool.Instance.Fetch<List<object>>();
-                    resultObjs.Add(check.Port.Node);
-                    resultObjs.Add(check.SuccessList);
+                    CheckStorySuccessResult resultObjs = new(invokeParam);
+                    //resultObjs.Add(check.Port.Node);
+                    //resultObjs.Add(check.SuccessList);
+                    resultObjsList.Add(resultObjs);
                     logName = check.Port.Node.Graph.Id;
                 }
             }
             for (int i = 0; i < resultList.Count && i < resultObjsList.Count; i++)
             {
-                resultList[i].Invoke(resultObjsList[i]);
+                long result = resultList[i];
+                CheckStorySuccessResult resultObjs = resultObjsList[i];
+                Log.Debug($"触发剧情事件判断成功回调{result}");
+                EventSystem.Instance.Invoke(result, resultObjs);
             }
         }
 
-        public static void AddCheckTypeToWait(this StoryComponent self, Type conditionType, IConditionNodeParam param, StoryCheckDicType dicType)
+        public static void AddCheckTypeToWait<TNode, TParam>(this StoryComponent self, TParam param, StoryCheckDicType dicType) where TNode : ConditionNode where TParam : struct
         {
-            foreach (StoryWaitCheck waitCheck in self.CheckTypeToWait)
+            Type conditionType = typeof(TParam);
+            foreach (StoryWaitCheckBase waitCheckBase in self.CheckTypeToWait)
             {
-                if (waitCheck.ConditionType != conditionType || waitCheck.DicType != dicType)
-                {
-                    continue;
-                }
-                if ((param == null && waitCheck.Param != null) || (param != null && waitCheck.Param == null))
-                {
-                    continue;
-                }
-                else if (param == null && waitCheck.Param == null)
+                if (waitCheckBase is StoryWaitCheck<TNode, TParam> waitCheck
+                    //&& waitCheck.ConditionType == conditionType
+                    && waitCheck.DicType == dicType
+                    && waitCheck.Param.Equals(param))
                 {
                     return;
                 }
-                if (param.GetType() != waitCheck.Param.GetType() || !param.Equals(waitCheck.Param))
-                {
-                    continue;
-                }
-                return;
             }
-            StoryWaitCheck w = new StoryWaitCheck();
-            w.ConditionType = conditionType;
+            StoryWaitCheck<TNode, TParam> w = new();
+            //w.ConditionType = conditionType;
             w.Param = param;
             w.DicType = dicType;
+            switch (dicType)
+            {
+                case StoryCheckDicType.Start:
+                    w.CheckDelegate = OnCheckStartAtStoryOut<TNode, TParam>;
+                    break;
+                case StoryCheckDicType.Hold:
+                    w.CheckDelegate = OnCheckHoldAtStoryOut<TNode, TParam>; ;
+                    break;
+                case StoryCheckDicType.All:
+                    w.CheckDelegate = CheckCondition<TNode, TParam>; ;
+                    break;
+                default:
+                    Log.Error("???");
+                    break;
+            }
             self.CheckTypeToWait.Add(w);
         }
 
         /// <summary>
         /// 事件播放时不能进行的检测(Start节点)
+        /// 【注意】(先不管这条注意事项)通用节点一定要把泛型TEntity声明成Entity(基类)
         /// </summary>
-        public static void OnCheckStartAtStoryOut(this StoryComponent self, Type conditionType, IConditionNodeParam param)
+        public static void OnCheckStartAtStoryOut<TNode, TParam>(this StoryComponent self, TParam param) where TNode : ConditionNode where TParam : struct
         {
             // 检测事件是否播放
-            self.CheckConditionNode(self.StartConditionNodes, conditionType, param, self.OnCheckStartAtStoryOut_Cb, true, true);
-        }
-        private static Action<List<object>> OnCheckStartAtStoryOut_Cb(this StoryComponent self, SerialNode node, List<ConditionNode> successList)
-        {
-            //SaveObjectStory.GraphData data = dataContainer.initedObject.GetOrCreateGraphData(node.graph.name);
-            StoryStartNode startNode = node as StoryStartNode;
-            //if (startNode.repeatTask && (node.graph as StoryGraph).headnode.taskLineType != StoryHeadInfoNode.TaskLineType.Cab)
-            //{
-            //    int LastPlayTime = data.LastPlayTime;
-            //    if (LastPlayTime >= 0 && InGameTimeManager.Instance.TotalQuaterPassedAsInt - LastPlayTime < startNode.MinTimeDiv)
-            //    {
-            //        // CD时间内不播
-            //        return null;
-            //    }
-            //    data.LastPlayTime = InGameTimeManager.Instance.TotalQuaterPassedAsInt;// 记录循环时刻
-            //}
-            return (List<object> objs) => { self.StoryStart(startNode); };
+            self.CheckConditionNode<TNode, TParam>(self.StartConditionPorts, param, StoryCondSuccessInvokeType.CheckStartAtStoryOut, true, true);
         }
 
         public static bool StoryStart(this StoryComponent self, StoryStartNode startNode)
@@ -324,6 +321,7 @@ namespace ET
             //    return false;
             //}
             StoryEntity entity = self.StoryDict[startNode.Graph.Id];
+            
             self.IsProcessingStory = true;
 
             //FindTalkingNpc(startNode.GetInputPort("conditionPort"), (npcID) =>
@@ -334,6 +332,7 @@ namespace ET
             entity.Blackboard.AddActiveTime(startNode);   // 标记已触发
             entity.State = StoryState.Started;
             Log.Warning($"触发事件 {startNode.Graph.Id}");
+            //entity.RemoveRedDot();
 
             //// 判断有生效中的时效标签
             //TimeLimitNode limitNode = (startNode.graph as StoryGraph).GetActiveTimeLimitNode(data.TimeLimitSaveID);
@@ -359,11 +358,11 @@ namespace ET
             {
                 return;
             }
-            using ListComponent<CheckAtStoryOut> triggerList = ListComponent<CheckAtStoryOut>.Create();
-            foreach (CheckAtStoryOut check in self.ListTriggerLaterAtStoryOut)
+            using ListComponent<CheckAtStoryOutBase> triggerList = ListComponent<CheckAtStoryOutBase>.Create();
+            foreach (CheckAtStoryOutBase check in self.ListTriggerLaterAtStoryOut)
             {
                 SerialPort port = check.Port;
-                ActionCheckStorySuccess callfunc = check.CallFunc;
+                long callfunc = check.InvokeType;
                 StoryEntity entity = self.StoryDict[port.Node.Graph.Id];
                 if (entity != null)
                 {
@@ -378,7 +377,7 @@ namespace ET
 
                 List<ConditionNode> successList = ObjectPool.Instance.Fetch<List<ConditionNode>>();
                 check.SuccessList = successList;
-                bool trigger = entity.CheckConditionFromRoot(port, check.ConditionType, check.Param, successList);
+                bool trigger = check.CheckConditionFromRoot(entity);
                 if (trigger)
                 {
                     triggerList.Add(check); // 只保留条件通过的
@@ -387,20 +386,19 @@ namespace ET
             self.ListTriggerLaterAtStoryOut.Clear();
 
             int logName = 0;
-            Action<List<object>> result = null;
-            List<object> resultobjs = null;
+            long result = 0;
+            CheckStorySuccessResult resultobjs = default;
             for (int i = 0; i < triggerList.Count; i++)
             {
-                CheckAtStoryOut check = triggerList[i];
-                if (self.IsProcessingStory == false && result == null)
+                CheckAtStoryOutBase check = triggerList[i];
+                if (self.IsProcessingStory == false && result == 0)
                 {
                     // 只触发第一个
-                    result = check.CallFunc(check.Port.Node, check.SuccessList);
-                    if (result != null)
+                    StoryCondSuccessInvokeParam invokeParam = new(self, check.Port.Node, check.SuccessList);
+                    result = EventSystem.Instance.Invoke<StoryCondSuccessInvokeParam, long>(check.InvokeType, invokeParam);
+                    if (result > 0)
                     {
-                        resultobjs = ObjectPool.Instance.Fetch<List<object>>();
-                        resultobjs.Add(check.Port.Node);
-                        resultobjs.Add(check.SuccessList);
+                        resultobjs.Param = invokeParam;
                         logName = check.Port.Node.Graph.Id;
                     }
                 }
@@ -412,11 +410,10 @@ namespace ET
                     Log.Debug($"由于正在播放事件{logName}, 稍后再重新检测{check.Port.Node.Graph.Id}");
                 }
             }
-            result?.Invoke(resultobjs);
-            if (resultobjs != null)
+            if (result > 0)
             {
-                resultobjs.Clear();
-                ObjectPool.Instance.Recycle(resultobjs);
+                Log.Debug($"触发剧情事件判断成功回调{result}");
+                EventSystem.Instance.Invoke(result, resultobjs);
             }
         }
 
@@ -432,31 +429,20 @@ namespace ET
                     return;
                 }
 
-                StoryWaitCheck w = self.CheckTypeToWait[0];
+                StoryWaitCheckBase w = self.CheckTypeToWait[0];
 
                 if (checkAll)
                 {
                     if (w.DicType == StoryCheckDicType.All)
                     {
                         self.CheckTypeToWait.RemoveAt(0);
-                        self.CheckCondition(w.ConditionType, w.Param);
+                        w.Check(self);
                     }
                 }
                 else
                 {
                     self.CheckTypeToWait.RemoveAt(0);
-                    if (w.DicType == StoryCheckDicType.All)
-                    {
-                        self.CheckCondition(w.ConditionType, w.Param);
-                    }
-                    else if (w.DicType == StoryCheckDicType.Start)
-                    {
-                        self.OnCheckStartAtStoryOut(w.ConditionType, w.Param);
-                    }
-                    else if (w.DicType == StoryCheckDicType.Hold)
-                    {
-                        self.OnCheckHoldAtStoryOut(w.ConditionType, w.Param);
-                    }
+                    w.Check(self);
                 }
             }
         }
@@ -464,43 +450,9 @@ namespace ET
         /// <summary>
         /// 事件播放时不能进行的检测(Hold节点)
         /// </summary>
-        public static void OnCheckHoldAtStoryOut(this StoryComponent self, Type conditionType, IConditionNodeParam param)
+        public static void OnCheckHoldAtStoryOut<TNode, TParam>(this StoryComponent self, TParam param) where TNode : ConditionNode where TParam : struct
         {
-            self.CheckConditionNode(self.HoldNodes, conditionType, param, self.OnCheckHoldAtStoryOut_Cb, true, true);
-        }
-        private static Action<List<object>> OnCheckHoldAtStoryOut_Cb(this StoryComponent self, SerialNode node, List<ConditionNode> successList)
-        {
-            StoryEntity story = self.StoryDict[node.Graph.Id];
-            HoldNode holdnode = node as HoldNode;
-            List<int> holdlist = story.Blackboard.HoldNodes;
-            if (holdlist == null || holdlist.Contains(holdnode.Id) == false)
-            {
-                Log.Warning($"触发{node.Graph.Id}流程判断{holdnode.Id}时, 没有找到存档数据");
-                return null;
-            }
-
-            // 标记所有同源的hold节点都失效
-            return (List<object> objs) =>
-            {
-                //FindTalkingNpc(holdnode.GetOutputPort("conditionPort"), (npcNode) =>
-                //{
-                //    RemoveTalkingNpc(npcNode);
-                //});
-                story.AddHoldNodeTimesIfSameSource(holdnode);
-                holdnode.Continue(story);
-            };
-        }
-
-        public static Action<List<object>> OnCheckExitConditionNode(this StoryComponent self, SerialNode node, List<ConditionNode> successList)
-        {
-            return (List<object> objs) =>
-            {
-                //if ((node.Graph as StoryGraph).taskLineType == StoryHeadInfoNode.TaskLineType.Hunter)
-                //{
-                //    BountyHunterManager.Instance.CloseByStoryHunter(node.graph.name);
-                //}
-                self.StoryClose(node.Graph.Id);
-            };
+            self.CheckConditionNode<TNode, TParam>(self.HoldPorts, param, StoryCondSuccessInvokeType.CheckHoldAtStoryOut, true, true);
         }
 
         public static void StoryClose(this StoryComponent self, int graphId)
@@ -520,6 +472,7 @@ namespace ET
             {
                 entity.State = StoryState.CloseAfterOpen;
             }
+            //entity.RemoveRedDot();
             SerialGraph graph = entity.Graph;
             //// 撤销追踪
             //RemoveCheckNote(graphName);
@@ -529,7 +482,7 @@ namespace ET
             //}
             //UpdateRomingMainStoryText();
             // 不发奖励
-            entity.Blackboard.Results.Clear();
+            entity.Blackboard.Results?.Clear();
             //// 悬赏
             //if (graph != null && graph.headnode.taskLineType == StoryHeadInfoNode.TaskLineType.Hunter)
             //{
@@ -545,12 +498,6 @@ namespace ET
             {
                 self.ExitStory();    // 走一次清理
             }
-        }
-
-        public static Action<List<object>> OnCheckOpenConditionNode(this StoryComponent self, SerialNode node, List<ConditionNode> successList)
-        {
-            self.StoryOpen(node as StoryOpenNode);
-            return null;
         }
 
         public static void StoryOpen(this StoryComponent self, StoryOpenNode openNode)
@@ -570,14 +517,14 @@ namespace ET
 
             //if (graph.headnode.taskLineType != StoryHeadInfoNode.TaskLineType.Cab)
             //{
-            if (entity.StartNode.CheckCondition(entity, "ExitConditions") == false)
+            if (entity.StartNode.CheckCloseCondition(entity) == false)
             {
                 // 事件按播放条件归类至指定列表
-                SerialPort startConditionRootPort = entity.StartNode.GetPort("conditionPort");
-                entity.RecordConditionCheck(self.StartConditionNodes, startConditionRootPort);
+                SerialPort startConditionRootPort = entity.StartNode.GetPort("ConditionPort");
+                entity.RecordConditionCheck(self.StartConditionPorts, startConditionRootPort);
 
                 // 事件按关闭条件归类至指定列表
-                entity.RecordConditionCheck(self.CloseStartedConditionNodes, /*graph.headnode.taskLineType == StoryHeadInfoNode.TaskLineType.Cab ? null : */entity.StartNode.GetPort("ExitConditions"));
+                entity.RecordConditionCheck(self.CloseStartedConditionPorts, /*graph.headnode.taskLineType == StoryHeadInfoNode.TaskLineType.Cab ? null : */entity.StartNode.GetPort("ExitConditions"));
 
                 //// 事件按跳出条件归类至指定列表
                 //if (graph.startnode.repeatTask)
@@ -597,6 +544,8 @@ namespace ET
                 //{
                 //    NoteActive(graph);
                 //}
+
+                //entity.CheckOpenRedDot();
             }
             else
             {
@@ -606,7 +555,66 @@ namespace ET
             //}
         }
 
+        public static void SetMiscValue<T>(this StoryComponent self, string key, T value)
+        {
+            // 防止装箱拆箱问题
+            if (typeof(T).IsValueType)
+            {
+                //这里要接入一次池化
+                if (!self.MiscValueDict.TryGetValue(key, out object obj))
+                {
+                    obj = new ValueObject<T>();
+                    self.MiscValueDict.Add(key, obj);
+                }
+                (obj as ValueObject<T>).Value = value;
+                return;
+            }
+            self.MiscValueDict[key] = value;
+        }
 
+        public static T GetMiscValue<T>(this StoryComponent self, string key)
+        {
+            if (!self.MiscValueDict.TryGetValue(key, out object obj))
+            {
+                // 抛出异常
+                return default;
+            }
+            if (typeof(T).IsValueType)
+            {
+                ValueObject<T> value = obj as ValueObject<T>;
+                return value.Value;
+            }
+            return (T)obj;
+        }
+
+        public static bool ContainsMiscValue(this StoryComponent self, string key)
+        {
+            return self.MiscValueDict.ContainsKey(key);
+        }
+
+        public static void RemoveMiscValue<T>(this StoryComponent self, string key)
+        {
+            if (self.MiscValueDict.TryGetValue(key, out object obj))
+            {
+                if (obj is IValueObject valueObject)
+                {
+                    valueObject.Dispose();
+                }
+                self.MiscValueDict.Remove(key);
+            }
+        }
+
+        public static void ClearMiscValue<T>(this StoryComponent self)
+        {
+            foreach (object obj in self.MiscValueDict.Values)
+            {
+                if (obj is IValueObject valueObject)
+                {
+                    valueObject.Dispose();
+                }
+            }
+            self.MiscValueDict.Clear();
+        }
     }
 }
 

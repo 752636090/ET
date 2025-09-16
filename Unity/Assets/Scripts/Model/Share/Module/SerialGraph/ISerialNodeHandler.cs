@@ -55,9 +55,9 @@ namespace ET
 
     public interface IConditionNodeHandler : ISerialNodeHandler
     {
-        bool HandleCheck(Entity entity, ConditionNode node, IConditionNodeParam param);
+        //bool HandleCheck(Entity entity, ConditionNode node, IConditionNodeParam param);
 
-        bool HandleCheckAllConnectNode(Entity entity, ConditionNode node, Direction direction, List<ConditionNode> line = null);
+        bool HandleCheck(Entity entity, ConditionNode node, NodeDefine.Direction direction, List<ConditionNode> line = null);
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -86,6 +86,19 @@ namespace ET
     }
 
     [AttributeUsage(AttributeTargets.Class)]
+    public class WaitableHappenNodeHandlerAttribute : TypeKeyBaseAttribute
+    {
+        public WaitableHappenNodeHandlerAttribute(Type type) : base(type)
+        {
+        }
+    }
+
+    public interface IWaitableHappenNodeHandler
+    {
+        ETTask HandleStartWait(Entity entity, HappenNode node, ETCancellationToken cancellationToken = null);
+    }
+
+    [AttributeUsage(AttributeTargets.Class)]
     public class ResultNodeHandlerAttribute : ContinueNodeHandlerAttribute
     {
         public ResultNodeHandlerAttribute(Type type) : base(type)
@@ -95,7 +108,7 @@ namespace ET
 
     public interface IResultNodeHandler : IContinueNodeHandler
     {
-        bool HandleOnResult(Entity entity, ResultNode node);
+        void HandleOnResult(Entity entity, ResultNode node);
     }
 
 
@@ -141,6 +154,9 @@ namespace ET
         protected abstract ETTask EnterHold(Entity entity, HoldNode holdNode);
         protected abstract ETTask ExitHold(Entity entity, HoldNode holdNode);
         protected abstract void CheckComplete(Entity entity);
+        /// <summary>
+        /// 暂时退出
+        /// </summary>
         protected abstract void Exit(Entity entity);
 
         public async ETTask HandleAfterHold(Entity entity, HoldNode holdNode)

@@ -16,4 +16,15 @@
     {
 
     }
+
+    [AbstractDeclare]
+    public abstract class AWaitableHappenNodeHandler<TEntity, TNode> : IWaitableHappenNodeHandler where TEntity : Entity where TNode : HappenNode
+    {
+        public async ETTask HandleStartWait(Entity entity, HappenNode node, ETCancellationToken cancellationToken = null)
+        {
+            await StartWait(entity as TEntity, node as TNode, cancellationToken);
+        }
+
+        protected abstract ETTask StartWait(TEntity entity, TNode node, ETCancellationToken cancellationToken = null);
+    }
 }
