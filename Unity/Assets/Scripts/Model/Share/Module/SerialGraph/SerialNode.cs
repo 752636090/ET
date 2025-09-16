@@ -68,4 +68,9 @@ namespace ET
     {
         string BeforeSave();
     }
+
+    public interface INodeColor
+    {
+        Color GetNodeColor();
+    }
 }

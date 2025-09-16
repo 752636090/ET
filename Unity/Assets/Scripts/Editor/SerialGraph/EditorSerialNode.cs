@@ -47,10 +47,11 @@ namespace ET
             //this.Q("node-border").style.color = Color.green; // 测试，没用
             //style.color = Color.green; // 测试，没用
             NodeTintAttribute nodeTint = node.GetType().GetCustomAttribute<NodeTintAttribute>(true);
-            Color color = nodeTint?.Color ?? Color.grey;
-            if (nodeTint != null)
+            INodeColor nodeColor = node as INodeColor;
+            Color color = nodeColor?.GetNodeColor() ?? nodeTint?.Color ?? Color.grey;
+            if (nodeColor != null || nodeTint != null)
             {
-                style.backgroundColor = nodeTint.Color;
+                style.backgroundColor = color;
                 mainContainer.style.backgroundColor = color;
                 contentContainer.style.backgroundColor = color;
                 inputContainer.style.backgroundColor = color;
